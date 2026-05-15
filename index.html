@@ -1,7 +1,252 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>test</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youngji Sohn — Economics PhD Student</title>
+<style>
+  body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #111;
+    background: #336;
+    margin: 0;
+    padding: 16px;
+  }
+  a { color: #003399; }
+  a:hover { color: #c00; }
 
+  /* 3-column layout */
+  .grid {
+    display: flex;
+    gap: 6px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+
+  /* Columns */
+  .col-sidebar { width: 270px; flex-shrink: 0; }
+  .col-about {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.col-papers {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+  
+  /* Boxes */
+  .box-teal {
+    background: #1a998e;
+    color: #fff;
+    border: 2px solid #0d7069;
+    padding: 14px;
+  }
+  .box-teal a { color: #ffd700; }
+  .box-teal a:hover { color: #fff; }
+  .box-cream {
+    background: #faf3e0;
+    border: 2px solid #c9b98a;
+    padding: 14px;
+  }
+  .box-light {
+    background: #e8f4f0;
+    border: 2px solid #99bbad;
+    padding: 14px;
+  }
+
+  /* Header cells */
+  .box-header {
+    background: #ffd700;
+    border: 2px solid #c9a200;
+    padding: 10px 14px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 17px;
+    margin: 16px 0 8px 0;
+    border-bottom: 1px solid #999;
+    padding-bottom: 3px;
+  }
+  h2:first-child { margin-top: 0; }
+
+  .name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .fields {
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .photo img {
+    width: 100%;
+    max-width: 230px;
+    border: 2px solid #555;
+    margin: 8px 0;
+  }
+
+  ul {
+    margin: 6px 0;
+    padding-left: 18px;
+  }
+  li { margin-bottom: 5px; }
+
+  .paper-entry { margin-bottom: 12px; }
+  .paper-links { font-size: 13px; }
+  .paper-status {
+    font-size: 13px;
+    font-style: italic;
+    color: #555;
+  }
+  .new-tag {
+    background: #c00;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .contact-item { margin-bottom: 4px; }
+
+  /* Responsive: stack on small screens */
+  @media (max-width: 700px) {
+    .grid { flex-direction: column; }
+    .col-sidebar { width: 100%; max-width: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid">
+
+  <!-- ========== SIDEBAR ========== -->
+  <div class="col-sidebar">
+    <div class="box-teal">
+      <div class="name">Youngji Sohn</div>
+      <div class="photo">
+        <img src="profile.jpg" alt="Youngji Sohn">
+      </div>
+      
+      PhD Student in Economics <br>
+      University of Warwick
+
+      <h2>Contact</h2>
+      <div class="contact-item">✉️ youngji.sohn@warwick.ac.uk</div>
+      <div class="contact-item">🏫 s1.111, Social Sciences building</div>
+
+
+      <h2>Links</h2>
+      <ul style="padding-left:14px;">
+        <li><a href="cv.pdf">Curriculum Vitae</a></li>
+        <li><a href="https://scholar.google.com/citations?user=tWI3v08AAAAJ&hl=en">Google Scholar</a></li>
+        <li><a href="#">Personal</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== ABOUT ========== -->
+  <div class="col-about">
+    <div class="box-header">About</div>
+    <div class="box-cream">
+      <p>I am a PhD student in Economics at <a href="#">University of Warwick</a>.</p>
+      <p>My advisors are <a href="https://www.condorelli.science">Daniele Condorelli</a> and <a href="https://profiles.warwick.ac.uk/ecsiak-motty-perry">Motty Perry</a>.</p>
+      <p>My research focuses on microeconomic theory and game theory,
+         with particular interests in contract design, communication,
+         and misspecified games.</p>
+
+      
+      <h2>Education</h2>
+      <ul style="padding-left:14px;">
+        <li>PhD Economics<br>University of Warwick<br>2020–present</li>
+        <li>MA Economics<br>University of Zurich<br>2020</li>
+        <li>BSc Mathematics<br>POSTECH<br>2017</li>
+      </ul>
+      
+      <h2>Presentations</h2>
+      <ul>
+        <li><strong>2026:</strong> Conference Name (City), Workshop Name (University)</li>
+        <li><strong>2025:</strong> Department Seminar (Warwick), Conference Name (City)</li>
+        <li><strong>2024:</strong> Workshop Name (University)</li>
+      </ul>
+
+      <h2>Teaching</h2>
+      <ul>
+        <li>TA, MRes: Advanced Microeconomic Theory — Fall 20XX for Motty Perry</li>
+        <li>TA, UG: Mathematical Economics 1A — Spring 20XX</li>
+        <li>TA, UG: Microeconomics 2 — Winter 20XX</li>
+      </ul>
+
+      <h2>Miscellaneous</h2>
+      <ul>
+        <li><a href="#">I like</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== RESEARCH ========== -->
+  <div class="col-papers">
+    <div class="box-header">Research</div>
+    <div class="box-light">
+
+      <div class="paper-entry">
+        <strong>[3] (Dis-)agreement in Misspecified Games</strong>
+        <span class="new-tag">NEW</span><br>
+        <span class="paper-links">[<a href="#">pdf</a>] [<a href="#">slides</a>]</span>
+        <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
+        <div class="abstract" style="display:none; font-size:13px; color:#444; margin-top:6px; padding:8px; background:#f5f5f0; border-left:3px solid #c9a200;">
+          Your abstract text here...
+        </div>
+      </div>
+
+      <div class="paper-entry">
+        <strong>[2] Pay to Quit</strong><br>
+        with <a href="https://sites.google.com/view/hyungminpark/">Hyungmin Park</a><br>
+        <span class="paper-links">[<a href="#">pdf</a>] [<a href="#">slides</a>]</span>
+        <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
+        <div class="abstract" style="display:none; font-size:13px; color:#444; margin-top:6px; padding:8px; background:#f5f5f0; border-left:3px solid #c9a200;">
+          Your abstract text here...
+        </div>
+      </div>
+
+      <h2>Publications</h2>
+      <div class="paper-entry">
+        <strong>[1] Vertical Mergers in Ecosystems with Consumer Hold-Up</strong><br>
+        with <a href="https://www.condorelli.science">Daniele Condorelli</a>, <a href="https://www.compasslexecon.com/professionals/jorge-padilla">Jorge Padilla</a><br>
+        <span class="paper-status">Journal of Industrial Economics, 2024</span><br>
+        <span class="paper-links">[<a href="#">pdf</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
+      </div>
+
+      <h2>Work in Progress</h2>
+      <div class="paper-entry">
+        Title of Your Ongoing Project<br>
+        <small>with <a href="#">Coauthor</a></small>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
+  &copy; 2026 Youngji Sohn
+</div>
+
+</body>
 </html>
