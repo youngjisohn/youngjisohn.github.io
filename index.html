@@ -3,160 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Youngji Sohn🙋🏻‍♀️</title>
-<style>
-  body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 15px;
-    line-height: 1.5;
-    color: #111;
-    background: #336;
-    margin: 0;
-    padding: 16px;
-  }
-  a { color: #003399; }
-  a:hover { color: #c00; }
-
-  /* 3-column layout */
-  .grid {
-    display: flex;
-    gap: 6px;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: flex-start;
-  }
-
-  /* Columns */
-  .col-sidebar { width: 270px; flex-shrink: 0; }
-  .col-about {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.col-papers {
-  flex: 1;
-  min-width: 300px;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-  
-  /* Boxes */
-  .box-teal {
-    background: #1a998e;
-    color: #fff;
-    border: 2px solid #0d7069;
-    padding: 14px;
-  }
-  .box-teal a { color: #ffd700; }
-  .box-teal a:hover { color: #fff; }
-  .box-cream {
-    background: #faf3e0;
-    border: 2px solid #c9b98a;
-    padding: 14px;
-  }
-  .box-light {
-    background: #e8f4f0;
-    border: 2px solid #99bbad;
-    padding: 14px;
-  }
-
-  /* Header cells */
-  .box-header {
-    background: #ffd700;
-    border: 2px solid #c9a200;
-    padding: 10px 14px;
-    font-weight: bold;
-    font-size: 18px;
-  }
-
-  h2 {
-    font-size: 17px;
-    margin: 16px 0 8px 0;
-    border-bottom: 1px solid #999;
-    padding-bottom: 3px;
-  }
-  h2:first-child { margin-top: 0; }
-
-  .name {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 4px;
-  }
-  .fields {
-    font-size: 14px;
-    margin-bottom: 12px;
-    line-height: 1.4;
-  }
-  .photo img {
-    width: 100%;
-    max-width: 230px;
-    border: 2px solid #555;
-    margin: 8px 0;
-  }
-
-  ul {
-    margin: 6px 0;
-    padding-left: 18px;
-  }
-  li { margin-bottom: 5px; }
-
-  .paper-entry { margin-bottom: 12px; }
-  .paper-links { font-size: 13px; }
-  .paper-status {
-    font-size: 13px;
-    font-style: italic;
-    color: #555;
-  }
-  .new-tag {
-    background: #c00;
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 1px 5px;
-    border-radius: 2px;
-    vertical-align: middle;
-    margin-left: 4px;
-  }
-  .contact-item { margin-bottom: 4px; }
-
-  /* Responsive: stack on small screens */
-  @media (max-width: 700px) {
-    .grid { flex-direction: column; }
-    .col-sidebar { width: 100%; max-width: 300px; }
-  }
-</style>
+<title>Youngji Sohn</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
+  
 
+
+  
+<div style="max-width:1200px; margin:0 auto 10px auto; display:flex; justify-content:space-between; align-items:center;">
+  <div>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="research.html" class="nav-btn">Research</a>
+    <a href="teaching.html" class="nav-btn">Teaching</a>
+  </div>
+  <a href="#" onclick="document.body.classList.toggle('bw'); this.textContent=document.body.classList.contains('bw')?'color on':'color off'; return false;" class="toggle-btn">color off</a>
+</div>
+
+  
 <div class="grid">
 
+ 
   <!-- ========== SIDEBAR ========== -->
   <div class="col-sidebar">
     <div class="box-teal">
       <div class="name">Youngji Sohn</div>
       <div class="photo">
-        <img src="profile.jpg" alt="Youngji Sohn">
+        <img src="profile.jpg" alt="Youngji Sohn" title="Me">
       </div>
-      
-      PhD Student in Economics <br>
-      University of Warwick
+      <div class="affiliation">
+        PhD Student in Economics<br>
+        University of Warwick
+      </div>
 
-      <h2>Contact</h2>
-      <div class="contact-item">✉️ youngji.sohn@warwick.ac.uk</div>
-      <div class="contact-item">🏫 s1.111, Social Sciences building</div>
+      <div class="contact-info">📍  Coventry, UK</div>
+      <div class="contact-info">✉️  youngji.sohn@warwick.ac.uk</div>
+      <div class="contact-info">🏫  Office S1.111, Social Sciences</div>
 
-
-      <h2>Links</h2>
-      <ul style="padding-left:14px;">
-        <li><a href="cv.pdf">Curriculum Vitae</a></li>
-        <li><a href="https://scholar.google.com/citations?user=tWI3v08AAAAJ&hl=en">Google Scholar</a></li>
-        <li><a href="#">Personal</a></li>
-      </ul>
+      <div class="sidebar-links">
+        <a href="cv.pdf">CV</a> ·
+        <a href="https://scholar.google.com/citations?user=tWI3v08AAAAJ&hl=en">Google Scholar</a> ·
+        <a href="#">X</a>
+      </div>
     </div>
   </div>
 
@@ -164,36 +53,26 @@
   <div class="col-about">
     <div class="box-header">About</div>
     <div class="box-cream">
-      <p>I am a PhD student in Economics at <a href="#">University of Warwick</a>.</p>
-      <p>My advisors are <a href="https://www.condorelli.science">Daniele Condorelli</a> and <a href="https://profiles.warwick.ac.uk/ecsiak-motty-perry">Motty Perry</a>.</p>
+      <p>Hello! My name is <a href="#" title="손영지" class="plain">Youngji</a>, and I am from South Korea.</p>
+      <p>I am a PhD student in Economics at the <a href="https://warwick.ac.uk/fac/soc/economics/">University of Warwick</a>
+        (<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/">department profile</a>).</p>
+      <p>My advisors are <a href="https://www.condorelli.science">Daniele Condorelli</a>
+         and <a href="https://profiles.warwick.ac.uk/ecsiak-motty-perry">Motty Perry</a>.</p>
       <p>My research focuses on microeconomic theory and game theory,
          with particular interests in contract design, communication,
          and misspecified games.</p>
 
       
       <h2>Education</h2>
-      <ul style="padding-left:14px;">
-        <li>PhD Economics<br>University of Warwick<br>2020–present</li>
-        <li>MA Economics<br>University of Zurich<br>2020</li>
-        <li>BSc Mathematics<br>POSTECH<br>2017</li>
-      </ul>
-      
-      <h2>Presentations</h2>
       <ul>
-        <li><strong>2026:</strong> 
-          Warwick MWIP,
-          <a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop">PhD Microeconomic Theory Workshop (LSE)</a>, EARIE (Mannheim), EETC (LSE, UCL)
-        </li>
-        <li><strong>2025:</strong> Warwick MWIP</li>
-        <li><strong>2024:</strong>  Warwick Microeconomics Work in Progress</li>
+        <li>PhD Economics, University of Warwick, 2020–present</li>
+        <li>MA Economics, University of Zurich, 2020</li>
+        <li>BSc Mathematics, POSTECH, 2016</li>
       </ul>
 
-      <h2>Teaching</h2>
-      <ul>
-        <li>TA, MRes: Advanced Microeconomic Theory for Motty Perry</li>
-        <li>TA, UG: Mathematical Economics 1A </li>
-        <li>TA, UG: Microeconomics 2</li>
-      </ul>
+      
+
+      
 
       <h2>Miscellaneous</h2>
       <ul>
@@ -210,7 +89,7 @@
       <div class="paper-entry">
         <strong>[3] (Dis-)agreement in Misspecified Games</strong>
         <span class="new-tag">NEW</span><br>
-        <span class="paper-links">[<a href="#">pdf</a>] [<a href="#">slides</a>]</span>
+        <span class="paper-links"> [<a href="#">slides</a>]</span>
         <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
         <div class="abstract" style="display:none; font-size:13px; color:#444; margin-top:6px; padding:8px; background:#f5f5f0; border-left:3px solid #c9a200;">
           Your abstract text here...
@@ -220,36 +99,51 @@
       <div class="paper-entry">
         <strong>[2] Pay to Quit</strong><br>
         with <a href="https://sites.google.com/view/hyungminpark/">Hyungmin Park</a><br>
-        <span class="paper-links">[<a href="#">pdf</a>] [<a href="#">slides</a>]</span>
+        <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_parksohn.pdf">pdf</a>] [<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_slides.pdf">slides</a>]</span>
         <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
         <div class="abstract" style="display:none; font-size:13px; color:#444; margin-top:6px; padding:8px; background:#f5f5f0; border-left:3px solid #c9a200;">
-          Your abstract text here...
+          We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately know whether their assigned components require costly repair. The principal observes only participation, not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information, leaving the principal exposed to high coordination rents. We show that a “pay-to-quit” contract—which offers a higher success bonus for opting out than for participating—strictly reduces implementation costs. As the contract screens out experts who intend to shirk or whose components need no repair, participation becomes an on-path signal of active effort. Under complementarities, this endogenous information raises each expert’s marginal contribution, significantly lowering the bonuses required for unique implementation. We also show that, paradoxically, environments in which components are more likely to be already satisfactory can be more expensive to implement robustly, because intervention then becomes less informative.
         </div>
       </div>
 
       <h2>Publications</h2>
       <div class="paper-entry">
         <strong>[1] Vertical Mergers in Ecosystems with Consumer Hold-Up</strong><br>
-        with <a href="https://www.condorelli.science">Daniele Condorelli</a>, <a href="https://www.compasslexecon.com/professionals/jorge-padilla">Jorge Padilla</a><br>
+        with <a href="https://www.condorelli.science">Daniele Condorelli</a>,
+        <a href="https://www.compasslexecon.com/professionals/jorge-padilla">Jorge Padilla</a><br>
         <span class="paper-status">Journal of Industrial Economics, 2024</span><br>
-        <span class="paper-links">[<a href="#">pdf</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
+        <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf">pdf</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
+        <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
+        <div class="abstract" style="display:none; font-size:13px; color:#444; margin-top:6px; padding:8px; background:#f5f5f0; border-left:3px solid #c9a200;">
+          An ecosystem comprises all downstream products that employ a certain upstream input. In many cases, final consumers make irreversible investments to join an ecosystem before downstream prices are set. By committing to buy products that use the specific ecosystem input, they are at risk of being held-up. Unable to observe future prices, consumers base their decisions on what they observe about the market structure within each ecosystem, including vertical contracts signed by the upstream firms. By entering into vertical agreements with multiple competing downstream firms, thus creating a credible expectation of lower prices, an upstream firm is able to mitigate consumers' hold-up problem and, as a result, increase ecosystem demand. Our main observation is that, in contrast to conventional wisdom, an upstream monopolist merging with one of its downstream affiliates will find it profitable to continue to serve downstream competitors, even when products sold downstream are homogeneous.
+        </div>
       </div>
-
-      <h2>Work in Progress</h2>
-      <div class="paper-entry">
-        .<br>
-        
-      </div>
+      
+      <h2>Presentations</h2>
+      <ul>
+        <li><strong>2026:</strong>
+          Warwick Microeconomics Work in Progress (MWIP),
+          <a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop">PhD Microeconomic Theory Workshop at LSE</a>,
+          EARIE, EETC
+        </li>
+        <li><strong>2025:</strong> Warwick MWIP</li>
+        <li><strong>2024:</strong> Warwick MWIP</li>
+      </ul>
 
     </div>
   </div>
+  
+  
 
 </div>
+  
+
+  
 
 <!-- Footer -->
-<div style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
+<footer style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
   &copy; 2026 Youngji Sohn
-</div>
+</footer>
 
 </body>
 </html>
