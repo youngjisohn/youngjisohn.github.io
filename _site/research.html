@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Youngji Sohn — Economics PhD student at the University of Warwick. Research on microeconomic theory, game theory, misspecified games, and contract design.">
+<meta property="og:title" content="Youngji Sohn — Research">
+<meta property="og:description" content="Youngji Sohn — Economics PhD student at the University of Warwick. Research on microeconomic theory, game theory, misspecified games, and contract design.">
+<meta property="og:url" content="https://youngjisohn.github.io">
+<link rel="canonical" href="https://youngjisohn.github.io/research.html">
 <title>Youngji Sohn — Research</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 
 </head>
 <body>
@@ -41,8 +46,20 @@ if (localStorage.getItem('bw') === 'true') {
 
     <div class="contact-info">📍 Coventry, UK</div>
     <div class="contact-info">✉️
-      <a href="#" class="plain" onclick="navigator.clipboard.writeText('youngji.sohn@warwick.ac.uk'); this.textContent='copied!'; setTimeout(()=>this.textContent='youngji.sohn@warwick.ac.uk',1500); return false;">youngji.sohn@warwick.ac.uk</a>
-    </div>
+  <a href="#" class="plain" onclick="
+    clearTimeout(this._t);
+    if(this.textContent==='copied!'){
+      this.textContent='youngji.sohn@warwick.ac.uk';
+      this.style.color='';
+    } else {
+      navigator.clipboard.writeText('youngji.sohn@warwick.ac.uk');
+      this.textContent='copied!';
+      this.style.color='#c00';
+      this._t=setTimeout(()=>{this.textContent='youngji.sohn@warwick.ac.uk'; this.style.color='';},3000);
+    }
+    return false;
+  ">youngji.sohn@warwick.ac.uk</a>
+</div>
     <div class="contact-info">🏫 Office S1.111, Social Sciences</div>
 
     <div class="sidebar-links">

@@ -7,8 +7,9 @@
 <meta property="og:title" content="Youngji Sohn">
 <meta property="og:description" content="Youngji Sohn — Economics PhD student at the University of Warwick. Research on microeconomic theory, game theory, misspecified games, and contract design.">
 <meta property="og:url" content="https://youngjisohn.github.io">
+<link rel="canonical" href="https://youngjisohn.github.io/">
 <title>Youngji Sohn</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
@@ -44,8 +45,20 @@ if (localStorage.getItem('bw') === 'true') {
 
     <div class="contact-info">📍 Coventry, UK</div>
     <div class="contact-info">✉️
-      <a href="#" class="plain" onclick="navigator.clipboard.writeText('youngji.sohn@warwick.ac.uk'); this.textContent='copied!'; setTimeout(()=>this.textContent='youngji.sohn@warwick.ac.uk',1500); return false;">youngji.sohn@warwick.ac.uk</a>
-    </div>
+  <a href="#" class="plain" onclick="
+    clearTimeout(this._t);
+    if(this.textContent==='copied!'){
+      this.textContent='youngji.sohn@warwick.ac.uk';
+      this.style.color='';
+    } else {
+      navigator.clipboard.writeText('youngji.sohn@warwick.ac.uk');
+      this.textContent='copied!';
+      this.style.color='#c00';
+      this._t=setTimeout(()=>{this.textContent='youngji.sohn@warwick.ac.uk'; this.style.color='';},3000);
+    }
+    return false;
+  ">youngji.sohn@warwick.ac.uk</a>
+</div>
     <div class="contact-info">🏫 Office S1.111, Social Sciences</div>
 
     <div class="sidebar-links">
@@ -99,19 +112,20 @@ if (localStorage.getItem('bw') === 'true') {
     </div>
 
     <div class="paper-entry">
-      <strong>[2] Pay to Quit</strong><br>
-      with <a href="https://sites.google.com/view/hyungminpark/">Hyungmin Park</a><br>
-      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_parksohn.pdf">pdf</a>] [<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_slides.pdf">slides</a>]</span>
-      <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
-      <div class="abstract">
-        We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately
-        know whether their assigned components require costly repair. The principal observes only participation,
-        not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann
-        and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information,
-        leaving the principal exposed to high coordination rents. We show that a "pay-to-quit" contract—which
-        offers a higher success bonus for opting out than for participating—strictly reduces implementation costs.
-      </div>
-    </div>
+  <strong>[2] Pay to Quit</strong><br>
+  with <a href="https://sites.google.com/view/hyungminpark/">Hyungmin Park</a><br>
+  <span class="paper-links">[<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='paper'; this.style.color='';}, 5000); return false;">paper</a>]</span>
+  <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_slides.pdf">slides</a>]</span>
+  <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
+  <div class="abstract">
+    We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately
+    know whether their assigned components require costly repair. The principal observes only participation,
+    not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann
+    and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information,
+    leaving the principal exposed to high coordination rents. We show that a "pay-to-quit" contract—which
+    offers a higher success bonus for opting out than for participating—strictly reduces implementation costs.
+  </div>
+</div>
 
     <h2>Publications</h2>
     <div class="paper-entry">
@@ -119,7 +133,7 @@ if (localStorage.getItem('bw') === 'true') {
       with <a href="https://www.condorelli.science">Daniele Condorelli</a>,
       <a href="https://www.compasslexecon.com/professionals/jorge-padilla">Jorge Padilla</a><br>
       <span class="paper-status">Journal of Industrial Economics, 2024</span><br>
-      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf">pdf</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
+      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf">paper</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
       <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
       <div class="abstract">
         An ecosystem comprises all downstream products that employ a certain upstream input. In many cases,

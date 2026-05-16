@@ -3,10 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{ page.description | default: 'Youngji Sohn — PhD student in Economics at the University of Warwick. Research in microeconomic theory, game theory, contract design and misspecified games.' }}">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.description | default: 'Youngji Sohn — PhD student in Economics at the University of Warwick.' }}">
+<meta property="og:url" content="https://youngjisohn.github.io">
+<link rel="canonical" href="https://youngjisohn.github.io{{ page.url }}">
 <title>{{ page.title }}</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 {% if page.extra_css %}
-<link rel="stylesheet" href="{{ page.extra_css }}">
+<link rel="stylesheet" href="/{{ page.extra_css }}">
 {% endif %}
 </head>
 <body>
