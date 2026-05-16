@@ -269,12 +269,28 @@ a.plain:hover { color: #c00; text-decoration: underline; }
 
 /* --- B&W TOGGLE --- */
 body.bw { background: #fff; }
-body.bw .box-side { background: #fff; color: #000; }
+body.bw .box-side {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
 body.bw .box-side a { color: #003399; }
-body.bw .box-cream { background: #fff; }
-body.bw .box-light { background: #fff; }
-body.bw .box-header { background: #fff; }
-body.bw .box-subtle, body.bw .box-subtle-header { background: #fff; }
+body.bw .box-cream {
+  background: #fff;
+  border: 2px solid #000;
+}
+body.bw .box-light {
+  background: #fff;
+  border: 2px solid #000;
+}
+body.bw .box-header {
+  background: #fff;
+  border: 2px solid #000;
+}
+body.bw .box-subtle, body.bw .box-subtle-header {
+  background: #fff;
+  border: 1px solid #000;
+}
 body.bw .name { color: #000; }
 body.bw .affiliation { color: #000; }
 body.bw .contact-info { color: #000; }
@@ -282,4 +298,4 @@ body.bw .sidebar-links { border-top: 1px solid #999; }
 body.bw .sidebar-links a { color: #003399; }
 body.bw .nav-btn { background: #fff; color: #942193; border: 1px solid #942193; }
 body.bw .toggle-btn:hover { color: #003399; border-color: #003399; }
-body.bw .abstract { background: #fff; }
+body.bw .abstract { background: #fff; border-left: 3px solid #000; }
