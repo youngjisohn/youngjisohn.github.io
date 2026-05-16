@@ -93,6 +93,8 @@ a:hover { color: #c00; text-decoration: underline; }
   border: 2px solid #555;
   display: block;
   margin: 0 auto 12px auto;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 .affiliation { font-size: 14px; line-height: 1.4; margin-bottom: 16px; }
 .contact-info { font-size: 14px; text-align: left; margin-bottom: 4px; }
