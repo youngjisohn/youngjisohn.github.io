@@ -17,14 +17,35 @@ body {
   padding: 16px;
 }
 
-a {
-  color: #003399;
-}
-a:hover {
-  color: #c00;
-}
+a { color: #003399; }
+a:hover { color: #c00; }
 
-/* Navigation buttons */
+/* ==========================================
+   WIDTH CONTROL — change these to resize
+   ========================================== */
+.page-wrapper {
+  max-width: fit-content;
+  width: 100%;
+  margin: 0 auto;
+}
+.col-sidebar { width: 265px; flex-shrink: 0; }                /* ← sidebar width */
+.col-about   { flex: 1; min-width: 0; max-width: 400px; }     /* ← about column max */
+.col-papers  { flex: 1; min-width: 0; max-width: 400px; }     /* ← research column max (home) */
+.col-wide {
+  width: 700px;          /* ← fixed, change this number */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
 .nav-btn {
   display: inline-block;
   background: #96229e;
@@ -40,16 +61,6 @@ a:hover {
   background: #7f1e85;
   color: #fff;
 }
-body.bw .nav-btn {
-  background: #fff;
-  color: #7f1e85;
-  border: 1px solid #7f1e85;
-}
-body.bw .nav-btn:hover {
-  background: #fff;
-  color: #7f1e85;
-}
-
 .toggle-btn {
   color: #aab;
   font-size: 11px;
@@ -62,48 +73,40 @@ body.bw .nav-btn:hover {
 }
 .toggle-btn:hover {
   color: #fff;
-  border: 1px solid #fff;
-}
-body.bw .toggle-btn:hover {
-  color: #003399;
-  border: 1px solid #003399;
+  border-color: #fff;
 }
 
-/* 3-column layout */
-.page-wrapper {
-  max-width: fit-content;
-  margin: 0 auto;
-}
+/* ==========================================
+   GRID LAYOUTS
+   ========================================== */
 
+/* 3-column: home page */
 .grid {
   display: flex;
   gap: 6px;
   align-items: flex-start;
 }
-
-/* Columns */
-.col-sidebar {
-  width: 265px;
-  flex-shrink: 0;
-}
-.col-about {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.col-papers {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
+.col-about, .col-papers {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-/* Sidebar */
+/* 2-column: research, cv, teaching pages */
+.grid-2col {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.col-wide {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ==========================================
+   SIDEBAR
+   ========================================== */
 .box-teal {
   background: #1a998e;
   color: #fff;
@@ -113,12 +116,9 @@ body.bw .toggle-btn:hover {
   padding: 20px 14px;
   text-align: center;
 }
-.box-teal a {
-  color: #ffd700;
-}
-.box-teal a:hover {
-  color: #fff;
-}
+.box-teal a { color: #ffd700; }
+.box-teal a:hover { color: #fff; }
+
 .name {
   font-size: 22px;
   font-weight: bold;
@@ -147,26 +147,24 @@ body.bw .toggle-btn:hover {
   padding-top: 10px;
   border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
-.sidebar-links a {
-  margin: 0 3px;
-}
+.sidebar-links a { margin: 0 3px; }
 
-/* Content boxes */
+/* ==========================================
+   CONTENT BOXES
+   ========================================== */
 .box-cream {
   background: #faf3e0;
   border: 2px solid #c9b98a;
   padding: 14px;
 }
-.box-cream p {
-  margin: 0 0 8px 0;
-}
+.box-cream p { margin: 0 0 8px 0; }
+
 .box-light {
   background: #e8f4f0;
   border: 2px solid #99bbad;
   padding: 14px;
 }
 
-/* Header cells */
 .box-header {
   background: #ffd700;
   border: 2px solid #c9a200;
@@ -177,40 +175,27 @@ body.bw .toggle-btn:hover {
   font-size: 18px;
 }
 
-/* Section headings — line before title, not after */
+/* ==========================================
+   TYPOGRAPHY
+   ========================================== */
 h2 {
   font-size: 17px;
   margin: 18px 0 8px 0;
   border-top: 1px solid #999;
   padding-top: 10px;
 }
-h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-}
+h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
-/* Lists */
-ul {
-  margin: 6px 0;
-  padding-left: 18px;
-}
-li {
-  margin-bottom: 5px;
-}
+ul { margin: 6px 0; padding-left: 18px; }
+li { margin-bottom: 5px; }
 
-/* Papers */
-.paper-entry {
-  margin-bottom: 14px;
-}
-.paper-links {
-  font-size: 13px;
-}
-.paper-status {
-  font-size: 13px;
-  font-style: italic;
-  color: #555;
-}
+/* ==========================================
+   PAPERS
+   ========================================== */
+.paper-entry { margin-bottom: 14px; }
+.paper-links { font-size: 13px; }
+.paper-status { font-size: 13px; font-style: italic; color: #555; }
+
 .new-tag {
   background: #c00;
   color: #fff;
@@ -221,70 +206,21 @@ li {
   vertical-align: middle;
   margin-left: 4px;
 }
+
 .abstract {
   display: none;
   font-size: 14px;
   color: #444;
   margin-top: 6px;
-  padding: 10px;
-  padding-left: 13px;
+  padding: 10px 10px 10px 13px;
   background: #f5f5f0;
   border-left: 3px solid #c9a200;
 }
 
-/* Responsive */
-/* Medium: sidebar stays left, About + Research stack on right */
-@media (max-width: 900px) {
-  .page-wrapper {
-    max-width: 100%;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: 265px 1fr;
-    grid-template-rows: auto auto;
-    gap: 6px;
-  }
-  .col-sidebar {
-    grid-row: 1 / 3;
-  }
-  .col-about {
-    min-width: 0;
-    max-width: none;
-  }
-  .col-papers {
-    min-width: 0;
-    max-width: none;
-  }
-}
-
-/* Small: everything stacks */
-@media (max-width: 600px) {
-  .page-wrapper {
-    max-width: 100%;
-  }
-  .grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .col-sidebar {
-    width: 100%;
-    max-width: 265px;
-  }
-  .col-about {
-    width: 100%;
-    max-width: 500px;
-  }
-  .col-papers {
-    width: 100%;
-    max-width: 500px;
-  }
-}
-
-/* Tooltips */
-.tooltip-wrap {
-  position: relative;
-}
+/* ==========================================
+   TOOLTIPS
+   ========================================== */
+.tooltip-wrap { position: relative; }
 .tooltip-text {
   display: none;
   position: absolute;
@@ -298,446 +234,78 @@ li {
   border-radius: 3px;
   white-space: nowrap;
 }
-.tooltip-wrap:hover .tooltip-text {
-  display: block;
-}
+.tooltip-wrap:hover .tooltip-text { display: block; }
+a.tooltip-wrap { position: relative; }
 
-a.tooltip-wrap {
-  position: relative;
-}
+a.plain { color: inherit; text-decoration: none; }
+a.plain:hover { color: #c00; text-decoration: none; }
 
-a.plain {
-  color: inherit;
-  text-decoration: none;
-}
-a.plain:hover {
-  text-decoration: none;
-  color: #c00;
-}
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
 
-/* Print */
-@media print {
-  body {
-    background: #fff;
-    color: #000;
-    padding: 0;
-    font-size: 12px;
-  }
-  .grid {
-    max-width: 100%;
-    gap: 10px;
-  }
-  .box-teal {
-    background: #fff;
-    color: #000;
-    border: 1px solid #000;
-  }
-  .box-teal a {
-    color: #000;
-  }
-  .box-cream {
-    background: #fff;
-    border: 1px solid #000;
-  }
-  .box-light {
-    background: #fff;
-    border: 1px solid #000;
-  }
-  .box-header {
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
-  }
-  a {
-    color: #000;
-  }
-  .sidebar-links a {
-    color: #000;
-  }
-  .new-tag {
-    background: #000;
-    color: #fff;
-  }
-  .paper-status {
-    color: #333;
-  }
-  h2 {
-    border-top: 1px solid #000;
-  }
-  .photo img {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-
-/* Minimal colour toggle */
-body.bw {
-  background: #fff;
-}
-body.bw .box-teal {
-  background: #fff;
-  color: #000;
-}
-body.bw .box-cream {
-  background: #fff;
-}
-body.bw .box-light {
-  background: #fff;
-}
-body.bw .box-header {
-  background: #fff;
-}
-body.bw .box-teal a {
-  color: #003399;
-}
-body.bw .name {
-  color: #000;
-}
-body.bw .affiliation {
-  color: #000;
-}
-body.bw .contact-info {
-  color: #000;
-}
-body.bw .sidebar-links a {
-  color: #003399;
-}
-  border: 1px solid #fff;
-}
-body.bw .toggle-btn:hover {
-  color: #003399;
-  border: 1px solid #003399;
-}
-
-/* 3-column layout */
-.page-wrapper {
-  max-width: fit-content;
-  margin: 0 auto;
-}
-
-.grid {
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-}
-
-/* Columns */
-.col-sidebar {
-  width: 265px;
-  flex-shrink: 0;
-}
-.col-about {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.col-papers {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Sidebar */
-.box-teal {
-  background: #1a998e;
-  color: #fff;
-  border: 2px solid #14776f;
-  border-bottom: 2.5px solid #105c55;
-  border-right: 2.5px solid #105c55;
-  padding: 20px 14px;
-  text-align: center;
-}
-.box-teal a {
-  color: #ffd700;
-}
-.box-teal a:hover {
-  color: #fff;
-}
-.name {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-.photo img {
-  width: 100%;
-  max-width: 210px;
-  border: 2px solid #555;
-  display: block;
-  margin: 0 auto 12px auto;
-}
-.affiliation {
-  font-size: 14px;
-  line-height: 1.4;
-  margin-bottom: 16px;
-}
-.contact-info {
-  font-size: 14px;
-  text-align: left;
-  margin-bottom: 4px;
-}
-.sidebar-links {
-  font-size: 14px;
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-.sidebar-links a {
-  margin: 0 3px;
-}
-
-/* Content boxes */
-.box-cream {
-  background: #faf3e0;
-  border: 2px solid #c9b98a;
-  padding: 14px;
-}
-.box-cream p {
-  margin: 0 0 8px 0;
-}
-.box-light {
-  background: #e8f4f0;
-  border: 2px solid #99bbad;
-  padding: 14px;
-}
-
-/* Header cells */
-.box-header {
-  background: #ffd700;
-  border: 2px solid #c9a200;
-  border-bottom: 2.5px solid #9a7e00;
-  border-right: 2.5px solid #9a7e00;
-  padding: 10px 14px;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-/* Section headings — line before title, not after */
-h2 {
-  font-size: 17px;
-  margin: 18px 0 8px 0;
-  border-top: 1px solid #999;
-  padding-top: 10px;
-}
-h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-}
-
-/* Lists */
-ul {
-  margin: 6px 0;
-  padding-left: 18px;
-}
-li {
-  margin-bottom: 5px;
-}
-
-/* Papers */
-.paper-entry {
-  margin-bottom: 14px;
-}
-.paper-links {
-  font-size: 13px;
-}
-.paper-status {
-  font-size: 13px;
-  font-style: italic;
-  color: #555;
-}
-.new-tag {
-  background: #c00;
-  color: #fff;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 1px 5px;
-  border-radius: 2px;
-  vertical-align: middle;
-  margin-left: 4px;
-}
-.abstract {
-  display: none;
-  font-size: 13px;
-  color: #444;
-  margin-top: 6px;
-  padding: 8px;
-  background: #f5f5f0;
-  border-left: 3px solid #c9a200;
-}
-
-/* Responsive */
-/* Medium: sidebar stays left, About + Research stack on right */
+/* Medium: sidebar stays left, content stacks on right */
 @media (max-width: 900px) {
-  .page-wrapper {
-    max-width: 100%;
-  }
+  .page-wrapper { max-width: 100%; }
   .grid {
     display: grid;
     grid-template-columns: 265px 1fr;
     grid-template-rows: auto auto;
     gap: 6px;
   }
-  .col-sidebar {
-    grid-row: 1 / 3;
-  }
-  .col-about {
-    min-width: 0;
-    max-width: none;
-  }
-  .col-papers {
-    min-width: 0;
-    max-width: none;
-  }
+  .col-sidebar { grid-row: 1 / 3; }
+  .col-about  { min-width: 0; max-width: none; }
+  .col-papers { min-width: 0; max-width: none; }
 }
 
 /* Small: everything stacks */
 @media (max-width: 600px) {
-  .page-wrapper {
-    max-width: 100%;
-  }
+  .page-wrapper { max-width: 100%; }
   .grid {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .col-sidebar {
-    width: 100%;
-    max-width: 265px;
+  .grid-2col {
+    flex-direction: column;
+    align-items: center;
   }
-  .col-about {
-    width: 100%;
-    max-width: 500px;
-  }
-  .col-papers {
-    width: 100%;
-    max-width: 500px;
-  }
+  .col-sidebar { width: 100%; max-width: 265px; }
+  .col-about   { width: 100%; max-width: 500px; }
+  .col-papers  { width: 100%; max-width: 500px; }
+  .col-wide    { width: 100%; max-width: 500px; }
 }
 
-/* Tooltips */
-.tooltip-wrap {
-  position: relative;
-}
-.tooltip-text {
-  display: none;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: #fff;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 3px;
-  white-space: nowrap;
-}
-.tooltip-wrap:hover .tooltip-text {
-  display: block;
-}
-
-a.tooltip-wrap {
-  position: relative;
-}
-
-a.plain {
-  color: inherit;
-  text-decoration: none;
-}
-a.plain:hover {
-  text-decoration: none;
-  color: #c00;
-}
-
-/* Print */
+/* ==========================================
+   PRINT
+   ========================================== */
 @media print {
-  body {
-    background: #fff;
-    color: #000;
-    padding: 0;
-    font-size: 12px;
-  }
-  .grid {
-    max-width: 100%;
-    gap: 10px;
-  }
-  .box-teal {
-    background: #fff;
-    color: #000;
-    border: 1px solid #000;
-  }
-  .box-teal a {
-    color: #000;
-  }
-  .box-cream {
+  * { color: #000 !important; }
+  body { background: #fff; padding: 0; font-size: 12px; }
+  .grid, .grid-2col { max-width: 100%; gap: 10px; }
+  .box-teal, .box-cream, .box-light, .box-header {
     background: #fff;
     border: 1px solid #000;
   }
-  .box-light {
-    background: #fff;
-    border: 1px solid #000;
-  }
-  .box-header {
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
-  }
-  a {
-    color: #000;
-  }
-  .sidebar-links a {
-    color: #000;
-  }
-  .new-tag {
-    background: #000;
-    color: #fff;
-  }
-  .paper-status {
-    color: #333;
-  }
-  h2 {
-    border-top: 1px solid #000;
-  }
-  .photo img {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+  .new-tag { background: #000; color: #fff !important; }
+  .paper-status { color: #333 !important; }
+  h2 { border-top: 1px solid #000; }
+  .photo img { print-color-adjust: exact; }
+  .nav-bar, .toggle-btn { display: none; }
 }
 
-/* Minimal colour toggle */
-body.bw {
-  background: #fff;
-}
-body.bw .box-teal {
-  background: #fff;
-  color: #000;
-}
-body.bw .box-cream {
-  background: #fff;
-}
-body.bw .box-light {
-  background: #fff;
-}
-body.bw .box-header {
-  background: #fff;
-}
-body.bw .box-teal a {
-  color: #003399;
-}
-body.bw .name {
-  color: #000;
-}
-body.bw .affiliation {
-  color: #000;
-}
-body.bw .contact-info {
-  color: #000;
-}
-body.bw .sidebar-links a {
-  color: #003399;
-}
+/* ==========================================
+   B&W TOGGLE
+   ========================================== */
+body.bw { background: #fff; }
+body.bw .box-teal { background: #fff; color: #000; }
+body.bw .box-cream { background: #fff; }
+body.bw .box-light { background: #fff; }
+body.bw .box-header { background: #fff; }
+body.bw .box-teal a { color: #003399; }
+body.bw .name { color: #000; }
+body.bw .affiliation { color: #000; }
+body.bw .contact-info { color: #000; }
+body.bw .sidebar-links a { color: #003399; }
+body.bw .nav-btn { background: #fff; color: #7f1e85; border: 1px solid #7f1e85; }
+body.bw .toggle-btn:hover { color: #003399; border-color: #003399; }

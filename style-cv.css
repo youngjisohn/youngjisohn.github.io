@@ -1,0 +1,52 @@
+/* CV-specific styles — loaded only by cv.html */
+
+/* Smaller, denser text */
+.col-wide .box-cream {
+  font-size: 14px;
+  line-height: 1.35;
+}
+.col-wide .box-cream h2 {
+  font-size: 15px;
+  margin: 10px 0 3px 0;
+  padding-top: 6px;
+}
+.col-wide .box-cream ul { margin: 2px 0; }
+.col-wide .box-cream li { margin-bottom: 1px; }
+.col-wide .box-cream p { margin: 0 0 4px 0; }
+
+/* CV entry — description left, dates right */
+.cv-entry {
+  margin-bottom: 1px;
+  overflow: hidden;
+}
+.cv-entry-dates {
+  float: right;
+  white-space: nowrap;
+  margin-left: 1em;
+}
+.cv-entry-indent { padding-left: 2em; }
+.cv-group { margin-bottom: 6px; }
+
+/* Bullet dot for cv-entry rows */
+.cv-entry-dot {
+  padding-left: 1.2em;
+  position: relative;
+}
+.cv-entry-dot::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+}
+
+/* Presentation list — year left, items right */
+.cv-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 2px 0;
+}
+.cv-list li {
+  display: flex;
+  gap: 0.8em;
+  margin-bottom: 4px;
+}
+.cv-list li strong { flex-shrink: 0; }
