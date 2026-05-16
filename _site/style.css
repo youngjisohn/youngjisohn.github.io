@@ -269,6 +269,10 @@ body.bw .box-teal a { color: #003399; }
 body.bw .name { color: #000; }
 body.bw .affiliation { color: #000; }
 body.bw .contact-info { color: #000; }
+body.bw .sidebar-links { border-top: 1px solid #999; }
 body.bw .sidebar-links a { color: #003399; }
 body.bw .nav-btn { background: #fff; color: #7f1e85; border: 1px solid #7f1e85; }
 body.bw .toggle-btn:hover { color: #003399; border-color: #003399; }
+body.bw .abstract { background: #fff; }
+
+
