@@ -43,9 +43,9 @@ if (localStorage.getItem('bw') === 'true') {
       University of Warwick
     </div>
 
-    <div class="contact-info">📍 Coventry, UK</div>
-    <div class="contact-info">✉️
-  <a href="#" class="plain" onclick="
+    <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
+    <div class="contact-info"> &nbsp; ✉️ &thinsp;
+  <a href="#" class="plain" title="click to copy" onclick="
     clearTimeout(this._t);
     if(this.textContent==='copied!'){
       this.textContent='youngji.sohn@warwick.ac.uk';
@@ -59,7 +59,7 @@ if (localStorage.getItem('bw') === 'true') {
     return false;
   ">youngji.sohn@warwick.ac.uk</a>
 </div>
-    <div class="contact-info">🏫 Office S1.111, Social Sciences</div>
+    <div class="contact-info"> &nbsp; 🏫 &thinsp; Office S1.111, Social Sciences</div>
 
     <div class="sidebar-links">
       <a href="cv.html">CV</a> ·
@@ -107,8 +107,12 @@ if (localStorage.getItem('bw') === 'true') {
       <strong>[3] (Dis-)agreement in Misspecified Games</strong>
       <span class="new-tag">NEW</span><br>
       <span class="paper-links">[<a href="#">slides</a>]</span>
-      <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
-      <div class="abstract">...</div>
+      <span class="paper-links">
+      [<label for="abs-3">abstract</label>]
+  </span>
+  <input type="checkbox" id="abs-3" class="abstract-toggle">
+  <div class="abstract">
+    .</div>
     </div>
 
     <div class="paper-entry">
@@ -116,7 +120,10 @@ if (localStorage.getItem('bw') === 'true') {
   with <a href="https://sites.google.com/view/hyungminpark/">Hyungmin Park</a><br>
   <span class="paper-links">[<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='paper'; this.style.color='';}, 5000); return false;">paper</a>]</span>
   <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_slides.pdf">slides</a>]</span>
-  <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
+  <span class="paper-links">
+    [<label for="abs-2">abstract</label>]
+  </span>
+  <input type="checkbox" id="abs-2" class="abstract-toggle">
   <div class="abstract">
     We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately
     know whether their assigned components require costly repair. The principal observes only participation,
@@ -134,8 +141,11 @@ if (localStorage.getItem('bw') === 'true') {
       <a href="https://www.compasslexecon.com/professionals/jorge-padilla">Jorge Padilla</a><br>
       <span class="paper-status">Journal of Industrial Economics, 2024</span><br>
       <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf">paper</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
-      <span class="paper-links">[<a href="#" onclick="let a=this.parentElement.nextElementSibling; a.style.display=a.style.display==='none'?'block':'none'; return false;">abstract</a>]</span>
-      <div class="abstract">
+      <span class="paper-links">
+    [<label for="abs-1">abstract</label>]
+  </span>
+  <input type="checkbox" id="abs-1" class="abstract-toggle">
+  <div class="abstract">
         An ecosystem comprises all downstream products that employ a certain upstream input. In many cases,
         final consumers make irreversible investments to join an ecosystem before downstream prices are set.
         Our main observation is that, in contrast to conventional wisdom, an upstream monopolist merging with
