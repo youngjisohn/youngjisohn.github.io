@@ -58,7 +58,7 @@ a:hover { color: #c00; text-decoration: underline; }
   text-decoration: none;
   line-height: 1.2;
 }
-.toggle-btn:hover { color: #fff; border-color: #fff; }
+.toggle-btn:hover { color: #fff; border-color: #fff; text-decoration: none; }
 
 /* --- GRID LAYOUTS --- */
 .grid, .grid-2col {
