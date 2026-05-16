@@ -15,8 +15,15 @@
     <a href="research.html" class="nav-btn">Research</a>
     <a href="cv.html" class="nav-btn">Curriculum</a>
   </div>
-  <a href="#" onclick="document.body.classList.toggle('bw'); this.textContent=document.body.classList.contains('bw')?'color on':'color off'; return false;" class="toggle-btn">color off</a>
+  <a href="#" id="bw-toggle" onclick="document.body.classList.toggle('bw'); var on=document.body.classList.contains('bw'); this.textContent=on?'color on':'color off'; localStorage.setItem('bw',on); return false;" class="toggle-btn">color off</a>
 </div>
+
+<script>
+if (localStorage.getItem('bw') === 'true') {
+  document.body.classList.add('bw');
+  document.getElementById('bw-toggle').textContent = 'color on';
+}
+</script>
 
 
   <div class="box-subtle-header">I like</div>
