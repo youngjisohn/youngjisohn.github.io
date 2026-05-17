@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Youngji Sohn">
+<meta property="og:title" content="Youngji Sohn - I like">
+<meta property="og:description" content="Youngji Sohn">
+<meta property="og:url" content="https://youngjisohn.github.io">
+<link rel="canonical" href="https://youngjisohn.github.io/like.html">
 <title>Youngji Sohn - I like</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/favicon.png" type="image/png">
 </head>
 <body>
@@ -22,12 +27,12 @@
 </div>
 
 <script>
-if (localStorage.getItem('bw') !== 'false') {
+var forceColor = new URLSearchParams(window.location.search).has('color');
+if (!forceColor && localStorage.getItem('bw') !== 'false') {
   document.body.classList.add('bw');
   document.getElementById('bw-toggle').textContent = 'color on';
 }
 </script>
-
 
   <div class="col-mini">
 <div class="box-subtle-header"></div>
