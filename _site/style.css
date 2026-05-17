@@ -286,6 +286,7 @@ a.tooltip-wrap { position: relative; }
 body.bw { background: #fff; }
 body.bw .box-side { background: #fff; color: #000; border: 2px solid #000; }
 body.bw .box-side a { color: #003399; }
+body.bw .box-side a:hover { color: #c00; }
 body.bw .box-cream { background: #fff; border: 2px solid #000; }
 body.bw .box-light { background: #fff; border: 2px solid #000; }
 body.bw .box-header { background: #fff; border: 2px solid #000; }
