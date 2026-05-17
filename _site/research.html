@@ -28,8 +28,11 @@
 </div>
 
 <script>
-if (new URLSearchParams(window.location.search).get('color') === 'true') {
+var colorParam = new URLSearchParams(window.location.search).get('color');
+if (colorParam === 'true') {
   sessionStorage.setItem('colorSession', 'true');
+} else if (colorParam === 'false') {
+  sessionStorage.removeItem('colorSession');
 }
 var forceColor = sessionStorage.getItem('colorSession') === 'true';
 if (!forceColor && localStorage.getItem('bw') !== 'false') {
