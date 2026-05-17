@@ -48,8 +48,8 @@ if (media.length > 0) {
   var vid = document.getElementById('random-vid');
   var isVideo = /\.(mp4|mov)$/i.test(pick.type);
 
-  function reveal() {
-  container.style.maxWidth = this.offsetWidth + 30 + 'px';
+function reveal() {
+  container.style.maxWidth = Math.min(this.offsetWidth + 30, window.innerWidth - 32) + 'px';
   document.querySelector('.page-wrapper').style.visibility = 'visible';
 }
 
