@@ -104,7 +104,7 @@ img, video {
   text-decoration: none;
   margin-right: 4px;
 }
-.nav-btn:hover { background: #751a74; color: #fff; }
+.nav-btn:hover { background: #751a74; color: #fff; text-decoration: none;}
 
 .toggle-btn {
   color: #aab;
@@ -296,5 +296,6 @@ body.bw .contact-info { color: #000; }
 body.bw .sidebar-links { border-top: 1px solid #999; }
 body.bw .sidebar-links a { color: #003399; }
 body.bw .nav-btn { background: #fff; color: #942193; border: 1px solid #942193; }
+body.bw .nav-btn:hover { background: #fff; color: #ca32c8; border: 1px solid #ca32c8; }
 body.bw .toggle-btn:hover { color: #003399; border-color: #003399; }
 body.bw .abstract { background: #fff; border-left: 3px solid #000; }
