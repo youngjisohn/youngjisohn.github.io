@@ -30,7 +30,10 @@
 </div>
 
 <script>
-var forceColor = new URLSearchParams(window.location.search).get('color') === 'true';
+if (new URLSearchParams(window.location.search).get('color') === 'true') {
+  sessionStorage.setItem('colorSession', 'true');
+}
+var forceColor = sessionStorage.getItem('colorSession') === 'true';
 if (!forceColor && localStorage.getItem('bw') !== 'false') {
   document.body.classList.add('bw');
   document.getElementById('bw-toggle').textContent = 'color on';
