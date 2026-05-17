@@ -21,27 +21,28 @@
     <a href="research.html" class="nav-btn">Research</a>
     <a href="cv.html" class="nav-btn">Curriculum</a>
   </div>
-  <a href="#" 
-   id="bw-toggle" onclick="document.body.classList.toggle('bw'); 
-                           var on=document.body.classList.contains('bw'); 
-                           this.textContent=on?'color on':'color off'; 
-                           sessionStorage.setItem('bw',on); return false;" class="toggle-btn">
-  color on</a>
+  <a href="#" id="bw-toggle" class="toggle-btn">color on</a>
 </div>
 
 <script>
-var colorParam = new URLSearchParams(window.location.search).get('color');
-if (colorParam === 'true') {
-  sessionStorage.setItem('colorSession', 'true');
-} else if (colorParam === 'false') {
-  sessionStorage.removeItem('colorSession');
-}
-var forceColor = sessionStorage.getItem('colorSession') === 'true';
-if (!forceColor && sessionStorage.getItem('bw') !== 'false') {
-  document.body.classList.add('bw');
-  document.getElementById('bw-toggle').textContent = 'color on';
-}
+var p = new URLSearchParams(window.location.search).get('color');
+if (p === 'true') sessionStorage.setItem('color', '1');
+if (p === 'false') sessionStorage.removeItem('color');
+if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
+
+var btn = document.getElementById('bw-toggle');
+btn.textContent = document.body.classList.contains('bw') ? 'color on' : 'color off';
+btn.onclick = function() {
+  document.body.classList.toggle('bw');
+  var bw = document.body.classList.contains('bw');
+  this.textContent = bw ? 'color on' : 'color off';
+  bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
+  return false;
+};
 </script>
+
+
+
 
   <div class="col-mini">
 <div class="box-subtle-header"></div>
