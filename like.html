@@ -2,14 +2,26 @@
 title: Youngji Sohn - I like
 layout: simple
 ---
+<style>.page-wrapper { visibility: hidden; }</style>
+
 <div class="col-mini">
-<div class="box-subtle-header"></div>
-<div class="box-subtle" style="text-align:center;">
-<img id="random-img" src="" alt="Random" style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;">
-<video id="random-vid" src="" autoplay muted loop style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;"></video>
+
+  <div class="box-subtle-header">birds</div>
+  <div class="box-subtle" style="text-align:center;">
+    <img id="random-img" src="" alt="Random" style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;">
+    <video id="random-vid" src="" autoplay muted loop style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;"></video>
+  </div>
+
+  <div class="box-subtle-header" style="margin-top: 20px;" id="name">my name</div>
+  <div class="box-subtle">
+    <p>My name is Youngji Sohn, written as 손 영지 in 
+      <a href="https://en.wikipedia.org/wiki/Hangul" title="한글" target="_blank">Korean</a>.
+      The first is my family name, and the latter is my given name.
+      My late grandfather gave me this name.</p>
+    <p>It's pronounced /jʌŋ.dʑi/ in Korean, but "young-jee" is also a good approximation.</p>
+  </div>
+
 </div>
-
-
 
 <script>
 var media = [
@@ -25,22 +37,30 @@ var media = [
 if (media.length > 0) {
   var seen = JSON.parse(localStorage.getItem('seenPhotos') || '[]');
   var unseen = media.filter(m => !seen.includes(m.path));
-
-  if (unseen.length === 0) {
-    seen = [];
-    unseen = media;
-  }
+  if (unseen.length === 0) { seen = []; unseen = media; }
 
   var pick = unseen[Math.floor(Math.random() * unseen.length)];
   seen.push(pick.path);
   localStorage.setItem('seenPhotos', JSON.stringify(seen));
 
-  if (pick.type === '.mp4' || pick.type === '.mov' || pick.type === '.MP4' || pick.type === '.MOV') {
-    document.getElementById('random-vid').src = pick.path;
-    document.getElementById('random-vid').style.display = '';
+  var container = document.querySelector('.col-mini');
+  var img = document.getElementById('random-img');
+  var vid = document.getElementById('random-vid');
+  var isVideo = /\.(mp4|mov)$/i.test(pick.type);
+
+  function reveal() {
+  container.style.maxWidth = this.offsetWidth + 30 + 'px';
+  document.querySelector('.page-wrapper').style.visibility = 'visible';
+}
+
+  if (isVideo) {
+    vid.src = pick.path;
+    vid.style.display = '';
+    vid.onloadedmetadata = reveal;
   } else {
-    document.getElementById('random-img').src = pick.path;
-    document.getElementById('random-img').style.display = '';
+    img.src = pick.path;
+    img.style.display = '';
+    img.onload = reveal;
   }
 }
 </script>

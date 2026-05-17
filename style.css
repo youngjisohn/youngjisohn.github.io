@@ -162,9 +162,7 @@ img, video {
 }
 .box-subtle p { margin: 0 0 8px 0; }
 .box-subtle img, .box-subtle video {
-  max-width: 100%;
-}
-
+  max-width: 100%; display: block; margin: 0 auto; }
 
 
 
@@ -181,7 +179,25 @@ ul { margin: 6px 0; padding-left: 18px; }
 li { margin-bottom: 5px; }
 
 /* --- PAPERS --- */
-.paper-entry { margin-bottom: 14px; }
+.paper-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: reversed(paper);
+}
+.paper-list li {
+  counter-increment: paper;
+  margin-bottom: 14px;
+  padding-left: 1.6em;
+  position: relative;
+}
+.paper-list li::before {
+  content: "[" counter(paper) "]";
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.paper-entry {  margin-bottom: 14px;  }
 .paper-links { font-size: 13px; }
 .paper-status { font-size: 13px; font-style: italic; color: #555; }
 
