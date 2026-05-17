@@ -25,8 +25,11 @@
     <a href="cv.html" class="nav-btn">Curriculum</a>
   </div>
   <a href="#" 
-     id="bw-toggle" onclick="document.body.classList.toggle('bw'); var on=document.body.classList.contains('bw'); 
-                             this.textContent=on?'color on':'color off'; localStorage.setItem('bw',on); return false;" class="toggle-btn">color on</a>
+   id="bw-toggle" onclick="document.body.classList.toggle('bw'); 
+                           var on=document.body.classList.contains('bw'); 
+                           this.textContent=on?'color on':'color off'; 
+                           sessionStorage.setItem('bw',on); return false;" class="toggle-btn">
+  color on</a>
 </div>
 
 <script>
@@ -37,13 +40,11 @@ if (colorParam === 'true') {
   sessionStorage.removeItem('colorSession');
 }
 var forceColor = sessionStorage.getItem('colorSession') === 'true';
-if (!forceColor && localStorage.getItem('bw') !== 'false') {
+if (!forceColor && sessionStorage.getItem('bw') !== 'false') {
   document.body.classList.add('bw');
   document.getElementById('bw-toggle').textContent = 'color on';
 }
 </script>
-
-
 
   <div class="grid-2col">
     <div class="col-sidebar">
