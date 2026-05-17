@@ -1,5 +1,5 @@
 /* ============================================
-   YOUNGJI SOHN â€” MAIN STYLESHEET
+   YOUNGJI SOHN - MAIN STYLESHEET
    ============================================ */
 
 /* --- RESET --- */
@@ -18,16 +18,73 @@ body {
   margin: 0;
   padding: 16px;
 }
-
 a { color: #003399; text-decoration: none; }
 a:hover { color: #c00; text-decoration: underline; }
 
-/* --- WIDTH CONTROL â€” change these to resize --- */
+/* --- WIDTH CONTROL — change these to resize --- */
 .page-wrapper { max-width: fit-content; width: 100%; margin: 0 auto; }
 .col-sidebar  { width: 265px; flex-shrink: 0; }
-.col-about    { flex: 1; min-width: 0; max-width: 400px; }
-.col-papers   { flex: 1; min-width: 0; max-width: 400px; }
+.col-narrow   { flex: 1; min-width: 0; max-width: 400px; }
 .col-wide     { width: 700px; }
+.col-mini     { width: auto;
+  max-width: 100%;
+  margin: 0 auto; }
+
+
+/* --- GRID LAYOUTS --- */
+.grid, .grid-2col {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.col-narrow, .col-wide, .col-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+
+/* --- SIDEBAR --- */
+.box-side {
+  background: #0F6068;
+  color: #fff;
+  border: 2px solid #0c4b51;
+  border-bottom: 2.5px solid #09393e;
+  border-right: 2.5px solid #09393e;
+  padding: 20px 14px;
+  text-align: center;
+}
+.box-side a { color: #ffd700; text-decoration: none; }
+.box-side a:hover { color: #fff; text-decoration: underline; }
+.name { font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+.photo img {
+  width: 100%;
+  max-width: 210px;
+  border: 2px solid #555;
+  display: block;
+  margin: 0 auto 12px auto;
+}
+/* --- IMAGE & VIDEO PROTECTION --- */
+img, video {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.affiliation { font-size: 14px; line-height: 1.4; margin-bottom: 16px; }
+.contact-info { font-size: 14px; text-align: left; margin-bottom: 4px; }
+
+.sidebar-links {
+  font-size: 14px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.sidebar-links a { margin: 0 3px; text-decoration: none; }
+
+
+
 
 /* --- NAVIGATION --- */
 .nav-bar {
@@ -60,52 +117,9 @@ a:hover { color: #c00; text-decoration: underline; }
 }
 .toggle-btn:hover { color: #fff; border-color: #fff; text-decoration: none; }
 
-/* --- GRID LAYOUTS --- */
-.grid, .grid-2col {
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-}
-.col-about, .col-papers, .col-wide {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
 
-/* --- SIDEBAR --- */
-.box-side {
-  background: #0F6068;
-  color: #fff;
-  border: 2px solid #0c4b51;
-  border-bottom: 2.5px solid #09393e;
-  border-right: 2.5px solid #09393e;
-  padding: 20px 14px;
-  text-align: center;
-}
-.box-side a { color: #ffd700; text-decoration: none; }
-.box-side a:hover { color: #fff; text-decoration: underline; }
 
-.name { font-size: 22px; font-weight: bold; margin-bottom: 10px; }
 
-.photo img {
-  width: 100%;
-  max-width: 210px;
-  border: 2px solid #555;
-  display: block;
-  margin: 0 auto 12px auto;
-  -webkit-user-drag: none;
-  user-select: none;
-}
-.affiliation { font-size: 14px; line-height: 1.4; margin-bottom: 16px; }
-.contact-info { font-size: 14px; text-align: left; margin-bottom: 4px; }
-
-.sidebar-links {
-  font-size: 14px;
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-.sidebar-links a { margin: 0 3px; text-decoration: none; }
 
 /* --- CONTENT BOXES --- */
 .box-cream {
@@ -147,6 +161,12 @@ a:hover { color: #c00; text-decoration: underline; }
   line-height: 1.5;
 }
 .box-subtle p { margin: 0 0 8px 0; }
+.box-subtle img, .box-subtle video {
+  max-width: 100%;
+}
+
+
+
 
 /* --- TYPOGRAPHY --- */
 h2 {
@@ -194,13 +214,13 @@ li { margin-bottom: 5px; }
   background: #f5f5f0;
   border-left: 3px solid #c9a200;
 }
+.abstract-toggle {  display: none;  }
+.abstract-toggle:checked + .abstract {  display: block; }
 
-.abstract-toggle {
-  display: none;
-}
-.abstract-toggle:checked + .abstract {
-  display: block;
-}
+
+/* --- LINKS --- */
+a.plain { color: inherit; text-decoration: none; }
+a.plain:hover { color: #c00; text-decoration: underline; }
 
 /* --- TOOLTIPS --- */
 .tooltip-wrap { position: relative; }
@@ -220,12 +240,11 @@ li { margin-bottom: 5px; }
 .tooltip-wrap:hover .tooltip-text { display: block; }
 a.tooltip-wrap { position: relative; }
 
-a.plain { color: inherit; text-decoration: none; }
-a.plain:hover { color: #c00; text-decoration: underline; }
 
-/* --- RESPONSIVE --- */
+
+
+/* --- RESPONSIVE --- .page-wrapper { max-width: 100%; }*/
 @media (max-width: 800px) {
-  .page-wrapper { max-width: 100%; }
   .grid {
     display: grid;
     grid-template-columns: 265px 1fr;
@@ -233,22 +252,18 @@ a.plain:hover { color: #c00; text-decoration: underline; }
     gap: 6px;
   }
   .col-sidebar { grid-row: 1 / 3; }
-  .col-about, .col-papers { min-width: 0; max-width: none; }
+  .col-narrow { min-width: 0; max-width: none; }
   .col-wide { width: auto; }
 }
-
 @media (max-width: 600px) {
-  .page-wrapper { max-width: 100%; }
   .grid, .grid-2col {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .grid {
-    grid-template-columns: none;
-  }
+  .grid { grid-template-columns: none; }
   .col-sidebar { width: 100%; max-width: 265px; }
-  .col-about, .col-papers, .col-wide { width: 100%; max-width: 500px; }
+  .col-narrow, .col-wide, .col-mini { width: 100%; max-width: 600px; }
 }
 
 /* --- PRINT --- */
@@ -269,28 +284,12 @@ a.plain:hover { color: #c00; text-decoration: underline; }
 
 /* --- B&W TOGGLE --- */
 body.bw { background: #fff; }
-body.bw .box-side {
-  background: #fff;
-  color: #000;
-  border: 2px solid #000;
-}
+body.bw .box-side { background: #fff; color: #000; border: 2px solid #000; }
 body.bw .box-side a { color: #003399; }
-body.bw .box-cream {
-  background: #fff;
-  border: 2px solid #000;
-}
-body.bw .box-light {
-  background: #fff;
-  border: 2px solid #000;
-}
-body.bw .box-header {
-  background: #fff;
-  border: 2px solid #000;
-}
-body.bw .box-subtle, body.bw .box-subtle-header {
-  background: #fff;
-  border: 1px solid #000;
-}
+body.bw .box-cream { background: #fff; border: 2px solid #000; }
+body.bw .box-light { background: #fff; border: 2px solid #000; }
+body.bw .box-header { background: #fff; border: 2px solid #000; }
+body.bw .box-subtle, body.bw .box-subtle-header { background: #fff; border: 1px solid #000; }
 body.bw .name { color: #000; }
 body.bw .affiliation { color: #000; }
 body.bw .contact-info { color: #000; }
