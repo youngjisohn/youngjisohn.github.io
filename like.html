@@ -1,11 +1,43 @@
 ---
-title: Youngji Sohn — I like
+title: Youngji Sohn - I like
 layout: simple
 ---
-
-<div class="box-subtle-header">I like</div>
-<div class="box-subtle">
-
-  <p>Your content here.</p>
-
+<div class="box-subtle-header"></div>
+<div class="box-subtle" style="text-align:center;">
+  <img id="random-img" src="" alt="Random" style="min-width:250px; min-height:250px; max-width:100%; max-height:600px; object-fit:contain; border:2px solid #555; margin-bottom:14px; display:none;">
+  <video id="random-vid" src="" autoplay muted loop style="min-width:250px; min-height:250px; max-width:100%; max-height:600px; object-fit:contain; border:2px solid #555; margin-bottom:14px; display:none;"></video>
 </div>
+
+<script>
+var media = [
+  {% for file in site.static_files %}
+    {% if file.path contains '/photos/' %}
+      {% if file.extname == '.jpg' or file.extname == '.JPG' or file.extname == '.jpeg' or file.extname == '.JPEG' or file.extname == '.png' or file.extname == '.PNG' or file.extname == '.mp4' or file.extname == '.MP4' or file.extname == '.mov' or file.extname == '.MOV' %}
+        {path: '{{ file.path }}', type: '{{ file.extname }}'},
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+];
+
+if (media.length > 0) {
+  var seen = JSON.parse(localStorage.getItem('seenPhotos') || '[]');
+  var unseen = media.filter(m => !seen.includes(m.path));
+
+  if (unseen.length === 0) {
+    seen = [];
+    unseen = media;
+  }
+
+  var pick = unseen[Math.floor(Math.random() * unseen.length)];
+  seen.push(pick.path);
+  localStorage.setItem('seenPhotos', JSON.stringify(seen));
+
+  if (pick.type === '.mp4' || pick.type === '.mov' || pick.type === '.MP4' || pick.type === '.MOV') {
+    document.getElementById('random-vid').src = pick.path;
+    document.getElementById('random-vid').style.display = 'block';
+  } else {
+    document.getElementById('random-img').src = pick.path;
+    document.getElementById('random-img').style.display = 'block';
+  }
+}
+</script>
