@@ -96,6 +96,12 @@ a:hover { color: #c00; text-decoration: underline; }
   -webkit-user-drag: none;
   user-select: none;
 }
+img, video {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
 .affiliation { font-size: 14px; line-height: 1.4; margin-bottom: 16px; }
 .contact-info { font-size: 14px; text-align: left; margin-bottom: 4px; }
 
