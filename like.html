@@ -2,15 +2,18 @@
 title: Youngji Sohn - I like
 layout: simple
 ---
-<style>.page-wrapper { visibility: hidden; }</style>
+<style>.page-wrapper{max-width: 500px;}</style>
 
 <div class="col-mini">
 
-  <div class="box-subtle-header">birds</div>
-  <div class="box-subtle" style="text-align:center;">
-    <img id="random-img" src="" alt="Random" style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
-<video id="random-vid" src="" autoplay muted loop style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+  <div class="box-subtle-header" id="birds-header">birds</div>
+  <div class="box-subtle" id="birds-box" style="text-align:center;">
+    <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
+    <video id="random-vid" autoplay muted loop style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
   </div>
+
+  <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
+  <div class="box-subtle" id="snippet-box" style="display:none;"></div>
 
   <div class="box-subtle-header" style="margin-top: 20px;" id="name">my name</div>
   <div class="box-subtle">
@@ -19,14 +22,14 @@ layout: simple
       The first is my family name, and the latter is my given name.
       My late grandfather gave me this name.</p>
     <p>It's pronounced /jʌŋ.dʑi/ in Korean, but "young-jee" is also a good approximation.</p>
-  </div>
-
+  </div>  
 </div>
 
 <script>
-var media = [
+// --- Data arrays ---
+var birds = [
   {% for file in site.static_files %}
-    {% if file.path contains '/photos/' %}
+    {% if file.path contains 'assets/birds/' %}
       {% if file.extname == '.jpg' or file.extname == '.JPG' or file.extname == '.jpeg' or file.extname == '.JPEG' or file.extname == '.png' or file.extname == '.PNG' or file.extname == '.mp4' or file.extname == '.MP4' or file.extname == '.mov' or file.extname == '.MOV' %}
         {path: '{{ file.path }}', type: '{{ file.extname }}'},
       {% endif %}
@@ -34,24 +37,53 @@ var media = [
   {% endfor %}
 ];
 
-if (media.length > 0) {
-  var seen = JSON.parse(localStorage.getItem('seenPhotos') || '[]');
-  var unseen = media.filter(m => !seen.includes(m.path));
-  if (unseen.length === 0) { seen = []; unseen = media; }
+var snippets = [
+  {% for file in site.static_files %}
+    {% if file.path contains 'assets/snippets/' %}
+      {% if file.extname == '.html' %}
+        '{{ file.path }}',
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+];
 
+// --- Rotation picker ---
+function pickRandom(items, key) {
+  var getId = function(item) { return typeof item === 'string' ? item : item.path; };
+  var seen = JSON.parse(sessionStorage.getItem(key) || '[]');
+  var unseen = items.filter(function(item) { return !seen.includes(getId(item)); });
+  if (unseen.length === 0) { seen = []; unseen = items; }
   var pick = unseen[Math.floor(Math.random() * unseen.length)];
-  seen.push(pick.path);
-  localStorage.setItem('seenPhotos', JSON.stringify(seen));
+  seen.push(getId(pick));
+  sessionStorage.setItem(key, JSON.stringify(seen));
+  return pick;
+}
 
-  var container = document.querySelector('.col-mini');
+// --- Birds ---
+if (birds.length > 0) {
+  var stored = sessionStorage.getItem('nextBird');
+  var pick;
+  if (stored) {
+    pick = JSON.parse(stored);
+    sessionStorage.removeItem('nextBird');
+  } else {
+    pick = pickRandom(birds, 'seenBirds');
+  }
+
   var img = document.getElementById('random-img');
   var vid = document.getElementById('random-vid');
   var isVideo = /\.(mp4|mov)$/i.test(pick.type);
 
-function reveal() {
-  container.style.maxWidth = Math.min(this.offsetWidth + 30, window.innerWidth - 32) + 'px';
-  document.querySelector('.page-wrapper').style.visibility = 'visible';
-}
+  function reveal() {
+    var w = Math.min(this.offsetWidth + 30, window.innerWidth - 32);
+    document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
+    var next = pickRandom(birds, 'seenBirds');
+    sessionStorage.setItem('nextBird', JSON.stringify(next));
+    if (!/\.(mp4|mov)$/i.test(next.type)) {
+      var preload = new Image();
+      preload.src = next.path;
+    }
+  }
 
   if (isVideo) {
     vid.src = pick.path;
@@ -62,5 +94,35 @@ function reveal() {
     img.style.display = '';
     img.onload = reveal;
   }
+} else {
+  document.getElementById('birds-header').style.display = 'none';
+  document.getElementById('birds-box').style.display = 'none';
+}
+
+// --- Snippets ---
+if (snippets.length > 0) {
+  var storedSnippet = sessionStorage.getItem('nextSnippet');
+  var sPick;
+  if (storedSnippet) {
+    sPick = storedSnippet;
+    sessionStorage.removeItem('nextSnippet');
+  } else {
+    sPick = pickRandom(snippets, 'seenSnippets');
+  }
+
+  fetch(sPick)
+    .then(function(r) { return r.text(); })
+    .then(function(t) {
+      var titleMatch = t.match(/<!--title:\s*(.+?)-->/);
+      var title = titleMatch ? titleMatch[1] : sPick.split('/').pop().replace('.html', '').replace(/-/g, ' ');
+      var content = t.replace(/<!--title:.+?-->/, '').trim();
+      document.getElementById('snippet-header').textContent = title;
+      document.getElementById('snippet-header').style.display = '';
+      document.getElementById('snippet-box').innerHTML = content;
+      document.getElementById('snippet-box').style.display = '';
+      var nextSnippet = pickRandom(snippets, 'seenSnippets');
+      sessionStorage.setItem('nextSnippet', nextSnippet);
+      fetch(nextSnippet);
+    });
 }
 </script>

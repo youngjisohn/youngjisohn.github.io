@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Youngji Sohn">
+<meta name="description" content="Youngji Sohn — PhD student in Economics at the University of Warwick. Research in microeconomic theory, game theory, contract design and misspecified games.">
 <meta property="og:title" content="Youngji Sohn - I like">
-<meta property="og:description" content="Youngji Sohn">
-<meta property="og:url" content="https://youngjisohn.github.io">
+<meta property="og:description" content="Youngji Sohn — PhD student in Economics at the University of Warwick.">
+<meta property="og:url" content="https://youngjisohn.github.io/like.html">
 <link rel="canonical" href="https://youngjisohn.github.io/like.html">
 <title>Youngji Sohn - I like</title>
 <link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/favicon.png" type="image/png">
+
+<link rel="icon" href="/assets/favicon.png" type="image/png">
 </head>
 <body>
-  
 <div class="page-wrapper">
   <div class="nav-bar">
   <div>
@@ -43,16 +43,18 @@ btn.onclick = function() {
 
 
 
-
-  <style>.page-wrapper { visibility: hidden; }</style>
+  <style>.page-wrapper{max-width: 500px;}</style>
 
 <div class="col-mini">
 
-  <div class="box-subtle-header">birds</div>
-  <div class="box-subtle" style="text-align:center;">
-    <img id="random-img" src="" alt="Random" style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;">
-    <video id="random-vid" src="" autoplay muted loop style="max-width:100%; max-height:600px; width:auto; border:2px solid #555; display:none;"></video>
+  <div class="box-subtle-header" id="birds-header">birds</div>
+  <div class="box-subtle" id="birds-box" style="text-align:center;">
+    <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
+    <video id="random-vid" autoplay muted loop style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
   </div>
+
+  <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
+  <div class="box-subtle" id="snippet-box" style="display:none;"></div>
 
   <div class="box-subtle-header" style="margin-top: 20px;" id="name">my name</div>
   <div class="box-subtle">
@@ -61,30 +63,12 @@ btn.onclick = function() {
       The first is my family name, and the latter is my given name.
       My late grandfather gave me this name.</p>
     <p>It's pronounced /jʌŋ.dʑi/ in Korean, but "young-jee" is also a good approximation.</p>
-  </div>
-
+  </div>  
 </div>
 
 <script>
-var media = [
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
+// --- Data arrays ---
+var birds = [
   
     
   
@@ -92,20 +76,40 @@ var media = [
   
     
       
-        {path: '/photos/IMG_6259.jpg', type: '.jpg'},
+        {path: '/assets/birds/IMG_6259.jpg', type: '.jpg'},
       
     
   
     
       
-        {path: '/photos/IMG_6269.JPG', type: '.JPG'},
+        {path: '/assets/birds/IMG_6269.JPG', type: '.JPG'},
       
     
   
     
       
-        {path: '/photos/IMG_6540.JPG', type: '.JPG'},
+        {path: '/assets/birds/IMG_6540.JPG', type: '.JPG'},
       
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
     
   
     
@@ -118,24 +122,89 @@ var media = [
   
 ];
 
-if (media.length > 0) {
-  var seen = JSON.parse(localStorage.getItem('seenPhotos') || '[]');
-  var unseen = media.filter(m => !seen.includes(m.path));
-  if (unseen.length === 0) { seen = []; unseen = media; }
+var snippets = [
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+        '/assets/snippets/1.html',
+      
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+];
 
+// --- Rotation picker ---
+function pickRandom(items, key) {
+  var getId = function(item) { return typeof item === 'string' ? item : item.path; };
+  var seen = JSON.parse(sessionStorage.getItem(key) || '[]');
+  var unseen = items.filter(function(item) { return !seen.includes(getId(item)); });
+  if (unseen.length === 0) { seen = []; unseen = items; }
   var pick = unseen[Math.floor(Math.random() * unseen.length)];
-  seen.push(pick.path);
-  localStorage.setItem('seenPhotos', JSON.stringify(seen));
+  seen.push(getId(pick));
+  sessionStorage.setItem(key, JSON.stringify(seen));
+  return pick;
+}
 
-  var container = document.querySelector('.col-mini');
+// --- Birds ---
+if (birds.length > 0) {
+  var stored = sessionStorage.getItem('nextBird');
+  var pick;
+  if (stored) {
+    pick = JSON.parse(stored);
+    sessionStorage.removeItem('nextBird');
+  } else {
+    pick = pickRandom(birds, 'seenBirds');
+  }
+
   var img = document.getElementById('random-img');
   var vid = document.getElementById('random-vid');
   var isVideo = /\.(mp4|mov)$/i.test(pick.type);
 
-function reveal() {
-  container.style.maxWidth = Math.min(this.offsetWidth + 30, window.innerWidth - 32) + 'px';
-  document.querySelector('.page-wrapper').style.visibility = 'visible';
-}
+  function reveal() {
+    var w = Math.min(this.offsetWidth + 30, window.innerWidth - 32);
+    document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
+    var next = pickRandom(birds, 'seenBirds');
+    sessionStorage.setItem('nextBird', JSON.stringify(next));
+    if (!/\.(mp4|mov)$/i.test(next.type)) {
+      var preload = new Image();
+      preload.src = next.path;
+    }
+  }
 
   if (isVideo) {
     vid.src = pick.path;
@@ -146,9 +215,38 @@ function reveal() {
     img.style.display = '';
     img.onload = reveal;
   }
+} else {
+  document.getElementById('birds-header').style.display = 'none';
+  document.getElementById('birds-box').style.display = 'none';
+}
+
+// --- Snippets ---
+if (snippets.length > 0) {
+  var storedSnippet = sessionStorage.getItem('nextSnippet');
+  var sPick;
+  if (storedSnippet) {
+    sPick = storedSnippet;
+    sessionStorage.removeItem('nextSnippet');
+  } else {
+    sPick = pickRandom(snippets, 'seenSnippets');
+  }
+
+  fetch(sPick)
+    .then(function(r) { return r.text(); })
+    .then(function(t) {
+      var titleMatch = t.match(/<!--title:\s*(.+?)-->/);
+      var title = titleMatch ? titleMatch[1] : sPick.split('/').pop().replace('.html', '').replace(/-/g, ' ');
+      var content = t.replace(/<!--title:.+?-->/, '').trim();
+      document.getElementById('snippet-header').textContent = title;
+      document.getElementById('snippet-header').style.display = '';
+      document.getElementById('snippet-box').innerHTML = content;
+      document.getElementById('snippet-box').style.display = '';
+      var nextSnippet = pickRandom(snippets, 'seenSnippets');
+      sessionStorage.setItem('nextSnippet', nextSnippet);
+      fetch(nextSnippet);
+    });
 }
 </script>
-
   <footer style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
   &copy; 2026 Youngji Sohn
 </footer>
@@ -156,6 +254,5 @@ function reveal() {
 </div>
 <script data-goatcounter="https://ysohn.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
-
 </body>
 </html>
