@@ -19,14 +19,8 @@ User-agent: cohere-ai
 User-agent: Google-Extended
 Disallow: /
 
-# Search engines
 User-agent: *
-Allow: /index.html
 Disallow: /assets/
-Disallow: /cv.html
-Disallow: /research.html
-Disallow: /like.html
-Disallow: /404.html
 Disallow: /style.css
 Disallow: /style-cv.css
 

@@ -1,19 +1,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ page.description | default: 'Youngji Sohn — PhD student in Economics at the University of Warwick. Research in microeconomic theory, game theory, contract design and misspecified games.' }}">
 <meta name="google-site-verification" content="Cr83S5F6xBZag8225T_oIUUOQwhk5dV5Rz5t2IJBg-s" />
+{% if page.noindex %}
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, max-image-preview:none, nosnippet">
+{% else %}
+<meta name="robots" content="nofollow, noarchive, noimageindex, max-image-preview:none">
+{% endif %}
+
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.description | default: 'Youngji Sohn — PhD student in Economics at the University of Warwick. Research in microeconomic theory, game theory, contract design and misspecified games.' }}">
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.description | default: 'Youngji Sohn — PhD student in Economics at the University of Warwick.' }}">
 <meta property="og:url" content="https://youngjisohn.github.io{{ page.url }}">
 <link rel="canonical" href="https://youngjisohn.github.io{{ page.url }}">
-<title>{{ page.title }}</title>
+
 <link rel="stylesheet" href="/style.css">
 {% if page.extra_css %}
 <link rel="stylesheet" href="/{{ page.extra_css }}">
 {% endif %}
 <link rel="icon" href="/assets/favicon.png" type="image/png">
-{% if page.noindex %}
-<meta name="robots" content="noindex, nofollow, noarchive">
-{% else %}
-<meta name="robots" content="nofollow, noarchive">
-{% endif %}
