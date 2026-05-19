@@ -12,3 +12,8 @@
 <link rel="stylesheet" href="/{{ page.extra_css }}">
 {% endif %}
 <link rel="icon" href="/assets/favicon.png" type="image/png">
+{% if page.noindex %}
+<meta name="robots" content="noindex, nofollow, noarchive">
+{% else %}
+<meta name="robots" content="nofollow, noarchive">
+{% endif %}
