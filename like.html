@@ -82,7 +82,7 @@ if (birds.length > 0) {
 
   function reveal() {
   var isLandscape = this.offsetWidth > this.offsetHeight;
-  var maxW = isLandscape ? 700 : 500;
+  var maxW = isLandscape ? 800 : 500;
   var w = Math.min(this.offsetWidth + 30, maxW, window.innerWidth - 32);
   document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
   var next = pickRandom(birds, 'seenBirds', pick.path);
