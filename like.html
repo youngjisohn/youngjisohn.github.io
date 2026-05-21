@@ -81,10 +81,10 @@ if (birds.length > 0) {
   var isVideo = /\.(mp4|mov)$/i.test(pick.type);
 
   function reveal() {
-  var isLandscape = this.offsetWidth > this.offsetHeight;
-  var maxW = isLandscape ? 800 : 500;
-  var w = Math.min(this.offsetWidth + 30, maxW, window.innerWidth - 32);
-  document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
+  var isLandscape = this.naturalWidth > this.naturalHeight;
+  if (isLandscape) {
+    document.querySelector('.page-wrapper').style.maxWidth = '800px';
+  }
   var next = pickRandom(birds, 'seenBirds', pick.path);
   sessionStorage.setItem('nextBird', JSON.stringify(next));
   if (!/\.(mp4|mov)$/i.test(next.type)) {
