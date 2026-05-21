@@ -13,6 +13,9 @@ noindex: true
     <video id="random-vid" autoplay muted loop style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
   </div>
 
+  <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
+  <div class="box-subtle" id="snippet-box" style="display:none;"></div>
+
   <div class="box-subtle-header" style="margin-top: 20px;" id="name">my name</div>
   <div class="box-subtle">
     <p>My name is Youngji Sohn, written as 손 영지 in 
@@ -20,7 +23,8 @@ noindex: true
       The first is my family name, and the latter is my given name.
       My late grandfather gave me this name.</p>
     <p>It's pronounced /jʌŋ.dʑi/ in Korean, but "young-jee" is also a good approximation.</p>
-  </div>  
+  </div>
+
 </div>
 
 <script>
@@ -46,11 +50,15 @@ var snippets = [
 ];
 
 // --- Rotation picker ---
-function pickRandom(items, key) {
+function pickRandom(items, key, exclude) {
   var getId = function(item) { return typeof item === 'string' ? item : item.path; };
   var seen = JSON.parse(sessionStorage.getItem(key) || '[]');
   var unseen = items.filter(function(item) { return !seen.includes(getId(item)); });
   if (unseen.length === 0) { seen = []; unseen = items; }
+  if (exclude) {
+    var filtered = unseen.filter(function(item) { return getId(item) !== exclude; });
+    if (filtered.length > 0) unseen = filtered;
+  }
   var pick = unseen[Math.floor(Math.random() * unseen.length)];
   seen.push(getId(pick));
   sessionStorage.setItem(key, JSON.stringify(seen));
@@ -75,7 +83,7 @@ if (birds.length > 0) {
   function reveal() {
     var w = Math.min(this.offsetWidth + 30, window.innerWidth - 32);
     document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
-    var next = pickRandom(birds, 'seenBirds');
+    var next = pickRandom(birds, 'seenBirds', pick.path);
     sessionStorage.setItem('nextBird', JSON.stringify(next));
     if (!/\.(mp4|mov)$/i.test(next.type)) {
       var preload = new Image();
@@ -118,7 +126,7 @@ if (snippets.length > 0) {
       document.getElementById('snippet-header').style.display = '';
       document.getElementById('snippet-box').innerHTML = content;
       document.getElementById('snippet-box').style.display = '';
-      var nextSnippet = pickRandom(snippets, 'seenSnippets');
+      var nextSnippet = pickRandom(snippets, 'seenSnippets', sPick);
       sessionStorage.setItem('nextSnippet', nextSnippet);
       fetch(nextSnippet);
     });
