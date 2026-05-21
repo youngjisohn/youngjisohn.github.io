@@ -81,15 +81,17 @@ if (birds.length > 0) {
   var isVideo = /\.(mp4|mov)$/i.test(pick.type);
 
   function reveal() {
-    var w = Math.min(this.offsetWidth + 30, window.innerWidth - 32);
-    document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
-    var next = pickRandom(birds, 'seenBirds', pick.path);
-    sessionStorage.setItem('nextBird', JSON.stringify(next));
-    if (!/\.(mp4|mov)$/i.test(next.type)) {
-      var preload = new Image();
-      preload.src = next.path;
-    }
+  var isLandscape = this.offsetWidth > this.offsetHeight;
+  var maxW = isLandscape ? 700 : 500;
+  var w = Math.min(this.offsetWidth + 30, maxW, window.innerWidth - 32);
+  document.querySelector('.page-wrapper').style.maxWidth = w + 'px';
+  var next = pickRandom(birds, 'seenBirds', pick.path);
+  sessionStorage.setItem('nextBird', JSON.stringify(next));
+  if (!/\.(mp4|mov)$/i.test(next.type)) {
+    var preload = new Image();
+    preload.src = next.path;
   }
+}
 
   if (isVideo) {
     vid.src = pick.path;
