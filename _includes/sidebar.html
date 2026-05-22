@@ -38,7 +38,7 @@
       ready = true;
       link.textContent = 'click to reveal';
       link.title = 'click to reveal';
-    }, 5000);
+    }, 5500);
   }
 
   function flashCopied(){
@@ -55,7 +55,7 @@
     ev.preventDefault();
     if (!ev.isTrusted || !ready) return;
 
-    // First click — wait 0.2s, fetch, reveal only. No copy yet.
+    // First click — wait 2s, fetch, reveal only. No copy yet.
     if (!email) {
       setTimeout(function(){
         fetch('/assets/c.txt')
@@ -66,7 +66,7 @@
             link.textContent = email;
             link.title = 'click to copy';
           });
-      }, 200);
+      }, 2000);
       return;
     }
 
