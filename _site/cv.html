@@ -56,18 +56,19 @@ btn.onclick = function() {
   <div class="box-side">
     <div class="name">Youngji Sohn</div>
     <div class="photo">
-      <img src="/assets/profile.jpg" alt="Youngji Sohn" title="Me"
-           draggable="false" oncontextmenu="return false;">
+      <img src="/assets/profile.jpg" alt="Youngji Sohn" title="Me" draggable="false" oncontextmenu="return false;">
     </div>
     <div class="affiliation">
       PhD Student in Economics<br>
       University of Warwick
     </div>
+
     <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
     <div class="contact-info"> &nbsp; ✉️ &thinsp;
-      <a href="#" class="plain" id="e-link" title="click to copy">click to copy</a>
+      <a href="#" class="plain" id="e-link" title="">loading...</a>
     </div>
     <div class="contact-info"> &nbsp; 🏫 &thinsp; Office S1.111, Social Sciences</div>
+
     <div class="sidebar-links">
       <a href="cv.html">CV</a> ·
       <a href="https://scholar.google.com/citations?user=tWI3v08AAAAJ&hl=en">Google Scholar</a> ·
@@ -77,82 +78,79 @@ btn.onclick = function() {
 </div>
 
 <script>
-(function () {
+(function(){
   var link = document.getElementById('e-link');
-  var loaded = null;       // closure — not on the DOM node
-  var fetching = null;     // in-flight fetch promise (for de-dup)
+  var armed = false;
+  var ready = false;
+  var email = null;
   var revertTimer = null;
 
-  function prefetch() {
-    if (loaded || fetching) return fetching || Promise.resolve();
-    fetching = fetch('/contact-token/' + Date.now(), {
-      credentials: 'same-origin',
-      headers: { 'X-Requested-With': 'click' }
-    })
-      .then(function (res) {
-        if (!res.ok) throw new Error('http ' + res.status);
-        return res.text();
-      })
-      .then(function (t) {
-        var parts = t.trim().split(' ');
-        if (parts.length < 2) throw new Error('bad response');
-        loaded = parts[0] + '@' + parts[1];
-      })
-      .catch(function () {
-        fetching = null; // allow retry on next interaction
-      });
-    return fetching;
+  function arm(){
+    if (armed) return;
+    armed = true;
+    setTimeout(function(){
+      ready = true;
+      link.textContent = 'click to reveal';
+      link.title = 'click to copy';
+    }, 5000);
   }
 
-  link.addEventListener('mouseenter', prefetch);
-  link.addEventListener('focus', prefetch);
-  link.addEventListener('touchstart', prefetch, { passive: true });
+  function loadE(){
+    return fetch('/assets/c.txt')
+      .then(function(r){ return r.text(); })
+      .then(function(t){
+        var parts = t.trim().split(' ');
+        email = parts[0] + '@' + parts[1];
+        return email;
+      });
+  }
 
-  function showCopied() {
+  function flashCopied(){
+    clearTimeout(revertTimer);
     link.textContent = 'copied!';
     link.style.color = '#c00';
-    revertTimer = setTimeout(function () {
-      link.textContent = 'click to copy';
+    revertTimer = setTimeout(function(){
+      link.textContent = email;
       link.style.color = '';
     }, 3000);
   }
 
-  link.addEventListener('click', function (ev) {
+  link.addEventListener('click', function(ev){
     ev.preventDefault();
-    if (!ev.isTrusted) return;
-    clearTimeout(revertTimer);
+    if (!ev.isTrusted || !ready) return;
 
-    // Fast path: email already in memory, copy synchronously.
-    if (loaded) {
-      navigator.clipboard.writeText(loaded).then(showCopied, function () {});
+    // Already loaded — synchronous copy path.
+    if (email) {
+      navigator.clipboard.writeText(email).then(flashCopied, function(){});
       return;
     }
 
-    // Slow path: clicked before prefetch finished (or never hovered).
-    // Use ClipboardItem with a Promise so the clipboard.write call happens
-    // synchronously inside the click handler (preserving user activation),
-    // and the content is supplied once the fetch resolves.
+    // First click — fetch + reveal + copy. ClipboardItem accepts a Promise,
+    // so the clipboard.write call happens inside the click handler (keeping
+    // user activation valid) and the content is supplied once fetch resolves.
     if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
-      var p = prefetch().then(function () {
-        if (!loaded) throw new Error('no email');
-        return new Blob([loaded], { type: 'text/plain' });
+      var blobP = loadE().then(function(e){
+        link.textContent = e;
+        return new Blob([e], { type: 'text/plain' });
       });
       try {
-        navigator.clipboard.write([new ClipboardItem({ 'text/plain': p })])
-          .then(showCopied, function () {});
+        navigator.clipboard.write([new ClipboardItem({ 'text/plain': blobP })])
+          .then(flashCopied, function(){});
         return;
-      } catch (e) { /* fall through */ }
+      } catch(e) { /* fall through */ }
     }
 
-    // Last resort: fetch, then writeText. Activation may have expired —
-    // the visual "copied!" still fires so the user knows to retry.
-    prefetch().then(function () {
-      if (!loaded) return;
-      navigator.clipboard.writeText(loaded).then(showCopied, function () {
-        showCopied(); // give feedback even if clipboard rejected
-      });
+    // Fallback: fetch then writeText.
+    loadE().then(function(e){
+      link.textContent = e;
+      navigator.clipboard.writeText(e).then(flashCopied, flashCopied);
     });
   });
+
+  // Arm on first user interaction anywhere on the page.
+  document.addEventListener('mousemove',  arm, { once: true, passive: true });
+  document.addEventListener('touchstart', arm, { once: true, passive: true });
+  document.addEventListener('keydown',    arm, { once: true });
 })();
 </script>
     <div class="col-wide">
