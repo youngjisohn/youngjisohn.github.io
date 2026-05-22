@@ -3,12 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Youngji Sohn — Economics PhD student at the University of Warwick. Research on microeconomic theory, game theory, misspecified games, and contract design.">
+<meta name="google-site-verification" content="Cr83S5F6xBZag8225T_oIUUOQwhk5dV5Rz5t2IJBg-s" />
+
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, max-image-preview:none, nosnippet">
+
+
+<title>Youngji Sohn — Research</title>
+<meta name="description" content="Youngji Sohn — Economics PhD student at the University of Warwick">
 <meta property="og:title" content="Youngji Sohn — Research">
-<meta property="og:description" content="Youngji Sohn — Economics PhD student at the University of Warwick. Research on microeconomic theory, game theory, misspecified games, and contract design.">
+<meta property="og:description" content="Youngji Sohn — Economics PhD student at the University of Warwick">
 <meta property="og:url" content="https://youngjisohn.github.io/research.html">
 <link rel="canonical" href="https://youngjisohn.github.io/research.html">
-<title>Youngji Sohn — Research</title>
+
 <link rel="stylesheet" href="/style.css">
 
 <link rel="icon" href="/assets/favicon.png" type="image/png">
@@ -54,25 +60,25 @@ btn.onclick = function() {
       PhD Student in Economics<br>
       University of Warwick
     </div>
-
     <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
-    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" title="click to copy" onclick="
+    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" id="email-link" title="click to copy" onclick="
+  if(!this._ready) return false;
   clearTimeout(this._t);
+  var e=this._e;
   if(this.textContent==='copied!'){
-    this.textContent='youngji.sohn&#64;warwick.ac.uk';
+    this.textContent=e;
     this.style.color='';
   } else {
-    var e='youngji.sohn'+'@'+'warwick.ac.uk';
     navigator.clipboard.writeText(e);
     this.textContent='copied!';
     this.style.color='#c00';
-    this._t=setTimeout(()=>{this.textContent='youngji.sohn&#64;warwick.ac.uk'; this.style.color='';},3000);
+    var el=this;
+    this._t=setTimeout(function(){el.textContent=e; el.style.color='';},3000);
   }
   return false;
-">youngji.sohn&#64;warwick.ac.uk</a>
+">loading...</a>
 </div>
     <div class="contact-info"> &nbsp; 🏫 &thinsp; Office S1.111, Social Sciences</div>
-
     <div class="sidebar-links">
       <a href="cv.html">CV</a> ·
       <a href="https://scholar.google.com/citations?user=tWI3v08AAAAJ&hl=en">Google Scholar</a> ·
@@ -80,7 +86,47 @@ btn.onclick = function() {
     </div>
   </div>
 </div>
+<script>
+(function(){
+  var link = document.getElementById('email-link');
+  var hovered = false;
 
+  function buildEmail() {
+    if (link._ready) return;
+    var e = 'lbhatwv.fbua@jnejvpx.np.hx'.replace(/[a-zA-Z]/g, function(c) {
+      return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+    });
+    link._e = e;
+    link._ready = true;
+    link.textContent = e;
+    link.title = 'click to copy';
+  }
+
+  document.addEventListener('mousemove', function() { hovered = true; }, { once: true });
+  document.addEventListener('touchstart', function() { hovered = true; }, { once: true });
+
+  function startTimer() {
+    if (document.visibilityState === 'visible') {
+      setTimeout(function() {
+        if (hovered) {
+          buildEmail();
+        } else {
+          document.addEventListener('mousemove', buildEmail, { once: true });
+          document.addEventListener('touchstart', buildEmail, { once: true });
+        }
+      }, 5000);
+    } else {
+      document.addEventListener('visibilitychange', function handler() {
+        if (document.visibilityState === 'visible') {
+          document.removeEventListener('visibilitychange', handler);
+          startTimer();
+        }
+      });
+    }
+  }
+  startTimer();
+})();
+</script>
     <div class="col-wide">
   <div class="box-header">Research</div>
   <div class="box-light">

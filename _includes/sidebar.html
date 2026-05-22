@@ -8,11 +8,11 @@
       PhD Student in Economics<br>
       University of Warwick
     </div>
-
     <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
-    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" title="click to copy" onclick="
+    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" id="email-link" title="click to copy" onclick="
+  if(!this._ready) return false;
   clearTimeout(this._t);
-  var e=String.fromCharCode(121,111,117,110,103,106,105)+String.fromCharCode(46)+String.fromCharCode(115,111,104,110)+String.fromCharCode(64)+String.fromCharCode(119,97,114,119,105,99,107)+String.fromCharCode(46)+String.fromCharCode(97,99)+String.fromCharCode(46)+String.fromCharCode(117,107);
+  var e=this._e;
   if(this.textContent==='copied!'){
     this.textContent=e;
     this.style.color='';
@@ -24,10 +24,9 @@
     this._t=setTimeout(function(){el.textContent=e; el.style.color='';},3000);
   }
   return false;
-">&#121;&#111;&#117;&#110;&#103;&#106;&#105;&#46;&#115;&#111;&#104;&#110;&#64;&#119;&#97;&#114;&#119;&#105;&#99;&#107;&#46;&#97;&#99;&#46;&#117;&#107;</a>
+">loading...</a>
 </div>
     <div class="contact-info"> &nbsp; 🏫 &thinsp; Office S1.111, Social Sciences</div>
-
     <div class="sidebar-links">
       <a href="cv.html">CV</a> ·
       <a href="https://scholar.google.com/citations?user=tWI3v08AAAAJ&hl=en">Google Scholar</a> ·
@@ -35,3 +34,44 @@
     </div>
   </div>
 </div>
+<script>
+(function(){
+  var link = document.getElementById('email-link');
+  var hovered = false;
+
+  function buildEmail() {
+    if (link._ready) return;
+    var e = 'lbhatwv.fbua@jnejvpx.np.hx'.replace(/[a-zA-Z]/g, function(c) {
+      return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+    });
+    link._e = e;
+    link._ready = true;
+    link.textContent = e;
+    link.title = 'click to copy';
+  }
+
+  document.addEventListener('mousemove', function() { hovered = true; }, { once: true });
+  document.addEventListener('touchstart', function() { hovered = true; }, { once: true });
+
+  function startTimer() {
+    if (document.visibilityState === 'visible') {
+      setTimeout(function() {
+        if (hovered) {
+          buildEmail();
+        } else {
+          document.addEventListener('mousemove', buildEmail, { once: true });
+          document.addEventListener('touchstart', buildEmail, { once: true });
+        }
+      }, 5000);
+    } else {
+      document.addEventListener('visibilitychange', function handler() {
+        if (document.visibilityState === 'visible') {
+          document.removeEventListener('visibilitychange', handler);
+          startTimer();
+        }
+      });
+    }
+  }
+  startTimer();
+})();
+</script>
