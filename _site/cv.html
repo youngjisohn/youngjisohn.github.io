@@ -56,26 +56,17 @@ btn.onclick = function() {
   <div class="box-side">
     <div class="name">Youngji Sohn</div>
     <div class="photo">
-      <img src="/assets/profile.jpg" alt="Youngji Sohn" title="Me" draggable="false" oncontextmenu="return false;">
+      <img src="/assets/profile.jpg" alt="Youngji Sohn" title="Me"
+           draggable="false" oncontextmenu="return false;">
     </div>
     <div class="affiliation">
       PhD Student in Economics<br>
       University of Warwick
     </div>
     <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
-    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" id="e-link" title="click to copy" onclick="
-  if(!this._ready) return false;
-  clearTimeout(this._t);
-  var e=this._e;
-  navigator.clipboard.writeText(e);
-  this.textContent='copied!';
-  this.style.color='#c00';
-  var el=this;
-  window._eRevealed=true;
-  this._t=setTimeout(function(){el.textContent=e; el.style.color='';},3000);
-  return false;
-">loading...</a>
-</div>
+    <div class="contact-info"> &nbsp; ✉️ &thinsp;
+      <a href="#" class="plain" id="e-link" title="click to copy">click to copy</a>
+    </div>
     <div class="contact-info"> &nbsp; 🏫 &thinsp; Office S1.111, Social Sciences</div>
     <div class="sidebar-links">
       <a href="cv.html">CV</a> ·
@@ -84,38 +75,42 @@ btn.onclick = function() {
     </div>
   </div>
 </div>
+
 <script>
 (function(){
   var link = document.getElementById('e-link');
-  function startTimer() {
-    if (document.visibilityState === 'visible') {
-      setTimeout(function() {
-        fetch('/assets/c.txt')
-          .then(function(res) { return res.text(); })
-          .then(function(t) {
-            var parts = t.trim().split(' ');
-            var e = parts[0] + '@' + parts[1];
-            link._e = e;
-            link._ready = true;
-            link.textContent = 'click to copy';
-            link.addEventListener('mouseenter', function() {
-              if (!window._eRevealed) link.textContent = e;
-            });
-            link.addEventListener('mouseleave', function() {
-              if (!window._eRevealed && link.textContent !== 'copied!') link.textContent = 'click to copy';
-            });
-          });
-      }, 5000);
-    } else {
-      document.addEventListener('visibilitychange', function handler() {
-        if (document.visibilityState === 'visible') {
-          document.removeEventListener('visibilitychange', handler);
-          startTimer();
-        }
-      });
+  var loaded = null;       // closure — never assigned to a DOM node
+  var revertTimer = null;  // handle for the "copied!" → "click to copy" revert
+
+  link.addEventListener('click', async function(ev) {
+    ev.preventDefault();
+    if (!ev.isTrusted) return;        // reject synthetic clicks
+
+    // rapid-click: cancel any pending revert from a previous copy
+    clearTimeout(revertTimer);
+
+    if (!loaded) {
+      try {
+        const res = await fetch('/contact-token/' + Date.now(), {
+          credentials: 'same-origin',
+          headers: { 'X-Requested-With': 'click' }
+        });
+        if (!res.ok) return;
+        const parts = (await res.text()).trim().split(' ');
+        if (parts.length < 2) return;
+        loaded = parts[0] + '@' + parts[1];
+      } catch (e) { return; }
     }
-  }
-  startTimer();
+
+    try { await navigator.clipboard.writeText(loaded); } catch (e) { /* still show feedback */ }
+
+    link.textContent = 'copied!';
+    link.style.color = '#c00';
+    revertTimer = setTimeout(function() {
+      link.textContent = 'click to copy';
+      link.style.color = '';
+    }, 3000);
+  });
 })();
 </script>
     <div class="col-wide">
