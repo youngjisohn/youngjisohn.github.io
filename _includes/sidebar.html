@@ -9,7 +9,7 @@
       University of Warwick
     </div>
     <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
-    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" id="email-link" title="click to copy" onclick="
+    <div class="contact-info"> &nbsp; ✉️ &thinsp; <a href="#" class="plain" id="e-link" title="click to copy" onclick="
   if(!this._ready) return false;
   clearTimeout(this._t);
   var e=this._e;
@@ -36,32 +36,26 @@
 </div>
 <script>
 (function(){
-  var link = document.getElementById('email-link');
-  var hovered = false;
-
-  function buildEmail() {
-    if (link._ready) return;
-    var e = 'lbhatwv.fbua@jnejvpx.np.hx'.replace(/[a-zA-Z]/g, function(c) {
-      return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
-    });
-    link._e = e;
-    link._ready = true;
-    link.textContent = e;
-    link.title = 'click to copy';
-  }
-
-  document.addEventListener('mousemove', function() { hovered = true; }, { once: true });
-  document.addEventListener('touchstart', function() { hovered = true; }, { once: true });
+  var link = document.getElementById('e-link');
 
   function startTimer() {
     if (document.visibilityState === 'visible') {
       setTimeout(function() {
-        if (hovered) {
-          buildEmail();
-        } else {
-          document.addEventListener('mousemove', buildEmail, { once: true });
-          document.addEventListener('touchstart', buildEmail, { once: true });
-        }
+        fetch('/assets/c.txt')
+          .then(function(res) { return res.text(); })
+          .then(function(t) {
+            var parts = t.trim().split(' ');
+            var e = parts[0] + '@' + parts[1];
+            link._e = e;
+            link._ready = true;
+            link.textContent = 'click to copy';
+            link.addEventListener('mouseenter', function() {
+              link.textContent = e;
+            });
+            link.addEventListener('mouseleave', function() {
+              if (link.textContent !== 'copied!') link.textContent = 'click to copy';
+            });
+          });
       }, 5000);
     } else {
       document.addEventListener('visibilitychange', function handler() {
