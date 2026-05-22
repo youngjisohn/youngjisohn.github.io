@@ -36,19 +36,9 @@
     armed = true;
     setTimeout(function(){
       ready = true;
-      link.textContent = 'click';
-      link.title = 'click to copy';
+      link.textContent = 'click to reveal';
+      link.title = 'click to reveal';
     }, 5000);
-  }
-
-  function loadE(){
-    return fetch('/assets/c.txt')
-      .then(function(r){ return r.text(); })
-      .then(function(t){
-        var parts = t.trim().split(' ');
-        email = parts[0] + '@' + parts[1];
-        return email;
-      });
   }
 
   function flashCopied(){
@@ -65,35 +55,25 @@
     ev.preventDefault();
     if (!ev.isTrusted || !ready) return;
 
-    // Already loaded — synchronous copy path.
-    if (email) {
-      navigator.clipboard.writeText(email).then(flashCopied, function(){});
+    // First click — wait 0.2s, fetch, reveal only. No copy yet.
+    if (!email) {
+      setTimeout(function(){
+        fetch('/assets/c.txt')
+          .then(function(r){ return r.text(); })
+          .then(function(t){
+            var parts = t.trim().split(' ');
+            email = parts[0] + '@' + parts[1];
+            link.textContent = email;
+            link.title = 'click to copy';
+          });
+      }, 200);
       return;
     }
 
-    // First click — fetch + reveal + copy. ClipboardItem accepts a Promise,
-    // so the clipboard.write call happens inside the click handler (keeping
-    // user activation valid) and the content is supplied once fetch resolves.
-    if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
-      var blobP = loadE().then(function(e){
-        link.textContent = e;
-        return new Blob([e], { type: 'text/plain' });
-      });
-      try {
-        navigator.clipboard.write([new ClipboardItem({ 'text/plain': blobP })])
-          .then(flashCopied, function(){});
-        return;
-      } catch(e) { /* fall through */ }
-    }
-
-    // Fallback: fetch then writeText.
-    loadE().then(function(e){
-      link.textContent = e;
-      navigator.clipboard.writeText(e).then(flashCopied, flashCopied);
-    });
+    // Second click onward — copy.
+    navigator.clipboard.writeText(email).then(flashCopied, function(){});
   });
 
-  // Arm on first user interaction anywhere on the page.
   document.addEventListener('mousemove',  arm, { once: true, passive: true });
   document.addEventListener('touchstart', arm, { once: true, passive: true });
   document.addEventListener('keydown',    arm, { once: true });
