@@ -13,16 +13,12 @@
   if(!this._ready) return false;
   clearTimeout(this._t);
   var e=this._e;
-  if(this.textContent==='copied!'){
-    this.textContent=e;
-    this.style.color='';
-  } else {
-    navigator.clipboard.writeText(e);
-    this.textContent='copied!';
-    this.style.color='#c00';
-    var el=this;
-    this._t=setTimeout(function(){el.textContent=e; el.style.color='';},3000);
-  }
+  navigator.clipboard.writeText(e);
+  this.textContent='copied!';
+  this.style.color='#c00';
+  var el=this;
+  window._eRevealed=true;
+  this._t=setTimeout(function(){el.textContent=e; el.style.color='';},3000);
   return false;
 ">loading...</a>
 </div>
@@ -37,7 +33,6 @@
 <script>
 (function(){
   var link = document.getElementById('e-link');
-
   function startTimer() {
     if (document.visibilityState === 'visible') {
       setTimeout(function() {
@@ -50,10 +45,10 @@
             link._ready = true;
             link.textContent = 'click to copy';
             link.addEventListener('mouseenter', function() {
-              link.textContent = e;
+              if (!window._eRevealed) link.textContent = e;
             });
             link.addEventListener('mouseleave', function() {
-              if (link.textContent !== 'copied!') link.textContent = 'click to copy';
+              if (!window._eRevealed && link.textContent !== 'copied!') link.textContent = 'click to copy';
             });
           });
       }, 5000);
