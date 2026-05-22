@@ -75,39 +75,81 @@ btn.onclick = function() {
 </div>
 
 <script>
-(function(){
+(function () {
   var link = document.getElementById('e-link');
-  var loaded = null;       // closure — never assigned to a DOM node
-  var revertTimer = null;  // handle for the "copied!" → "click to copy" revert
+  var loaded = null;       // closure — not on the DOM node
+  var fetching = null;     // in-flight fetch promise (for de-dup)
+  var revertTimer = null;
 
-  link.addEventListener('click', async function(ev) {
-    ev.preventDefault();
-    if (!ev.isTrusted) return;        // reject synthetic clicks
-
-    // rapid-click: cancel any pending revert from a previous copy
-    clearTimeout(revertTimer);
-
-    if (!loaded) {
-      try {
-        const res = await fetch('/contact-token/' + Date.now(), {
-          credentials: 'same-origin',
-          headers: { 'X-Requested-With': 'click' }
-        });
-        if (!res.ok) return;
-        const parts = (await res.text()).trim().split(' ');
-        if (parts.length < 2) return;
+  function prefetch() {
+    if (loaded || fetching) return fetching || Promise.resolve();
+    fetching = fetch('/contact-token/' + Date.now(), {
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'click' }
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('http ' + res.status);
+        return res.text();
+      })
+      .then(function (t) {
+        var parts = t.trim().split(' ');
+        if (parts.length < 2) throw new Error('bad response');
         loaded = parts[0] + '@' + parts[1];
-      } catch (e) { return; }
-    }
+      })
+      .catch(function () {
+        fetching = null; // allow retry on next interaction
+      });
+    return fetching;
+  }
 
-    try { await navigator.clipboard.writeText(loaded); } catch (e) { /* still show feedback */ }
+  link.addEventListener('mouseenter', prefetch);
+  link.addEventListener('focus', prefetch);
+  link.addEventListener('touchstart', prefetch, { passive: true });
 
+  function showCopied() {
     link.textContent = 'copied!';
     link.style.color = '#c00';
-    revertTimer = setTimeout(function() {
+    revertTimer = setTimeout(function () {
       link.textContent = 'click to copy';
       link.style.color = '';
     }, 3000);
+  }
+
+  link.addEventListener('click', function (ev) {
+    ev.preventDefault();
+    if (!ev.isTrusted) return;
+    clearTimeout(revertTimer);
+
+    // Fast path: email already in memory, copy synchronously.
+    if (loaded) {
+      navigator.clipboard.writeText(loaded).then(showCopied, function () {});
+      return;
+    }
+
+    // Slow path: clicked before prefetch finished (or never hovered).
+    // Use ClipboardItem with a Promise so the clipboard.write call happens
+    // synchronously inside the click handler (preserving user activation),
+    // and the content is supplied once the fetch resolves.
+    if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
+      var p = prefetch().then(function () {
+        if (!loaded) throw new Error('no email');
+        return new Blob([loaded], { type: 'text/plain' });
+      });
+      try {
+        navigator.clipboard.write([new ClipboardItem({ 'text/plain': p })])
+          .then(showCopied, function () {});
+        return;
+      } catch (e) { /* fall through */ }
+    }
+
+    // Last resort: fetch, then writeText. Activation may have expired —
+    // the visual "copied!" still fires so the user knows to retry.
+    prefetch().then(function () {
+      if (!loaded) return;
+      navigator.clipboard.writeText(loaded).then(showCopied, function () {
+        showCopied(); // give feedback even if clipboard rejected
+      });
+    });
   });
 })();
 </script>
