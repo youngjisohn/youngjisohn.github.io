@@ -28,6 +28,7 @@
   var link = document.getElementById('e-link');
   var armed = false;
   var ready = false;
+  var clicks = 0;
   var email = null;
   var revertTimer = null;
 
@@ -36,14 +37,23 @@
     armed = true;
     setTimeout(function(){
       ready = true;
-      link.textContent = 'click to copy';
-      link.title = 'click to copy';
-    }, 2000);
+      link.textContent = 'contact';
+      link.title = '';
+    }, 3000);
+  }
+
+  function showThenRevert(text, revertTo, ms){
+    clearTimeout(revertTimer);
+    link.textContent = text;
+    revertTimer = setTimeout(function(){
+      link.textContent = revertTo;
+      link.style.color = '';
+    }, ms);
   }
 
   function flash(afterText){
     clearTimeout(revertTimer);
-    link.textContent = 'copied!';
+    link.textContent = '!!!';
     link.style.color = '#c00';
     revertTimer = setTimeout(function(){
       link.textContent = afterText;
@@ -55,11 +65,16 @@
     ev.preventDefault();
     if (!ev.isTrusted || !ready) return;
 
-    // First click — fetch, copy, flash "copied!" 3s, revert to "click to copy".
-    // Email is NOT revealed yet. ClipboardItem accepts a Promise so the
-    // clipboard.write call happens synchronously inside the click handler
-    // (preserving user activation) while the fetch resolves.
-    if (!email) {
+    clicks++;
+
+    // Click 1, 2 — show !/!!, no fetch, no copy. Revert to "contact" after 2s.
+    if (clicks === 1) { showThenRevert('!',  'contact', 2000); return; }
+    if (clicks === 2) { showThenRevert('!!', 'contact', 2000); return; }
+
+    // Click 3 — fetch, reveal, copy. ClipboardItem accepts a Promise so the
+    // clipboard.write fires inside the click handler (keeping user activation)
+    // while fetch resolves.
+    if (clicks === 3) {
       if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
         var blobP = fetch('/assets/c.txt')
           .then(function(r){ return r.text(); })
@@ -70,26 +85,29 @@
           });
         try {
           navigator.clipboard.write([new ClipboardItem({ 'text/plain': blobP })])
-            .then(function(){ flash('click to copy'); }, function(){});
+            .then(function(){ flash(email); }, function(){ flash(email); });
           return;
         } catch(e) { /* fall through */ }
       }
-      // Fallback for browsers without ClipboardItem.
+      // Fallback.
       fetch('/assets/c.txt')
         .then(function(r){ return r.text(); })
         .then(function(t){
           var parts = t.trim().split(' ');
           email = parts[0] + '@' + parts[1];
           navigator.clipboard.writeText(email).then(
-            function(){ flash('click to copy'); },
-            function(){ flash('click to copy'); }
+            function(){ flash(email); },
+            function(){ flash(email); }
           );
         });
       return;
     }
 
-    // Second click onward — copy, flash "copied!" 3s, then settle on email.
-    navigator.clipboard.writeText(email).then(function(){ flash(email); }, function(){});
+    // Click 4+ — copy, flash, settle on email.
+    navigator.clipboard.writeText(email).then(
+      function(){ flash(email); },
+      function(){ flash(email); }
+    );
   });
 
   document.addEventListener('mousemove',  arm, { once: true, passive: true });
