@@ -164,6 +164,7 @@ img, video {
   font-size: 14px;
   line-height: 1.5;
 }
+.box-subtle > :last-child { margin-bottom: 0; }
 .box-subtle p { margin: 0 0 8px 0; }
 .box-subtle img, .box-subtle video {
   max-width: 100%; display: block; margin: 0 auto; }
