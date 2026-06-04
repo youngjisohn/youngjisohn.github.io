@@ -7,15 +7,15 @@ noindex: true
 
 <div class="col-mini">
 
-  <div class="box-subtle-header" id="birds-header">birds</div>
-  <div class="box-subtle" id="birds-box" style="text-align:center;">
+<div class="box-subtle-header" id="birds-header">birds</div>
+<div class="box-subtle" id="birds-box" style="text-align:center;">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
     <video id="random-vid" autoplay muted loop style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
   </div>
 
-  <!-- <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
-  <div class="box-subtle" id="snippet-box" style="display:none;"></div>-->
-
+<div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
+<div class="box-subtle" id="snippet-box" style="display:none;"></div>
+  
   <div class="box-subtle-header" style="margin-top: 20px;" id="name">my name</div>
   <div class="box-subtle">
     <p>My name is Youngji Sohn, written as 손 영지 in 
@@ -107,30 +107,95 @@ if (birds.length > 0) {
   document.getElementById('birds-box').style.display = 'none';
 }
 
+   // --- PDF first-page preview ---
+var PDFJS_SRC    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+var pdfLibPromise = null;
+
+function loadPdfLib() {
+  if (pdfLibPromise) return pdfLibPromise;
+  pdfLibPromise = new Promise(function(resolve, reject) {
+    var s = document.createElement('script');
+    s.src = PDFJS_SRC;
+    s.onload = function() {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+      resolve(window.pdfjsLib);
+    };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+  return pdfLibPromise;
+}
+
+function renderPdfPreview(url, mountBefore) {
+  loadPdfLib()
+    .then(function(lib) { return lib.getDocument(url).promise; })
+    .then(function(pdf) { return pdf.getPage(1); })
+    .then(function(page) {
+      var base = page.getViewport({ scale: 1 });
+      var viewport = page.getViewport({ scale: 900 / base.width }); // 900px bitmap; CSS scales down for crispness
+
+      var canvas = document.createElement('canvas');
+      canvas.width  = viewport.width;
+      canvas.height = viewport.height;
+      // SAME width rule as the bird photo:
+      canvas.style.cssText =
+        'max-width:100%; max-height:700px; width:auto; ' +
+        'border:2px solid #555; display:block; margin:0 auto 10px auto;';
+
+      var link = document.createElement('a');   // click preview -> full PDF
+      link.href = url;
+      link.target = '_blank';
+      link.appendChild(canvas);
+      mountBefore.parentNode.insertBefore(link, mountBefore);
+
+      return page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+    })
+    .catch(function() { /* on any failure just leave the plain link */ });
+}
+   
+   
 // --- Snippets ---
 if (snippets.length > 0) {
-  var storedSnippet = sessionStorage.getItem('nextSnippet');
+  var stored = sessionStorage.getItem('nextSnippet');
   var sPick;
-  if (storedSnippet) {
-    sPick = storedSnippet;
+  if (stored) {
+    sPick = stored;                       // plain string path, no JSON.parse
     sessionStorage.removeItem('nextSnippet');
   } else {
     sPick = pickRandom(snippets, 'seenSnippets');
   }
 
+  var header = document.getElementById('snippet-header');
+  var box = document.getElementById('snippet-box');
+
   fetch(sPick)
     .then(function(r) { return r.text(); })
     .then(function(t) {
-      var titleMatch = t.match(/<!--title:\s*(.+?)-->/);
-      var title = titleMatch ? titleMatch[1] : sPick.split('/').pop().replace('.html', '').replace(/-/g, ' ');
-      var content = t.replace(/<!--title:.+?-->/, '').trim();
-      document.getElementById('snippet-header').textContent = title;
-      document.getElementById('snippet-header').style.display = '';
-      document.getElementById('snippet-box').innerHTML = content;
-      document.getElementById('snippet-box').style.display = '';
-      var nextSnippet = pickRandom(snippets, 'seenSnippets', sPick);
-      sessionStorage.setItem('nextSnippet', nextSnippet);
-      fetch(nextSnippet);
+      var m = t.match(/<!--\s*title:\s*([\s\S]+?)-->/);
+      var title = m
+        ? m[1].trim()
+        : sPick.split('/').pop().replace(/\.html$/i, '').replace(/[-_]/g, ' ');
+      var content = t.replace(/<!--\s*title:[\s\S]+?-->/, '').trim();
+
+      header.textContent = title;
+      box.innerHTML = content;
+      header.style.display = '';
+      box.style.display = '';
+    var pdfLink = box.querySelector('a[href$=".pdf" i]');
+if (pdfLink) {
+  renderPdfPreview(pdfLink.getAttribute('href'), box.firstChild);
+}
+    
+
+      // precompute next + warm the HTTP cache for the next load
+      var next = pickRandom(snippets, 'seenSnippets', sPick);
+      sessionStorage.setItem('nextSnippet', next);
+      fetch(next);
+    })
+    .catch(function() {            // failed fetch -> just stay hidden
+      header.style.display = 'none';
+      box.style.display = 'none';
     });
 }
 </script>
