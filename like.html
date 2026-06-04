@@ -7,15 +7,15 @@ noindex: true
 
 <div class="col-mini">
 
-<div class="box-subtle-header" id="birds-header">birds</div>
-<div class="box-subtle" id="birds-box" style="text-align:center;">
+  <div class="box-subtle-header" id="birds-header">birds</div>
+  <div class="box-subtle" id="birds-box" style="text-align:center;">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
     <video id="random-vid" autoplay muted loop style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
   </div>
 
-<div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
-<div class="box-subtle" id="snippet-box" style="display:none;"></div>
-  
+  <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
+  <div class="box-subtle" id="snippet-box" style="display:none;"></div>
+
   <div class="box-subtle-header" style="margin-top: 20px;" id="name">my name</div>
   <div class="box-subtle">
     <p>My name is Youngji Sohn, written as 손 영지 in 
@@ -67,10 +67,10 @@ function pickRandom(items, key, exclude) {
 
 // --- Birds ---
 if (birds.length > 0) {
-  var stored = sessionStorage.getItem('nextBird');
+  var storedBird = sessionStorage.getItem('nextBird');
   var pick;
-  if (stored) {
-    pick = JSON.parse(stored);
+  if (storedBird) {
+    pick = JSON.parse(storedBird);
     sessionStorage.removeItem('nextBird');
   } else {
     pick = pickRandom(birds, 'seenBirds');
@@ -81,17 +81,17 @@ if (birds.length > 0) {
   var isVideo = /\.(mp4|mov)$/i.test(pick.type);
 
   function reveal() {
-  var isLandscape = this.naturalWidth > this.naturalHeight;
-  if (isLandscape) {
-    document.querySelector('.page-wrapper').style.maxWidth = '800px';
+    var isLandscape = this.naturalWidth > this.naturalHeight;
+    if (isLandscape) {
+      document.querySelector('.page-wrapper').style.maxWidth = '800px';
+    }
+    var next = pickRandom(birds, 'seenBirds', pick.path);
+    sessionStorage.setItem('nextBird', JSON.stringify(next));
+    if (!/\.(mp4|mov)$/i.test(next.type)) {
+      var preload = new Image();
+      preload.src = next.path;
+    }
   }
-  var next = pickRandom(birds, 'seenBirds', pick.path);
-  sessionStorage.setItem('nextBird', JSON.stringify(next));
-  if (!/\.(mp4|mov)$/i.test(next.type)) {
-    var preload = new Image();
-    preload.src = next.path;
-  }
-}
 
   if (isVideo) {
     vid.src = pick.path;
@@ -107,7 +107,7 @@ if (birds.length > 0) {
   document.getElementById('birds-box').style.display = 'none';
 }
 
-   // --- PDF first-page preview ---
+// --- PDF first-page preview ---
 var PDFJS_SRC    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
 var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 var pdfLibPromise = null;
@@ -133,14 +133,14 @@ function renderPdfPreview(url, mountBefore) {
     .then(function(pdf) { return pdf.getPage(1); })
     .then(function(page) {
       var base = page.getViewport({ scale: 1 });
-      var viewport = page.getViewport({ scale: 900 / base.width }); // 900px bitmap; CSS scales down for crispness
+      var viewport = page.getViewport({ scale: 900 / base.width }); // 900px bitmap; CSS scales it down for crispness
 
       var canvas = document.createElement('canvas');
       canvas.width  = viewport.width;
       canvas.height = viewport.height;
-      // SAME width rule as the bird photo:
+      // Fill the box, so the preview width tracks the box width (set by the bird photo)
       canvas.style.cssText =
-        'max-width:100%; max-height:700px; width:auto; ' +
+        'width:100%; height:auto; ' +
         'border:2px solid #555; display:block; margin:0 auto 10px auto;';
 
       var link = document.createElement('a');   // click preview -> full PDF
@@ -153,14 +153,13 @@ function renderPdfPreview(url, mountBefore) {
     })
     .catch(function() { /* on any failure just leave the plain link */ });
 }
-   
-   
+
 // --- Snippets ---
 if (snippets.length > 0) {
-  var stored = sessionStorage.getItem('nextSnippet');
+  var storedSnippet = sessionStorage.getItem('nextSnippet');
   var sPick;
-  if (stored) {
-    sPick = stored;                       // plain string path, no JSON.parse
+  if (storedSnippet) {
+    sPick = storedSnippet;                  // plain string path, no JSON.parse
     sessionStorage.removeItem('nextSnippet');
   } else {
     sPick = pickRandom(snippets, 'seenSnippets');
@@ -182,11 +181,11 @@ if (snippets.length > 0) {
       box.innerHTML = content;
       header.style.display = '';
       box.style.display = '';
-    var pdfLink = box.querySelector('a[href$=".pdf" i]');
-if (pdfLink) {
-  renderPdfPreview(pdfLink.getAttribute('href'), box.firstChild);
-}
-    
+
+      var pdfLink = box.querySelector('a[href$=".pdf" i]');
+      if (pdfLink) {
+        renderPdfPreview(pdfLink.getAttribute('href'), box.firstChild);
+      }
 
       // precompute next + warm the HTTP cache for the next load
       var next = pickRandom(snippets, 'seenSnippets', sPick);
