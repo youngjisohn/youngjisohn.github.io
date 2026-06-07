@@ -10,7 +10,8 @@ noindex: true
   <div class="box-subtle-header" id="birds-header">birds</div>
   <div class="box-subtle" id="birds-box" style="text-align:center; cursor:pointer;" title="click for the next one">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
-    <video id="random-vid" autoplay muted loop playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+    <video id="random-vid" loop controls playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+    <div id="bird-next" style="margin-top:8px; font-size:13px; color:#888;">next &rsaquo;</div>
   </div>
 
   <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
@@ -127,11 +128,13 @@ if (birds.length > 0) {
     var isVideo = /\.(mp4|mov)$/i.test(bird.type);
     if (isVideo) {
       img.style.display = 'none';
-      vid.src = bird.path;
+      vid.src = bird.path;          // no autoplay: the visitor presses play (with sound)
       vid.style.display = '';
       vid.onloadedmetadata = sizePage;
     } else {
+      vid.pause();
       vid.removeAttribute('src');
+      vid.load();
       vid.style.display = 'none';
       img.src = bird.path;
       img.style.display = '';
@@ -142,8 +145,12 @@ if (birds.length > 0) {
 
   function advance() { show(pickBird(currentPath)); }
 
-  show(pickBird(null));                       // first bird on load
-  box.addEventListener('click', advance);     // click the photo -> next photo
+  show(pickBird(null));                        // first bird on load
+
+  box.addEventListener('click', advance);      // click the photo / "next" -> next
+  vid.addEventListener('click', function(e) {  // but clicking the video uses its controls
+    e.stopPropagation();
+  });
 
 } else {
   document.getElementById('birds-header').style.display = 'none';
