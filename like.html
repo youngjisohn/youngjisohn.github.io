@@ -4,15 +4,40 @@ layout: simple
 noindex: true
 ---
 <style>.page-wrapper{max-width: 500px;}
-.bird-folder{cursor:pointer; padding:1px 7px; margin-left:4px; border:1px solid #c9b98a; border-radius:3px; font-weight:normal; font-size:12px;}
+
+/* dropdown menu floating below the "birds" title */
+#birds-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  z-index:50;
+  margin-top:2px;
+  min-width:160px;
+  background:#fdfcf8;
+  border:1px solid #c9b98a;
+  box-shadow:2px 3px 6px rgba(0,0,0,0.25);
+  padding:4px;
+  text-align:left;
+}
+.bird-folder{
+  display:block;
+  cursor:pointer;
+  padding:5px 12px;
+  font-weight:normal;
+  font-size:13px;
+  color:#444;
+  white-space:nowrap;
+}
 .bird-folder:hover{background:#f0ead6;}
+.bird-folder.active{background:#E6C843; font-weight:bold;}
+
 #bird-controls span.ctl{cursor:pointer;}
 #bird-controls span.ctl:hover{color:#555; text-decoration:underline;}
 </style>
 
 <div class="col-mini">
 
-  <div class="box-subtle-header" id="birds-header" style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+  <div class="box-subtle-header" id="birds-header" style="position:relative;">
     <span id="birds-label">birds</span>
     <span id="birds-menu" style="display:none;"></span>
   </div>
@@ -181,7 +206,14 @@ if (birds.length > 0) {
         .then(function(txt) {
           var id = ytId(txt.trim());
           if (!id) { stopYoutube(); return; }
-          ytFrame.onload = function() { applySound(); };
+          ytFrame.onload = function() {
+            // some browsers ignore the autoplay param; nudge it via the iframe API
+            try {
+              ytFrame.contentWindow.postMessage(
+                JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+            } catch (e) {}
+            applySound();
+          };
           ytFrame.src = 'https://www.youtube.com/embed/' + id +
             '?autoplay=1&mute=1&loop=1&playlist=' + id + '&rel=0&playsinline=1&enablejsapi=1';
           ytWrap.style.display = '';
@@ -223,9 +255,8 @@ if (birds.length > 0) {
   // ---- subfolder menu (built only when there's more than one folder) ----
   function highlightMenu() {
     Array.prototype.forEach.call(birdsMenu.children, function(b) {
-      var active = b.getAttribute('data-group') === currentGroup;
-      b.style.background = active ? '#E6C843' : 'transparent';
-      b.style.fontWeight = active ? 'bold' : 'normal';
+      if (b.getAttribute('data-group') === currentGroup) b.classList.add('active');
+      else b.classList.remove('active');
     });
   }
   if (groupNames.length > 1) {
