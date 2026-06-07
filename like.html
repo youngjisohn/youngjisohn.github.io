@@ -217,47 +217,62 @@ function renderPdfPreview(url, mountBefore) {
     .catch(function() { /* on any failure just leave the plain link */ });
 }
 
-// --- Snippets ---
+// --- Snippets: click the title to load the next one (random, no repeat until all shown) ---
 if (snippets.length > 0) {
-  var storedSnippet = sessionStorage.getItem('nextSnippet');
-  var sPick;
-  if (storedSnippet) {
-    sPick = storedSnippet;                  // plain string path, no JSON.parse
-    sessionStorage.removeItem('nextSnippet');
-  } else {
-    sPick = pickRandom(snippets, 'seenSnippets');
-  }
-
   var header = document.getElementById('snippet-header');
   var sbox = document.getElementById('snippet-box');
+  var currentSnippet = null;
 
-  fetch(sPick)
-    .then(function(r) { return r.text(); })
-    .then(function(t) {
-      var m = t.match(/<!--\s*title:\s*([\s\S]+?)-->/);
-      var title = m
-        ? m[1].trim()
-        : sPick.split('/').pop().replace(/\.html$/i, '').replace(/[-_]/g, ' ');
-      var content = t.replace(/<!--\s*title:[\s\S]+?-->/, '').trim();
+  function showSnippet(path) {
+    currentSnippet = path;
+    fetch(path)
+      .then(function(r) { return r.text(); })
+      .then(function(t) {
+        var m = t.match(/<!--\s*title:\s*([\s\S]+?)-->/);
+        var title = m
+          ? m[1].trim()
+          : path.split('/').pop().replace(/\.html$/i, '').replace(/[-_]/g, ' ');
+        var content = t.replace(/<!--\s*title:[\s\S]+?-->/, '').trim();
 
-      header.textContent = title;
-      sbox.innerHTML = content;
-      header.style.display = '';
-      sbox.style.display = '';
+        header.textContent = title;
+        sbox.innerHTML = content;
+        header.style.display = '';
+        sbox.style.display = '';
 
-      var pdfLink = sbox.querySelector('a[href$=".pdf" i]');
-      if (pdfLink) {
-        renderPdfPreview(pdfLink.getAttribute('href'), sbox.firstChild);
-      }
+        var pdfLink = sbox.querySelector('a[href$=".pdf" i]');
+        if (pdfLink) {
+          renderPdfPreview(pdfLink.getAttribute('href'), sbox.firstChild);
+        }
 
-      // precompute next + warm the HTTP cache for the next load
-      var next = pickRandom(snippets, 'seenSnippets', sPick);
-      sessionStorage.setItem('nextSnippet', next);
-      fetch(next);
-    })
-    .catch(function() {            // failed fetch -> just stay hidden
-      header.style.display = 'none';
-      sbox.style.display = 'none';
-    });
+        // precompute the following snippet + warm its cache, so the next click is instant
+        var next = pickRandom(snippets, 'seenSnippets', path);
+        sessionStorage.setItem('nextSnippet', next);
+        fetch(next).catch(function(){});
+      })
+      .catch(function() {           // failed fetch -> just stay hidden
+        header.style.display = 'none';
+        sbox.style.display = 'none';
+      });
+  }
+
+  function advanceSnippet() {
+    var next = sessionStorage.getItem('nextSnippet');
+    if (next) { sessionStorage.removeItem('nextSnippet'); }
+    else { next = pickRandom(snippets, 'seenSnippets', currentSnippet); }
+    showSnippet(next);
+  }
+
+  // first snippet (reuse one precomputed last load if present)
+  var first = sessionStorage.getItem('nextSnippet');
+  if (first) { sessionStorage.removeItem('nextSnippet'); }
+  else { first = pickRandom(snippets, 'seenSnippets'); }
+  showSnippet(first);
+
+  // make the title clickable only when there's actually more than one to cycle
+  if (snippets.length > 1) {
+    header.style.cursor = 'pointer';
+    header.title = 'click for the next one';
+    header.addEventListener('click', advanceSnippet);
+  }
 }
 </script>
