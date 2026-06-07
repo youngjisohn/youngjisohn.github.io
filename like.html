@@ -10,8 +10,8 @@ noindex: true
   <div class="box-subtle-header" id="birds-header">birds</div>
   <div class="box-subtle" id="birds-box" style="text-align:center; cursor:pointer;" title="click for the next one">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
-    <video id="random-vid" loop controls playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
-    <div id="bird-next" style="margin-top:8px; font-size:13px; color:#888;">next &rsaquo;</div>
+    <video id="random-vid" autoplay muted loop playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+    <div id="bird-sound" style="margin-top:8px; font-size:13px; color:#888; display:none;">&#128263; sound off</div>
   </div>
 
   <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
@@ -106,8 +106,10 @@ if (birds.length > 0) {
   var box = document.getElementById('birds-box');
   var img = document.getElementById('random-img');
   var vid = document.getElementById('random-vid');
+  var soundBtn = document.getElementById('bird-sound');
   var currentPath = null;
   var prefetchedGroup = null;
+  var wantSound = false;            // session-wide preference; starts muted (autoplay needs it)
 
   // download every file in a subfolder so later clicks are instant (cache-warming)
   function prefetchGroup(name) {
@@ -123,19 +125,27 @@ if (birds.length > 0) {
     document.querySelector('.page-wrapper').style.maxWidth = (w > h) ? '800px' : '500px';
   }
 
+  function updateSoundLabel() {
+    soundBtn.innerHTML = wantSound ? '&#128266; sound on' : '&#128263; sound off';
+  }
+
   function show(bird) {
     currentPath = bird.path;
     var isVideo = /\.(mp4|mov)$/i.test(bird.type);
     if (isVideo) {
       img.style.display = 'none';
-      vid.src = bird.path;          // no autoplay: the visitor presses play (with sound)
+      vid.src = bird.path;
+      vid.muted = !wantSound;        // autoplay + loop handle play/replay; only mute is toggled
       vid.style.display = '';
       vid.onloadedmetadata = sizePage;
+      soundBtn.style.display = '';
+      updateSoundLabel();
     } else {
       vid.pause();
       vid.removeAttribute('src');
       vid.load();
       vid.style.display = 'none';
+      soundBtn.style.display = 'none';
       img.src = bird.path;
       img.style.display = '';
       img.onload = sizePage;
@@ -147,9 +157,12 @@ if (birds.length > 0) {
 
   show(pickBird(null));                        // first bird on load
 
-  box.addEventListener('click', advance);      // click the photo / "next" -> next
-  vid.addEventListener('click', function(e) {  // but clicking the video uses its controls
-    e.stopPropagation();
+  box.addEventListener('click', advance);      // click the photo/video -> next bird
+  soundBtn.addEventListener('click', function(e) {   // sound toggle: the only control
+    e.stopPropagation();                       // ...and it must not advance
+    wantSound = !wantSound;
+    vid.muted = !wantSound;
+    updateSoundLabel();
   });
 
 } else {
