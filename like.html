@@ -8,9 +8,14 @@ noindex: true
 <div class="col-mini">
 
   <div class="box-subtle-header" id="birds-header">birds</div>
-  <div class="box-subtle" id="birds-box" style="text-align:center; cursor:pointer;" title="click for the next one">
+  <div class="box-subtle" id="birds-box" style="text-align:center; position:relative;">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
-    <video id="random-vid" autoplay muted loop playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+    <video id="random-vid" autoplay muted loop controls playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+    <div id="yt-wrap" style="display:none; max-width:100%; margin:0 auto;">
+      <iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"
+              style="display:block; border:2px solid #555; width:100%; aspect-ratio:16/9;"></iframe>
+    </div>
+    <div id="bird-hint" style="position:absolute; top:6px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.72); color:#fff; font-size:12px; padding:3px 9px; border-radius:3px; pointer-events:none; display:none; white-space:nowrap;">click the &ldquo;birds&rdquo; title for the next one</div>
     <div id="bird-sound" style="margin-top:8px; font-size:13px; color:#888; display:none;">&#128263; sound off</div>
   </div>
 
@@ -33,7 +38,7 @@ noindex: true
 var birds = [
   {% for file in site.static_files %}
     {% if file.path contains 'assets/birds/' %}
-      {% if file.extname == '.jpg' or file.extname == '.JPG' or file.extname == '.jpeg' or file.extname == '.JPEG' or file.extname == '.png' or file.extname == '.PNG' or file.extname == '.mp4' or file.extname == '.MP4' or file.extname == '.mov' or file.extname == '.MOV' %}
+      {% if file.extname == '.jpg' or file.extname == '.JPG' or file.extname == '.jpeg' or file.extname == '.JPEG' or file.extname == '.png' or file.extname == '.PNG' or file.extname == '.mp4' or file.extname == '.MP4' or file.extname == '.mov' or file.extname == '.MOV' or file.extname == '.txt' or file.extname == '.TXT' %}
         {path: '{{ file.path }}', type: '{{ file.extname }}'},
       {% endif %}
     {% endif %}
@@ -66,7 +71,7 @@ function pickRandom(items, key, exclude) {
   return pick;
 }
 
-// --- Birds: click-to-advance, one subfolder at a time, whole subfolder prefetched ---
+// --- Birds: title advances; images click-to-advance; video/YouTube use normal players ---
 if (birds.length > 0) {
 
   // immediate subfolder under assets/birds/ ; files directly in birds/ go to "(root)"
@@ -74,6 +79,12 @@ if (birds.length > 0) {
     var rest  = (path.split('assets/birds/')[1] || '');
     var parts = rest.split('/');
     return parts.length > 1 ? parts[0] : '(root)';
+  }
+
+  // pull an 11-char YouTube id out of any common URL form
+  function ytId(url) {
+    var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/);
+    return m ? m[1] : null;
   }
 
   var groups = {};
@@ -103,11 +114,16 @@ if (birds.length > 0) {
     return pickRandom(groups[current], 'seenGroup:' + current, lastPath);
   }
 
+  var birdsHeader = document.getElementById('birds-header');
   var box = document.getElementById('birds-box');
   var img = document.getElementById('random-img');
   var vid = document.getElementById('random-vid');
+  var ytWrap = document.getElementById('yt-wrap');
+  var ytFrame = document.getElementById('yt-frame');
+  var hint = document.getElementById('bird-hint');
   var soundBtn = document.getElementById('bird-sound');
   var currentPath = null;
+  var currentKind = 'image';        // 'image' | 'video' | 'youtube'
   var prefetchedGroup = null;
   var wantSound = false;            // session-wide preference; starts muted (autoplay needs it)
 
@@ -129,23 +145,77 @@ if (birds.length > 0) {
     soundBtn.innerHTML = wantSound ? '&#128266; sound on' : '&#128263; sound off';
   }
 
+  // apply the sound preference to whichever player is showing
+  function applySound() {
+    if (currentKind === 'video') {
+      vid.muted = !wantSound;
+    } else if (currentKind === 'youtube') {
+      var func = wantSound ? 'unMute' : 'mute';
+      try {
+        ytFrame.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: func, args: [] }), '*');
+      } catch (e) {}
+    }
+  }
+
+  function stopLocalVideo() {
+    vid.pause();
+    vid.removeAttribute('src');
+    vid.load();
+    vid.style.display = 'none';
+  }
+  function stopYoutube() {
+    ytFrame.removeAttribute('src');   // unloading the iframe stops playback + audio
+    ytWrap.style.display = 'none';
+  }
+
   function show(bird) {
     currentPath = bird.path;
-    var isVideo = /\.(mp4|mov)$/i.test(bird.type);
-    if (isVideo) {
+    var isVideo   = /\.(mp4|mov)$/i.test(bird.type);
+    var isYoutube = /\.txt$/i.test(bird.type);
+    hint.style.display = 'none';
+
+    if (isYoutube) {
+      currentKind = 'youtube';
       img.style.display = 'none';
+      stopLocalVideo();
+      box.style.cursor = 'default';
+      box.removeAttribute('title');
+      fetch(bird.path)
+        .then(function(r) { return r.text(); })
+        .then(function(txt) {
+          var id = ytId(txt.trim());
+          if (!id) { stopYoutube(); return; }
+          ytFrame.onload = function() { applySound(); };   // honor sound choice once ready
+          ytFrame.src = 'https://www.youtube.com/embed/' + id +
+            '?autoplay=1&mute=1&loop=1&playlist=' + id + '&rel=0&playsinline=1&enablejsapi=1';
+          ytWrap.style.display = '';
+          soundBtn.style.display = '';
+          updateSoundLabel();
+          document.querySelector('.page-wrapper').style.maxWidth = '800px'; // 16:9 is wide
+        })
+        .catch(function() { stopYoutube(); });
+
+    } else if (isVideo) {
+      currentKind = 'video';
+      img.style.display = 'none';
+      stopYoutube();
+      box.style.cursor = 'default';
+      box.removeAttribute('title');
       vid.src = bird.path;
-      vid.muted = !wantSound;        // autoplay + loop handle play/replay; only mute is toggled
+      vid.muted = !wantSound;
       vid.style.display = '';
       vid.onloadedmetadata = sizePage;
       soundBtn.style.display = '';
       updateSoundLabel();
-    } else {
-      vid.pause();
-      vid.removeAttribute('src');
-      vid.load();
-      vid.style.display = 'none';
+
+    } else { // image
+      currentKind = 'image';
+      stopLocalVideo();
+      stopYoutube();
       soundBtn.style.display = 'none';
+      box.style.cursor = 'pointer';
+      box.title = 'click for the next one';
       img.src = bird.path;
       img.style.display = '';
       img.onload = sizePage;
@@ -155,15 +225,33 @@ if (birds.length > 0) {
 
   function advance() { show(pickBird(currentPath)); }
 
-  show(pickBird(null));                        // first bird on load
+  show(pickBird(null));                        // first item on load
 
-  box.addEventListener('click', advance);      // click the photo/video -> next bird
-  soundBtn.addEventListener('click', function(e) {   // sound toggle: the only control
-    e.stopPropagation();                       // ...and it must not advance
+  // images: click the picture to advance (video/YouTube clicks go to their own player)
+  box.addEventListener('click', function() {
+    if (currentKind === 'image') advance();
+  });
+
+  // hover message over a player, telling people to use the title to move on
+  box.addEventListener('mouseenter', function() {
+    if (currentKind === 'video' || currentKind === 'youtube') hint.style.display = '';
+  });
+  box.addEventListener('mouseleave', function() { hint.style.display = 'none'; });
+
+  // sound on/off (applies to local video or YouTube)
+  soundBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
     wantSound = !wantSound;
-    vid.muted = !wantSound;
+    applySound();
     updateSoundLabel();
   });
+
+  // the "birds" title advances to the next item, always (like the snippet title)
+  if (birds.length > 1) {
+    birdsHeader.style.cursor = 'pointer';
+    birdsHeader.title = 'click for the next one';
+    birdsHeader.addEventListener('click', advance);
+  }
 
 } else {
   document.getElementById('birds-header').style.display = 'none';
