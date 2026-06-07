@@ -122,7 +122,9 @@ if (birds.length > 0) {
     var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/);
     return m ? m[1] : null;
   }
-  function folderLabel(g) { return g === '(root)' ? 'misc' : g; }
+  function folderLabel(g) {
+    return g === '(root)' ? 'misc' : g.replace(/[-_]+/g, ' ');
+  }
 
   var groups = {};
   birds.forEach(function(b) {
