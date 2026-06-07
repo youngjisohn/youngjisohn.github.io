@@ -147,6 +147,7 @@ if (birds.length > 0) {
   var currentKind = 'image';
   var prefetchedGroup = null;
   var wantSound = false;
+  var skipCount = 0;            // guards against looping over unparseable .txt files
 
   // current subfolder (persists across reloads); default to a random one
   var currentGroup = sessionStorage.getItem('currentGroup');
@@ -208,8 +209,8 @@ if (birds.length > 0) {
 
   function show(bird) {
     currentPath = bird.path;
-    var isVideo   = /\.(mp4|mov)$/i.test(bird.type);
-    var isYoutube = /\.txt$/i.test(bird.type);
+    var isVideo   = /\.(mp4|mov)$/i.test(bird.path);
+    var isYoutube = /\.txt$/i.test(bird.path);
 
     if (isYoutube) {
       currentKind = 'youtube';
@@ -218,10 +219,18 @@ if (birds.length > 0) {
       box.style.cursor = 'default';
       box.removeAttribute('title');
       fetch(bird.path)
-        .then(function(r) { return r.text(); })
+        .then(function(r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + bird.path);
+          return r.text();
+        })
         .then(function(txt) {
           var id = ytId(txt.trim());
-          if (!id) { stopYoutube(); return; }
+          if (!id) {
+            console.warn('like.html: no YouTube id in ' + bird.path + ' — got:', JSON.stringify(txt.slice(0, 120)));
+            if (skipCount++ < birds.length) advance(); else stopYoutube();
+            return;
+          }
+          skipCount = 0;
           ytFrame.onload = function() {
             // some browsers ignore the autoplay param; nudge it via the iframe API
             try {
@@ -237,10 +246,14 @@ if (birds.length > 0) {
           updateSoundLabel();
           document.querySelector('.page-wrapper').style.maxWidth = '800px';
         })
-        .catch(function() { stopYoutube(); });
+        .catch(function(err) {
+          console.warn('like.html: could not load ' + bird.path, err);
+          if (skipCount++ < birds.length) advance(); else stopYoutube();
+        });
 
     } else if (isVideo) {
       currentKind = 'video';
+      skipCount = 0;
       img.style.display = 'none';
       stopYoutube();
       box.style.cursor = 'default';
@@ -254,6 +267,7 @@ if (birds.length > 0) {
 
     } else { // image
       currentKind = 'image';
+      skipCount = 0;
       stopLocalVideo();
       stopYoutube();
       controls.style.display = 'none';
