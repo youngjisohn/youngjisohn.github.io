@@ -3,11 +3,19 @@ title: Youngji Sohn - I like
 layout: simple
 noindex: true
 ---
-<style>.page-wrapper{max-width: 500px;}</style>
+<style>.page-wrapper{max-width: 500px;}
+.bird-folder{cursor:pointer; padding:1px 7px; margin-left:4px; border:1px solid #c9b98a; border-radius:3px; font-weight:normal; font-size:12px;}
+.bird-folder:hover{background:#f0ead6;}
+#bird-controls span.ctl{cursor:pointer;}
+#bird-controls span.ctl:hover{color:#555; text-decoration:underline;}
+</style>
 
 <div class="col-mini">
 
-  <div class="box-subtle-header" id="birds-header">birds</div>
+  <div class="box-subtle-header" id="birds-header" style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+    <span id="birds-label">birds</span>
+    <span id="birds-menu" style="display:none;"></span>
+  </div>
   <div class="box-subtle" id="birds-box" style="text-align:center; position:relative;">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
     <video id="random-vid" autoplay muted loop controls playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
@@ -15,8 +23,11 @@ noindex: true
       <iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen frameborder="0"
               style="display:block; border:2px solid #555; width:100%; aspect-ratio:16/9;"></iframe>
     </div>
-    <div id="bird-hint" style="position:absolute; top:6px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.72); color:#fff; font-size:12px; padding:3px 9px; border-radius:3px; pointer-events:none; display:none; white-space:nowrap;">click the &ldquo;birds&rdquo; title for the next one</div>
-    <div id="bird-sound" style="margin-top:8px; font-size:13px; color:#888; display:none;">&#128263; sound off</div>
+    <div id="bird-controls" style="margin-top:8px; font-size:13px; color:#888; display:none;">
+      <span id="bird-sound" class="ctl">&#128263; sound off</span>
+      <span style="margin:0 6px;">&middot;</span>
+      <span id="bird-next" class="ctl">next &rsaquo;</span>
+    </div>
   </div>
 
   <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
@@ -71,21 +82,19 @@ function pickRandom(items, key, exclude) {
   return pick;
 }
 
-// --- Birds: title advances; images click-to-advance; video/YouTube use normal players ---
+// --- Birds: pick a subfolder from the title menu, then randomize within it ---
 if (birds.length > 0) {
 
-  // immediate subfolder under assets/birds/ ; files directly in birds/ go to "(root)"
   function subfolderOf(path) {
     var rest  = (path.split('assets/birds/')[1] || '');
     var parts = rest.split('/');
     return parts.length > 1 ? parts[0] : '(root)';
   }
-
-  // pull an 11-char YouTube id out of any common URL form
   function ytId(url) {
     var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/);
     return m ? m[1] : null;
   }
+  function folderLabel(g) { return g === '(root)' ? 'misc' : g; }
 
   var groups = {};
   birds.forEach(function(b) {
@@ -94,47 +103,40 @@ if (birds.length > 0) {
   });
   var groupNames = Object.keys(groups);
 
-  // pick a bird: stay in the current subfolder until it's fully shown, then move on
-  function pickBird(lastPath) {
-    var current = sessionStorage.getItem('currentGroup');
-    var needNewGroup = false;
+  var birdsHeader = document.getElementById('birds-header');
+  var birdsLabel  = document.getElementById('birds-label');
+  var birdsMenu   = document.getElementById('birds-menu');
+  var box      = document.getElementById('birds-box');
+  var img      = document.getElementById('random-img');
+  var vid      = document.getElementById('random-vid');
+  var ytWrap   = document.getElementById('yt-wrap');
+  var ytFrame  = document.getElementById('yt-frame');
+  var controls = document.getElementById('bird-controls');
+  var soundBtn = document.getElementById('bird-sound');
+  var nextBtn  = document.getElementById('bird-next');
 
-    if (current === null || !groups[current]) {
-      needNewGroup = true;
-    } else {
-      var sg = JSON.parse(sessionStorage.getItem('seenGroup:' + current) || '[]');
-      var hasUnseen = groups[current].some(function(b) { return sg.indexOf(b.path) === -1; });
-      if (!hasUnseen) needNewGroup = true;
-    }
+  var currentPath = null;
+  var currentKind = 'image';
+  var prefetchedGroup = null;
+  var wantSound = false;
 
-    if (needNewGroup) {
-      current = pickRandom(groupNames, 'seenGroups', current || undefined);
-      sessionStorage.setItem('currentGroup', current);
-    }
-    return pickRandom(groups[current], 'seenGroup:' + current, lastPath);
+  // current subfolder (persists across reloads); default to a random one
+  var currentGroup = sessionStorage.getItem('currentGroup');
+  if (!currentGroup || !groups[currentGroup]) {
+    currentGroup = groupNames[Math.floor(Math.random() * groupNames.length)];
+    sessionStorage.setItem('currentGroup', currentGroup);
   }
 
-  var birdsHeader = document.getElementById('birds-header');
-  var box = document.getElementById('birds-box');
-  var img = document.getElementById('random-img');
-  var vid = document.getElementById('random-vid');
-  var ytWrap = document.getElementById('yt-wrap');
-  var ytFrame = document.getElementById('yt-frame');
-  var hint = document.getElementById('bird-hint');
-  var soundBtn = document.getElementById('bird-sound');
-  var currentPath = null;
-  var currentKind = 'image';        // 'image' | 'video' | 'youtube'
-  var prefetchedGroup = null;
-  var wantSound = false;            // session-wide preference; starts muted (autoplay needs it)
+  function pickInGroup(lastPath) {
+    return pickRandom(groups[currentGroup], 'seenGroup:' + currentGroup, lastPath);
+  }
 
-  // download every file in a subfolder so later clicks are instant (cache-warming)
   function prefetchGroup(name) {
     if (prefetchedGroup === name) return;
     prefetchedGroup = name;
     (groups[name] || []).forEach(function(b) { fetch(b.path).catch(function(){}); });
   }
 
-  // size the page to the media's orientation (wide -> 800, tall -> 500)
   function sizePage() {
     var w = this.naturalWidth  || this.videoWidth;
     var h = this.naturalHeight || this.videoHeight;
@@ -144,8 +146,6 @@ if (birds.length > 0) {
   function updateSoundLabel() {
     soundBtn.innerHTML = wantSound ? '&#128266; sound on' : '&#128263; sound off';
   }
-
-  // apply the sound preference to whichever player is showing
   function applySound() {
     if (currentKind === 'video') {
       vid.muted = !wantSound;
@@ -159,21 +159,16 @@ if (birds.length > 0) {
   }
 
   function stopLocalVideo() {
-    vid.pause();
-    vid.removeAttribute('src');
-    vid.load();
-    vid.style.display = 'none';
+    vid.pause(); vid.removeAttribute('src'); vid.load(); vid.style.display = 'none';
   }
   function stopYoutube() {
-    ytFrame.removeAttribute('src');   // unloading the iframe stops playback + audio
-    ytWrap.style.display = 'none';
+    ytFrame.removeAttribute('src'); ytWrap.style.display = 'none';
   }
 
   function show(bird) {
     currentPath = bird.path;
     var isVideo   = /\.(mp4|mov)$/i.test(bird.type);
     var isYoutube = /\.txt$/i.test(bird.type);
-    hint.style.display = 'none';
 
     if (isYoutube) {
       currentKind = 'youtube';
@@ -186,13 +181,13 @@ if (birds.length > 0) {
         .then(function(txt) {
           var id = ytId(txt.trim());
           if (!id) { stopYoutube(); return; }
-          ytFrame.onload = function() { applySound(); };   // honor sound choice once ready
+          ytFrame.onload = function() { applySound(); };
           ytFrame.src = 'https://www.youtube.com/embed/' + id +
             '?autoplay=1&mute=1&loop=1&playlist=' + id + '&rel=0&playsinline=1&enablejsapi=1';
           ytWrap.style.display = '';
-          soundBtn.style.display = '';
+          controls.style.display = '';
           updateSoundLabel();
-          document.querySelector('.page-wrapper').style.maxWidth = '800px'; // 16:9 is wide
+          document.querySelector('.page-wrapper').style.maxWidth = '800px';
         })
         .catch(function() { stopYoutube(); });
 
@@ -206,52 +201,74 @@ if (birds.length > 0) {
       vid.muted = !wantSound;
       vid.style.display = '';
       vid.onloadedmetadata = sizePage;
-      soundBtn.style.display = '';
+      controls.style.display = '';
       updateSoundLabel();
 
     } else { // image
       currentKind = 'image';
       stopLocalVideo();
       stopYoutube();
-      soundBtn.style.display = 'none';
+      controls.style.display = 'none';
       box.style.cursor = 'pointer';
       box.title = 'click for the next one';
       img.src = bird.path;
       img.style.display = '';
       img.onload = sizePage;
     }
-    prefetchGroup(subfolderOf(bird.path));   // warm the rest of this subfolder
+    prefetchGroup(currentGroup);
   }
 
-  function advance() { show(pickBird(currentPath)); }
+  function advance() { show(pickInGroup(currentPath)); }
 
-  show(pickBird(null));                        // first item on load
+  // ---- subfolder menu (built only when there's more than one folder) ----
+  function highlightMenu() {
+    Array.prototype.forEach.call(birdsMenu.children, function(b) {
+      var active = b.getAttribute('data-group') === currentGroup;
+      b.style.background = active ? '#E6C843' : 'transparent';
+      b.style.fontWeight = active ? 'bold' : 'normal';
+    });
+  }
+  if (groupNames.length > 1) {
+    groupNames.forEach(function(g) {
+      var b = document.createElement('span');
+      b.className = 'bird-folder';
+      b.textContent = folderLabel(g);
+      b.setAttribute('data-group', g);
+      b.addEventListener('click', function(e) {
+        e.stopPropagation();
+        currentGroup = g;
+        sessionStorage.setItem('currentGroup', g);
+        highlightMenu();
+        show(pickInGroup(null));     // fresh draw from the chosen folder
+      });
+      birdsMenu.appendChild(b);
+    });
+    birdsLabel.style.cursor = 'pointer';
+    birdsLabel.title = 'choose a folder';
+    birdsLabel.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var open = birdsMenu.style.display !== 'none';
+      birdsMenu.style.display = open ? 'none' : '';
+      if (!open) highlightMenu();
+    });
+  }
 
-  // images: click the picture to advance (video/YouTube clicks go to their own player)
-  box.addEventListener('click', function() {
+  // ---- interactions ----
+  box.addEventListener('click', function() {            // images advance on click
     if (currentKind === 'image') advance();
   });
-
-  // hover message over a player, telling people to use the title to move on
-  box.addEventListener('mouseenter', function() {
-    if (currentKind === 'video' || currentKind === 'youtube') hint.style.display = '';
+  nextBtn.addEventListener('click', function(e) {       // video/YouTube advance via button
+    e.stopPropagation();
+    advance();
   });
-  box.addEventListener('mouseleave', function() { hint.style.display = 'none'; });
-
-  // sound on/off (applies to local video or YouTube)
-  soundBtn.addEventListener('click', function(e) {
+  soundBtn.addEventListener('click', function(e) {      // sound on/off
     e.stopPropagation();
     wantSound = !wantSound;
     applySound();
     updateSoundLabel();
   });
 
-  // the "birds" title advances to the next item, always (like the snippet title)
-  if (birds.length > 1) {
-    birdsHeader.style.cursor = 'pointer';
-    birdsHeader.title = 'click for the next one';
-    birdsHeader.addEventListener('click', advance);
-  }
+  show(pickInGroup(null));                              // first item on load
 
 } else {
   document.getElementById('birds-header').style.display = 'none';
@@ -284,17 +301,16 @@ function renderPdfPreview(url, mountBefore) {
     .then(function(pdf) { return pdf.getPage(1); })
     .then(function(page) {
       var base = page.getViewport({ scale: 1 });
-      var viewport = page.getViewport({ scale: 900 / base.width }); // 900px bitmap; CSS scales it down for crispness
+      var viewport = page.getViewport({ scale: 900 / base.width });
 
       var canvas = document.createElement('canvas');
       canvas.width  = viewport.width;
       canvas.height = viewport.height;
-      // Fill the box, so the preview width tracks the box width (set by the bird photo)
       canvas.style.cssText =
         'width:100%; height:auto; ' +
         'border:2px solid #555; display:block; margin:0 auto 10px auto;';
 
-      var link = document.createElement('a');   // click preview -> full PDF
+      var link = document.createElement('a');
       link.href = url;
       link.target = '_blank';
       link.appendChild(canvas);
@@ -302,7 +318,7 @@ function renderPdfPreview(url, mountBefore) {
 
       return page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
     })
-    .catch(function() { /* on any failure just leave the plain link */ });
+    .catch(function() {});
 }
 
 // --- Snippets: click the title to load the next one (random, no repeat until all shown) ---
@@ -332,12 +348,11 @@ if (snippets.length > 0) {
           renderPdfPreview(pdfLink.getAttribute('href'), sbox.firstChild);
         }
 
-        // precompute the following snippet + warm its cache, so the next click is instant
         var next = pickRandom(snippets, 'seenSnippets', path);
         sessionStorage.setItem('nextSnippet', next);
         fetch(next).catch(function(){});
       })
-      .catch(function() {           // failed fetch -> just stay hidden
+      .catch(function() {
         header.style.display = 'none';
         sbox.style.display = 'none';
       });
@@ -350,13 +365,11 @@ if (snippets.length > 0) {
     showSnippet(next);
   }
 
-  // first snippet (reuse one precomputed last load if present)
   var first = sessionStorage.getItem('nextSnippet');
   if (first) { sessionStorage.removeItem('nextSnippet'); }
   else { first = pickRandom(snippets, 'seenSnippets'); }
   showSnippet(first);
 
-  // make the title clickable only when there's actually more than one to cycle
   if (snippets.length > 1) {
     header.style.cursor = 'pointer';
     header.title = 'click for the next one';
