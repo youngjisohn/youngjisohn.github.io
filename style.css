@@ -164,7 +164,6 @@ img, video {
   font-size: 14px;
   line-height: 1.5;
 }
-.box-subtle > :last-child { margin-bottom: 0; }
 .box-subtle p { margin: 0 0 8px 0; }
 .box-subtle img, .box-subtle video {
   max-width: 100%; display: block; margin: 0 auto; }
@@ -264,6 +263,43 @@ a.tooltip-wrap { position: relative; }
 
 
 
+/* --- I LIKE PAGE: birds dropdown menu + media players --- */
+
+/* dropdown menu floating below the "birds" title */
+#birds-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  margin-top: 2px;
+  min-width: 160px;
+  background: #fdfcf8;
+  border: 1px solid #c9b98a;
+  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
+  padding: 4px;
+  text-align: left;
+}
+.bird-folder {
+  display: block;
+  cursor: pointer;
+  padding: 5px 12px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #444;
+  white-space: nowrap;
+}
+.bird-folder:hover { background: #f0ead6; }
+.bird-folder.active { background: #E6C843; font-weight: bold; }
+
+/* responsive 16:9 YouTube embed (padding trick = height can't collapse) */
+#yt-wrap { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; margin: 0 auto; }
+#yt-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 2px solid #555; }
+
+/* sound / next controls under a video or YouTube */
+#bird-controls span.ctl { cursor: pointer; }
+#bird-controls span.ctl:hover { color: #555; text-decoration: underline; }
+
+
 /* --- RESPONSIVE --- If there is an issues in phone, add .page-wrapper { max-width: 100%; }*/
 @media (max-width: 800px) {
   .grid {
@@ -347,3 +383,9 @@ body.bw .nav-btn { background: #fff; color: #942193; border: 1px solid #942193; 
 body.bw .nav-btn:hover { background: #fff; color: #ca32c8; border: 1px solid #ca32c8; }
 body.bw .toggle-btn:hover { color: #003399; border-color: #003399; }
 body.bw .abstract { background: #fff; border-left: 3px solid #000; }
+
+/* birds dropdown menu in color-off mode: white panel, black border, black text */
+body.bw #birds-menu { background: #fff; border: 1px solid #000; }
+body.bw .bird-folder { color: #000; }
+body.bw .bird-folder:hover { background: #fff; color: #000; }
+body.bw .bird-folder.active { background: #d9d9d9; color: #000; font-weight: bold; }

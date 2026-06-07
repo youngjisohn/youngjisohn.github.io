@@ -3,47 +3,7 @@ title: Youngji Sohn - I like
 layout: simple
 noindex: true
 ---
-<style>.page-wrapper{max-width: 500px;}
-
-/* dropdown menu floating below the "birds" title */
-#birds-menu{
-  position:absolute;
-  top:100%;
-  left:0;
-  z-index:50;
-  margin-top:2px;
-  min-width:160px;
-  background:#fdfcf8;
-  border:1px solid #c9b98a;
-  box-shadow:2px 3px 6px rgba(0,0,0,0.25);
-  padding:4px;
-  text-align:left;
-}
-.bird-folder{
-  display:block;
-  cursor:pointer;
-  padding:5px 12px;
-  font-weight:normal;
-  font-size:13px;
-  color:#444;
-  white-space:nowrap;
-}
-.bird-folder:hover{background:#f0ead6;}
-.bird-folder.active{background:#E6C843; font-weight:bold;}
-
-/* color-off mode: white panel with a black border; pure-black text */
-body.bw #birds-menu{ background:#fff; border:1px solid #000; }
-body.bw .bird-folder{ color:#000; }
-body.bw .bird-folder:hover{ background:#fff; color:#000; }
-body.bw .bird-folder.active{ background:#d9d9d9; color:#000; font-weight:bold; }
-
-/* responsive 16:9 YouTube embed (padding trick = height can't collapse) */
-#yt-wrap{ position:relative; width:100%; height:0; padding-bottom:56.25%; margin:0 auto; }
-#yt-frame{ position:absolute; top:0; left:0; width:100%; height:100%; border:2px solid #555; }
-
-#bird-controls span.ctl{cursor:pointer;}
-#bird-controls span.ctl:hover{color:#555; text-decoration:underline;}
-</style>
+<style>.page-wrapper{max-width: 500px;}</style>
 
 <div class="col-mini">
 
@@ -309,7 +269,7 @@ if (birds.length > 0) {
         sessionStorage.setItem('currentGroup', g);
         highlightMenu();
         birdsMenu.style.display = 'none';   // close the menu after choosing
-        show(pickInGroup(null));            // fresh draw from the chosen folder
+        show(pickInGroup(currentPath));     // fresh draw, never the one already shown
       });
       birdsMenu.appendChild(b);
     });
