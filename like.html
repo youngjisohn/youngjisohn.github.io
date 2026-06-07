@@ -8,9 +8,9 @@ noindex: true
 <div class="col-mini">
 
   <div class="box-subtle-header" id="birds-header">birds</div>
-  <div class="box-subtle" id="birds-box" style="text-align:center;">
+  <div class="box-subtle" id="birds-box" style="text-align:center; cursor:pointer;" title="click for the next one">
     <img id="random-img" alt="Random" style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;">
-    <video id="random-vid" autoplay muted loop style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
+    <video id="random-vid" autoplay muted loop playsinline style="max-width:100%; max-height:700px; width:auto; border:2px solid #555; display:none;" draggable="false" oncontextmenu="return false;"></video>
   </div>
 
   <div class="box-subtle-header" id="snippet-header" style="margin-top: 20px; display:none;"></div>
@@ -49,7 +49,7 @@ var snippets = [
   {% endfor %}
 ];
 
-// --- Rotation picker ---
+// --- Rotation picker (shuffle bag: no repeat until the whole pool is shown) ---
 function pickRandom(items, key, exclude) {
   var getId = function(item) { return typeof item === 'string' ? item : item.path; };
   var seen = JSON.parse(sessionStorage.getItem(key) || '[]');
@@ -65,43 +65,86 @@ function pickRandom(items, key, exclude) {
   return pick;
 }
 
-// --- Birds ---
+// --- Birds: click-to-advance, one subfolder at a time, whole subfolder prefetched ---
 if (birds.length > 0) {
-  var storedBird = sessionStorage.getItem('nextBird');
-  var pick;
-  if (storedBird) {
-    pick = JSON.parse(storedBird);
-    sessionStorage.removeItem('nextBird');
-  } else {
-    pick = pickRandom(birds, 'seenBirds');
+
+  // immediate subfolder under assets/birds/ ; files directly in birds/ go to "(root)"
+  function subfolderOf(path) {
+    var rest  = (path.split('assets/birds/')[1] || '');
+    var parts = rest.split('/');
+    return parts.length > 1 ? parts[0] : '(root)';
   }
 
+  var groups = {};
+  birds.forEach(function(b) {
+    var g = subfolderOf(b.path);
+    (groups[g] = groups[g] || []).push(b);
+  });
+  var groupNames = Object.keys(groups);
+
+  // pick a bird: stay in the current subfolder until it's fully shown, then move on
+  function pickBird(lastPath) {
+    var current = sessionStorage.getItem('currentGroup');
+    var needNewGroup = false;
+
+    if (current === null || !groups[current]) {
+      needNewGroup = true;
+    } else {
+      var sg = JSON.parse(sessionStorage.getItem('seenGroup:' + current) || '[]');
+      var hasUnseen = groups[current].some(function(b) { return sg.indexOf(b.path) === -1; });
+      if (!hasUnseen) needNewGroup = true;
+    }
+
+    if (needNewGroup) {
+      current = pickRandom(groupNames, 'seenGroups', current || undefined);
+      sessionStorage.setItem('currentGroup', current);
+    }
+    return pickRandom(groups[current], 'seenGroup:' + current, lastPath);
+  }
+
+  var box = document.getElementById('birds-box');
   var img = document.getElementById('random-img');
   var vid = document.getElementById('random-vid');
-  var isVideo = /\.(mp4|mov)$/i.test(pick.type);
+  var currentPath = null;
+  var prefetchedGroup = null;
 
-  function reveal() {
-    var isLandscape = this.naturalWidth > this.naturalHeight;
-    if (isLandscape) {
-      document.querySelector('.page-wrapper').style.maxWidth = '800px';
-    }
-    var next = pickRandom(birds, 'seenBirds', pick.path);
-    sessionStorage.setItem('nextBird', JSON.stringify(next));
-    if (!/\.(mp4|mov)$/i.test(next.type)) {
-      var preload = new Image();
-      preload.src = next.path;
-    }
+  // download every file in a subfolder so later clicks are instant (cache-warming)
+  function prefetchGroup(name) {
+    if (prefetchedGroup === name) return;
+    prefetchedGroup = name;
+    (groups[name] || []).forEach(function(b) { fetch(b.path).catch(function(){}); });
   }
 
-  if (isVideo) {
-    vid.src = pick.path;
-    vid.style.display = '';
-    vid.onloadedmetadata = reveal;
-  } else {
-    img.src = pick.path;
-    img.style.display = '';
-    img.onload = reveal;
+  // size the page to the media's orientation (wide -> 800, tall -> 500)
+  function sizePage() {
+    var w = this.naturalWidth  || this.videoWidth;
+    var h = this.naturalHeight || this.videoHeight;
+    document.querySelector('.page-wrapper').style.maxWidth = (w > h) ? '800px' : '500px';
   }
+
+  function show(bird) {
+    currentPath = bird.path;
+    var isVideo = /\.(mp4|mov)$/i.test(bird.type);
+    if (isVideo) {
+      img.style.display = 'none';
+      vid.src = bird.path;
+      vid.style.display = '';
+      vid.onloadedmetadata = sizePage;
+    } else {
+      vid.removeAttribute('src');
+      vid.style.display = 'none';
+      img.src = bird.path;
+      img.style.display = '';
+      img.onload = sizePage;
+    }
+    prefetchGroup(subfolderOf(bird.path));   // warm the rest of this subfolder
+  }
+
+  function advance() { show(pickBird(currentPath)); }
+
+  show(pickBird(null));                       // first bird on load
+  box.addEventListener('click', advance);     // click the photo -> next photo
+
 } else {
   document.getElementById('birds-header').style.display = 'none';
   document.getElementById('birds-box').style.display = 'none';
@@ -166,7 +209,7 @@ if (snippets.length > 0) {
   }
 
   var header = document.getElementById('snippet-header');
-  var box = document.getElementById('snippet-box');
+  var sbox = document.getElementById('snippet-box');
 
   fetch(sPick)
     .then(function(r) { return r.text(); })
@@ -178,13 +221,13 @@ if (snippets.length > 0) {
       var content = t.replace(/<!--\s*title:[\s\S]+?-->/, '').trim();
 
       header.textContent = title;
-      box.innerHTML = content;
+      sbox.innerHTML = content;
       header.style.display = '';
-      box.style.display = '';
+      sbox.style.display = '';
 
-      var pdfLink = box.querySelector('a[href$=".pdf" i]');
+      var pdfLink = sbox.querySelector('a[href$=".pdf" i]');
       if (pdfLink) {
-        renderPdfPreview(pdfLink.getAttribute('href'), box.firstChild);
+        renderPdfPreview(pdfLink.getAttribute('href'), sbox.firstChild);
       }
 
       // precompute next + warm the HTTP cache for the next load
@@ -194,7 +237,7 @@ if (snippets.length > 0) {
     })
     .catch(function() {            // failed fetch -> just stay hidden
       header.style.display = 'none';
-      box.style.display = 'none';
+      sbox.style.display = 'none';
     });
 }
 </script>
