@@ -43,7 +43,7 @@ noindex: true
 var birds = [
   {% for file in site.static_files %}
     {% if file.path contains 'assets/birds/' %}
-      {% if file.extname == '.jpg' or file.extname == '.JPG' or file.extname == '.jpeg' or file.extname == '.JPEG' or file.extname == '.png' or file.extname == '.PNG' or file.extname == '.mp4' or file.extname == '.MP4' or file.extname == '.mov' or file.extname == '.MOV' or file.extname == '.txt' or file.extname == '.TXT' %}
+      {% if file.extname == '.jpg' or file.extname == '.JPG' or file.extname == '.jpeg' or file.extname == '.JPEG' or file.extname == '.png' or file.extname == '.PNG' or file.extname == '.webp' or file.extname == '.WEBP' or file.extname == '.mp4' or file.extname == '.MP4' or file.extname == '.mov' or file.extname == '.MOV' or file.extname == '.txt' or file.extname == '.TXT' %}
         {path: '{{ file.path }}', type: '{{ file.extname }}'},
       {% endif %}
     {% endif %}
