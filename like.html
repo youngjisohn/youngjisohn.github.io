@@ -31,6 +31,12 @@ noindex: true
 .bird-folder:hover{background:#f0ead6;}
 .bird-folder.active{background:#E6C843; font-weight:bold;}
 
+/* color-off mode: white background, keep the same border + shadow; grey highlights */
+body.bw #birds-menu{ background:#fff; }
+body.bw .bird-folder{ color:#222; }
+body.bw .bird-folder:hover{ background:#eee; color:#000; }
+body.bw .bird-folder.active{ background:#d9d9d9; color:#000; font-weight:bold; }
+
 /* responsive 16:9 YouTube embed (padding trick = height can't collapse) */
 #yt-wrap{ position:relative; width:100%; height:0; padding-bottom:56.25%; margin:0 auto; }
 #yt-frame{ position:absolute; top:0; left:0; width:100%; height:100%; border:2px solid #555; }
