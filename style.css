@@ -216,6 +216,7 @@ li { margin-bottom: 5px; }
   margin-left: 4px;
 }
 
+
 .news-tag {
   background: #003399;
   color: #fff;
@@ -225,7 +226,14 @@ li { margin-bottom: 5px; }
   border-radius: 2px;
   vertical-align: middle;
   margin-right: 4px;
+  position: relative;
+  top: -1px;
+  cursor: pointer;
 }
+.news-msg { display: none; }
+.news-toggle:checked ~ .news-msg { display: inline; }
+
+
 
 .paper-links a,
 .paper-links label {
