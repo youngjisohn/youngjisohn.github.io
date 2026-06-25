@@ -234,12 +234,15 @@ li { margin-bottom: 5px; }
 }
 .news-tag:hover { background: #3366cc; }
 
-.news-msg { display: none; font-size: 13px; color: #003399; 
-          position: relative; top: -1px;}
-
-
+.news-msg {
+  display: none;
+  font-size: 13px;
+  color: #003399 !important;
+  cursor: pointer;
+  position: relative; 
+  top: -1px;
+}
 .news-toggle:checked ~ .news-msg { display: inline; }
-
 
 
 .paper-links a,
