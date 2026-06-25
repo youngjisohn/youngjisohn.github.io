@@ -231,7 +231,7 @@ li { margin-bottom: 5px; }
   cursor: pointer;
 }
 
-.news-msg { display: none; font-size: 11px; }
+.news-msg { display: none; font-size: 13px; }
 .news-toggle:checked ~ .news-msg { display: inline; }
 
 
