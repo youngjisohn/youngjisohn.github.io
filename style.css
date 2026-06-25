@@ -234,7 +234,8 @@ li { margin-bottom: 5px; }
 }
 .news-tag:hover { background: #3366cc; }
 
-.news-msg { display: none; font-size: 13px; color: #003399; }
+.news-msg { display: none; font-size: 13px; color: #003399; 
+          position: relative; top: -1px;}
 
 
 .news-toggle:checked ~ .news-msg { display: inline; }
