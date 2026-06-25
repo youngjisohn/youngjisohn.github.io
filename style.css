@@ -216,10 +216,9 @@ li { margin-bottom: 5px; }
   margin-left: 4px;
 }
 
-
 .news-tag {
   background: #003399;
-  color: #fff;
+  color: #fff !important;
   font-size: 10px;
   font-weight: bold;
   padding: 1px 5px;
@@ -230,6 +229,7 @@ li { margin-bottom: 5px; }
   top: -1px;
   cursor: pointer;
 }
+
 .news-msg { display: none; }
 .news-toggle:checked ~ .news-msg { display: inline; }
 
