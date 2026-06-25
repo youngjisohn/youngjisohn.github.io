@@ -232,8 +232,11 @@ li { margin-bottom: 5px; }
   top: -2px;
   cursor: pointer;
 }
+.news-tag:hover { background: #3366cc; }
 
-.news-msg { display: none; font-size: 13px; }
+.news-msg { display: none; font-size: 13px; color: #003399; }
+
+
 .news-toggle:checked ~ .news-msg { display: inline; }
 
 
@@ -319,13 +322,15 @@ a.tooltip-wrap { position: relative; }
 
 /* Bullet dot */
 .cv-entry-dot {
-  padding-left: 1.2em;
+  padding-left: 18px;
   position: relative;
 }
 .cv-entry-dot::before {
   content: "•";
   position: absolute;
-  left: 0;
+  left: 4px;
+  font-size: 1.5em;
+  line-height: 1;
 }
 
 /* Presentation list — year left, items right */
