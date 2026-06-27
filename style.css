@@ -274,6 +274,9 @@ li { margin-bottom: 5px; }
 a.plain { color: inherit; text-decoration: none; }
 a.plain:hover { color: #c00; text-decoration: underline; }
 
+a.inherit { color: inherit; text-decoration: none; }
+a.inherit:hover { color: #000; text-decoration: none; }
+
 /* --- TOOLTIPS --- */
 .tooltip-wrap { position: relative; }
 .tooltip-text {
