@@ -15,9 +15,7 @@
 <meta property="og:url" content="https://youngjisohn.github.io/cv.html">
 <link rel="canonical" href="https://youngjisohn.github.io/cv.html">
 
-<link rel="stylesheet" href="/style.css">
-
-<link rel="stylesheet" href="/style-cv.css">
+<link rel="stylesheet" href="/style.css?v=3">
 
 <link rel="icon" href="/assets/favicon.png" type="image/png">
 </head>
@@ -26,10 +24,10 @@
   <div class="nav-bar">
   <div>
     <a href="index.html" class="nav-btn">Home</a>
-    <a href="research.html" class="nav-btn">Research</a>
     <a href="cv.html" class="nav-btn">Curriculum</a>
+    <a href="research.html" class="nav-btn">Research</a>
   </div>
-  <a href="#" id="bw-toggle" class="toggle-btn">color on</a>
+  <a href="#" id="bw-toggle" class="toggle-btn">color off</a>
 </div>
 
 <script>
@@ -39,18 +37,16 @@ if (p === 'false') sessionStorage.removeItem('color');
 if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
 
 var btn = document.getElementById('bw-toggle');
-btn.textContent = document.body.classList.contains('bw') ? 'color on' : 'color off';
+// label shows the CURRENT state: color on = color is on, color off = black & white
+btn.textContent = document.body.classList.contains('bw') ? 'color off' : 'color on';
 btn.onclick = function() {
   document.body.classList.toggle('bw');
   var bw = document.body.classList.contains('bw');
-  this.textContent = bw ? 'color on' : 'color off';
+  this.textContent = bw ? 'color off' : 'color on';
   bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
   return false;
 };
 </script>
-
-
-
   <div class="grid-2col">
     <div class="col-sidebar">
   <div class="box-side">
@@ -82,6 +78,7 @@ btn.onclick = function() {
   var link = document.getElementById('e-link');
   var armed = false;
   var ready = false;
+  var clicks = 0;
   var email = null;
   var revertTimer = null;
 
@@ -90,9 +87,19 @@ btn.onclick = function() {
     armed = true;
     setTimeout(function(){
       ready = true;
-      link.textContent = 'click to reveal';
-      link.title = 'click to reveal';
-    }, 5500);
+      link.textContent = 'contact';
+      link.title = '';
+    }, 3000);
+  }
+
+  function showThenRevert(text, revertTo, ms){
+    clearTimeout(revertTimer);
+    link.textContent = text;
+    link.style.color = '';
+    revertTimer = setTimeout(function(){
+      link.textContent = revertTo;
+      link.style.color = '';
+    }, ms);
   }
 
   function flashCopied(){
@@ -102,30 +109,36 @@ btn.onclick = function() {
     revertTimer = setTimeout(function(){
       link.textContent = email;
       link.style.color = '';
-    }, 1500);
+    }, 3000);
   }
 
   link.addEventListener('click', function(ev){
     ev.preventDefault();
     if (!ev.isTrusted || !ready) return;
 
-    // First click — wait 2s, fetch, reveal only. No copy yet.
-    if (!email) {
-      setTimeout(function(){
-        fetch('/assets/c.txt')
-          .then(function(r){ return r.text(); })
-          .then(function(t){
-            var parts = t.trim().split(' ');
-            email = parts[0] + '@' + parts[1];
-            link.textContent = email;
-            link.title = 'click to copy';
-          });
-      }, 1000);
+    clicks++;
+
+    // Click 1, 2 — escalating dots, no fetch, no copy. Revert to "contact".
+    if (clicks === 1) { showThenRevert('!',  'contact', 2000); return; }
+    if (clicks === 2) { showThenRevert('!!', 'contact', 2000); return; }
+
+    // Click 3 — fetch + reveal only. No copy yet.
+    if (clicks === 3) {
+      showThenRevert('!!!', '!!!', 2000); // hold !!! while fetch runs
+      fetch('/assets/c.txt')
+        .then(function(r){ return r.text(); })
+        .then(function(t){
+          var parts = t.trim().split(' ');
+          email = parts[0] + '@' + parts[1];
+          clearTimeout(revertTimer);
+          link.textContent = email;
+          link.style.color = '';
+        });
       return;
     }
 
-    // Second click onward — copy.
-    navigator.clipboard.writeText(email).then(flashCopied, function(){});
+    // Click 4+ — copy, flash "copied!", revert to email.
+    navigator.clipboard.writeText(email).then(flashCopied, flashCopied);
   });
 
   document.addEventListener('mousemove',  arm, { once: true, passive: true });
@@ -134,13 +147,14 @@ btn.onclick = function() {
 })();
 </script>
     <div class="col-wide">
-  <div class="box-header">Curriculum Vitae</div>
+  <div class="box-header"><a href="index.html" class="inherit" style="display:block; margin:-10px -14px; padding:10px 14px;">Curriculum Vitae</a></div>
   <div class="box-cream">
 
     <div style="margin-bottom:12px;">
       <div style="font-size:20px; font-weight:bold;">Youngji Sohn</div>
       <div style="font-size:13px; color:#555;">
         University of Warwick, Coventry, UK<br>
+
         https://youngjisohn.github.io<br>
         https://warwick.ac.uk/fac/soc/economics/staff/sohn/
       </div>
@@ -179,7 +193,7 @@ btn.onclick = function() {
     <h2>Working Papers</h2>
     <ul>
       <li><strong>(Dis-)agreement in Misspecified Games</strong></li>
-      <li><strong>Pay to Quit</strong> (with Hyungmin Park)</li>
+      <li><strong>Pay to Quit: Robust Team Incentives with Hidden Need</strong> (with Hyungmin Park)</li>
     </ul>
 
     <h2>Publications</h2>
@@ -195,7 +209,11 @@ btn.onclick = function() {
         <strong>2026.</strong>
         <span>
           Warwick Microeconomics Work in Progress;<br>
-          PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London);<br>
+          <a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop" class="plain">
+            PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London);</a><br>
+          15th Lisbon Meetings in Game Theory and Applications;<br>
+          2nd Berlin PhD Conference in Economics;<br>
+          37th Stony Brook International Conference on Game Theory;<br>
           53rd Annual Conference of EARIE (Mannheim);<br>
           2nd European Economic Theory Conference (London)
         </span>
@@ -210,16 +228,26 @@ btn.onclick = function() {
       </li>
     </ul>
 
-    <h2>Scholarships</h2>
-    <ul>
-      <li>Departmental Scholarship, Department of Economics, University of Warwick, 2020–2026</li>
-      <li>Teaching Excellence Award, Department of Economics, University of Warwick, Term 2 2023-2024</li>
-    </ul>
+    <h2>Awards and Scholarships</h2>
+    <div class="cv-group">
+      <div class="cv-entry cv-entry-dot">
+        <span>Departmental Scholarship, Department of Economics, University of Warwick</span>
+        <span class="cv-entry-dates">2020–2026</span>
+      </div>
+      <div class="cv-entry cv-entry-dot">
+        <span>Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications</span>
+        <span class="cv-entry-dates">June 2026</span>
+      </div>
+      <div class="cv-entry cv-entry-dot">
+        <span>Teaching Excellence Award, Department of Economics, University of Warwick</span>
+        <span class="cv-entry-dates">Term 2 2023-2024</span>
+      </div>
+    </div>
 
     <h2>Service</h2>
     <div class="cv-group">
       <div class="cv-entry">
-        <span>Organizer, Warwick PhD Conference, University of Warwick</span>
+        <span>Co-Organizer, Warwick PhD Conference, University of Warwick</span>
         <span class="cv-entry-dates">2023</span>
       </div>
     </div>
@@ -248,12 +276,15 @@ btn.onclick = function() {
 
     <h2>References</h2>
     <ul>
-      <li><strong>Daniele Condorelli</strong> — University of Warwick<br>
-        <a href="https://www.condorelli.science">website</a></li>
-      <li><strong>Motty Perry</strong> — University of Warwick<br>
-        <a href="https://profiles.warwick.ac.uk/ecsiak-motty-perry">website</a></li>
+      <li><a href="https://www.condorelli.science" class="plain"><strong>Daniele Condorelli</strong></a><br>
+        Department of Economics, University of Warwick
+        </li>
+      <li><a href="https://profiles.warwick.ac.uk/ecsiak-motty-perry" class="plain"><strong>Motty Perry</strong></a><br>
+        Department of Economics, University of Warwick
+        </li>
     </ul>
-
+    <br>
+    (Last updated: 26 June 2026)
   </div>
 </div>
 

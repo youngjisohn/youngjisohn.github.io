@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://youngjisohn.github.io/">
 <link rel="canonical" href="https://youngjisohn.github.io/">
 
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=3">
 
 <link rel="icon" href="/assets/favicon.png" type="image/png">
 </head>
@@ -24,10 +24,10 @@
   <div class="nav-bar">
   <div>
     <a href="index.html" class="nav-btn">Home</a>
-    <a href="research.html" class="nav-btn">Research</a>
     <a href="cv.html" class="nav-btn">Curriculum</a>
+    <a href="research.html" class="nav-btn">Research</a>
   </div>
-  <a href="#" id="bw-toggle" class="toggle-btn">color on</a>
+  <a href="#" id="bw-toggle" class="toggle-btn">color off</a>
 </div>
 
 <script>
@@ -37,18 +37,16 @@ if (p === 'false') sessionStorage.removeItem('color');
 if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
 
 var btn = document.getElementById('bw-toggle');
-btn.textContent = document.body.classList.contains('bw') ? 'color on' : 'color off';
+// label shows the CURRENT state: color on = color is on, color off = black & white
+btn.textContent = document.body.classList.contains('bw') ? 'color off' : 'color on';
 btn.onclick = function() {
   document.body.classList.toggle('bw');
   var bw = document.body.classList.contains('bw');
-  this.textContent = bw ? 'color on' : 'color off';
+  this.textContent = bw ? 'color off' : 'color on';
   bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
   return false;
 };
 </script>
-
-
-
   <div class="grid">
     <div class="col-sidebar">
   <div class="box-side">
@@ -80,6 +78,7 @@ btn.onclick = function() {
   var link = document.getElementById('e-link');
   var armed = false;
   var ready = false;
+  var clicks = 0;
   var email = null;
   var revertTimer = null;
 
@@ -88,9 +87,19 @@ btn.onclick = function() {
     armed = true;
     setTimeout(function(){
       ready = true;
-      link.textContent = 'click to reveal';
-      link.title = 'click to reveal';
-    }, 5500);
+      link.textContent = 'contact';
+      link.title = '';
+    }, 3000);
+  }
+
+  function showThenRevert(text, revertTo, ms){
+    clearTimeout(revertTimer);
+    link.textContent = text;
+    link.style.color = '';
+    revertTimer = setTimeout(function(){
+      link.textContent = revertTo;
+      link.style.color = '';
+    }, ms);
   }
 
   function flashCopied(){
@@ -100,30 +109,36 @@ btn.onclick = function() {
     revertTimer = setTimeout(function(){
       link.textContent = email;
       link.style.color = '';
-    }, 1500);
+    }, 3000);
   }
 
   link.addEventListener('click', function(ev){
     ev.preventDefault();
     if (!ev.isTrusted || !ready) return;
 
-    // First click — wait 2s, fetch, reveal only. No copy yet.
-    if (!email) {
-      setTimeout(function(){
-        fetch('/assets/c.txt')
-          .then(function(r){ return r.text(); })
-          .then(function(t){
-            var parts = t.trim().split(' ');
-            email = parts[0] + '@' + parts[1];
-            link.textContent = email;
-            link.title = 'click to copy';
-          });
-      }, 1000);
+    clicks++;
+
+    // Click 1, 2 — escalating dots, no fetch, no copy. Revert to "contact".
+    if (clicks === 1) { showThenRevert('!',  'contact', 2000); return; }
+    if (clicks === 2) { showThenRevert('!!', 'contact', 2000); return; }
+
+    // Click 3 — fetch + reveal only. No copy yet.
+    if (clicks === 3) {
+      showThenRevert('!!!', '!!!', 2000); // hold !!! while fetch runs
+      fetch('/assets/c.txt')
+        .then(function(r){ return r.text(); })
+        .then(function(t){
+          var parts = t.trim().split(' ');
+          email = parts[0] + '@' + parts[1];
+          clearTimeout(revertTimer);
+          link.textContent = email;
+          link.style.color = '';
+        });
       return;
     }
 
-    // Second click onward — copy.
-    navigator.clipboard.writeText(email).then(flashCopied, function(){});
+    // Click 4+ — copy, flash "copied!", revert to email.
+    navigator.clipboard.writeText(email).then(flashCopied, flashCopied);
   });
 
   document.addEventListener('mousemove',  arm, { once: true, passive: true });
@@ -133,7 +148,7 @@ btn.onclick = function() {
 </script>
     <!-- ========== ABOUT ========== -->
 <div class="col-narrow">
-  <div class="box-header">About</div>
+  <div class="box-header"><a href="cv.html" class="inherit" style="display:block; margin:-10px -14px; padding:10px 14px;">About</a></div>
   <div class="box-cream">
     <p>Hello!<br>
       My name is <a href="/like.html#name" title="손영지" class="plain">Youngji</a>, and I am from <wbr>South&nbsp;Korea.</p>
@@ -155,57 +170,73 @@ btn.onclick = function() {
 
     <h2>Miscellaneous</h2>
     <ul>
-      <li><a href="like.html">I like</a></li>
+      <li><a href="like.html" class="plain">I like</a></li>
     </ul>
   </div>
 </div>
 
 <!-- ========== RESEARCH ========== -->
 <div class="col-narrow">
-  <div class="box-header">Research</div>
+  <div class="box-header"><a href="research.html" class="inherit" style="display:block; margin:-10px -14px; padding:10px 14px;">Research</a></div>
   <div class="box-light">
     
     <div class="paper-entry">
       <strong>[3] (Dis-)agreement in Misspecified Games</strong>
       <span class="new-tag">NEW</span><br>
-      <span class="paper-links">[<a href="#">slides</a>]</span>
       <span class="paper-links">
-      [<label for="abs-3">abstract</label>]
-  </span>
+        [<a href="#">slides</a>]
+        [<label for="abs-3">abstract</label>]
+      </span>
   <input type="checkbox" id="abs-3" class="abstract-toggle" hidden>
   <div class="abstract">
     .</div>
     </div>
 
     <div class="paper-entry">
-  <strong>[2] Pay to Quit</strong><br>
-  with <a href="https://sites.google.com/view/hyungminpark/">Hyungmin Park</a><br>
-  <span class="paper-links">[<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='paper'; this.style.color='';}, 5000); return false;">paper</a>]</span>
-  <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquit_slides.pdf">slides</a>]</span>
-  <span class="paper-links">
-    [<label for="abs-2">abstract</label>]
-  </span>
-  <input type="checkbox" id="abs-2" class="abstract-toggle" hidden>
-  <div class="abstract">
-    We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately
-    know whether their assigned components require costly repair. The principal observes only participation,
-    not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann
-    and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information,
-    leaving the principal exposed to high coordination rents. We show that a "pay-to-quit" contract—which
-    offers a higher success bonus for opting out than for participating—strictly reduces implementation costs.
-  </div>
-</div>
+      <strong>[2] Pay to Quit: Robust Team Incentives with Hidden Need</strong> 
+      <input type="checkbox" id="news-2" class="news-toggle" hidden>
+      <label for="news-2" class="news-tag">NEWS</label>
+      <label for="news-2" class="news-msg">Best Graduate Paper Award at Lisbon Meetings 2026!</label>
+      <br />
+      with <a href="https://sites.google.com/view/hyungminpark/" class="plain">Hyungmin Park</a><br />
+      <span class="paper-links">
+        [<a
+          href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquitmar2026draft.pdf"
+          data-goatcounter-click="paytoquit-paper"
+          data-goatcounter-title="Pay to Quit paper"
+          >paper</a
+        >] [<a
+          href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/paytoquitjune2026slides_45min.pdf"
+          data-goatcounter-click="paytoquit-slides"
+          data-goatcounter-title="Pay to Quit slides"
+          >slides</a
+        >] [<label for="abs-2">abstract</label>]<br />
+        
+        
+        
+      </span>
+      <input type="checkbox" id="abs-2" class="abstract-toggle" hidden />
+      <div class="abstract">
+        We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately know
+        whether their assigned components require costly repair. The principal observes only participation, not effort,
+        and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann and Morris, 2017).
+        Standard contracts rewarding only participation fail to elicit private information, leaving the principal
+        exposed to high coordination rents. We show that a "pay-to-quit" contract—which offers a higher success bonus
+        for opting out than for participating—strictly reduces implementation costs.
+      </div>
+    </div>
 
     <h2>Publications</h2>
     <div class="paper-entry">
       <strong>[1] Vertical Mergers in Ecosystems with Consumer Hold-Up</strong><br>
-      with <a href="https://www.condorelli.science">Daniele Condorelli</a>,
-      <a href="https://www.compasslexecon.com/professionals/jorge-padilla">Jorge Padilla</a><br>
+      with <a href="https://www.condorelli.science" class="plain">Daniele Condorelli</a>,
+      <a href="https://www.compasslexecon.com/professionals/jorge-padilla" class="plain">Jorge Padilla</a><br>
       <span class="paper-status">Journal of Industrial Economics, 2024</span><br>
-      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf">paper</a>] [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377">journal</a>]</span>
       <span class="paper-links">
-    [<label for="abs-1">abstract</label>]
-  </span>
+        [<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf" data-goatcounter-click="vertical-mergers-paper" data-goatcounter-title="Vertical Mergers paper">paper</a>] 
+        [<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/joie.12377" data-goatcounter-click="vertical-mergers-journal" data-goatcounter-title="Vertical Mergers journal">journal</a>]
+        [<label for="abs-1">abstract</label>]
+      </span>
   <input type="checkbox" id="abs-1" class="abstract-toggle" hidden>
   <div class="abstract">
         An ecosystem comprises all downstream products that employ a certain upstream input. In many cases,
@@ -219,8 +250,11 @@ btn.onclick = function() {
     <h2>Presentations</h2>
 <ul>
   <li><strong>2026:</strong>
-    Warwick&nbsp;Microeconomics&nbsp;<wbr>Work&nbsp;<wbr>in&nbsp;<wbr>Progress;
-    <a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop">PhD&nbsp;Microeconomic&nbsp;Theory&nbsp;<wbr>Workshop (LSE)</a>;
+    Warwick MWIP;
+    <a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop" class="plain">PhD Micro Theory Workshop (London)</a>;
+    Lisbon Meetings;
+    Berlin PhD Conference;
+    Stony Brook International Conference;
     EARIE;
     EETC</li>
   <li><strong>2025:</strong> Warwick MWIP</li>

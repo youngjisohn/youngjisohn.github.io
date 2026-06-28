@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://youngjisohn.github.io/resources.html">
 <link rel="canonical" href="https://youngjisohn.github.io/resources.html">
 
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=3">
 
 <link rel="icon" href="/assets/favicon.png" type="image/png">
 </head>
@@ -24,10 +24,10 @@
   <div class="nav-bar">
   <div>
     <a href="index.html" class="nav-btn">Home</a>
-    <a href="research.html" class="nav-btn">Research</a>
     <a href="cv.html" class="nav-btn">Curriculum</a>
+    <a href="research.html" class="nav-btn">Research</a>
   </div>
-  <a href="#" id="bw-toggle" class="toggle-btn">color on</a>
+  <a href="#" id="bw-toggle" class="toggle-btn">color off</a>
 </div>
 
 <script>
@@ -37,37 +37,87 @@ if (p === 'false') sessionStorage.removeItem('color');
 if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
 
 var btn = document.getElementById('bw-toggle');
-btn.textContent = document.body.classList.contains('bw') ? 'color on' : 'color off';
+// label shows the CURRENT state: color on = color is on, color off = black & white
+btn.textContent = document.body.classList.contains('bw') ? 'color off' : 'color on';
 btn.onclick = function() {
   document.body.classList.toggle('bw');
   var bw = document.body.classList.contains('bw');
-  this.textContent = bw ? 'color on' : 'color off';
+  this.textContent = bw ? 'color off' : 'color on';
   bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
   return false;
 };
 </script>
-
-
-
   <style>.page-wrapper{max-width: 500px;}</style>
 
 <div class="col-mini">
-
-  <div class="box-subtle-header">Useful links</div>
-  <div class="box-subtle" style="text-align:left;">
-    https://saet.uiowa.edu
-    https://www.lisbonmeetings.com
-    https://www.eea-esem-congresses.org
-    https://gametheorysociety.org/conferences/
-    https://sites.google.com/view/parisgtfestival/
-    https://game-theory.u-paris2.fr
-    https://sites.google.com/view/europeanecontheoryconference/home
-    https://earie.org
-    https://gtcenter.org
-  </div>
-
-   
+  
+  <div class="box-subtle-header">Conferences</div>
+<div class="box-subtle" style="text-align:left;">
+  Grouped by size and topic
+  <ul>
+    <li>Econometric Society Meetings</li>
+    <li><a href="https://www.eea-esem-congresses.org">EEA-ESEM</a></li>
+    <li>RES Annual Conference</li>
+    <li><a href="https://www.economicscience.org/conferences.php">ESA</a> (Experimental)</li>
+  </ul>
+  <hr>
+  <ul>
+    <li><a href="https://gtcenter.org">Stony Brook International Conference on Game Theory</a></li>
+    <li><a href="https://www.lisbonmeetings.com">Lisbon Meetings in Game Theory and Applications</a></li>
+    <li><a href="https://sites.google.com/view/parisgtfestival/">Paris Game Theory Festival</a></li>
+    <li><a href="https://agt2026tokyo.blogspot.com">Asian Game Theory Meeting</a>, Tokyo</li>
+    <li><a href="https://bse.eu/summer-forum">BSE Summer Forum</a></li>
+    <li><a href="https://saet.uiowa.edu">SAET</a> (Society for the Advancement of Economic Theory)</li>
+    <li><a href="https://economics.stanford.edu/site">SITE</a> (Stanford Institute for Theoretical Economics)</li>
+    
+  </ul>
+  <hr>
+  <ul>
+    <li>Conference on Economic Design (Biennial, Society for Economic Design)</li>
+    <li>Conference on Mechanism and Institution Design</li>
+    <li>SIOE</li>
+    <li><a href="https://earie.org">EARIE</a></li>
+  </ul>
+  <hr>
+  <ul>
+    <li><a href="https://sites.google.com/view/europeanecontheoryconference/home">European Economic Theory Conference</a></li>
+    <li>Durham Economic Theory Conference</li>
+    <li><a href="https://sites.google.com/view/theros2026">THEROS</a></li>
+    <li>European Workshop in Economic Theory</li>
+  </ul>
+  <hr>
+  <ul>
+    <li>RES PhD Conference</li>
+    <li>HEC Economics PhD Conference</li>
+    <li>Berlin PhD Conference in Economics</li>
+    <li>QMUL Economics and Finance Workshop for PhD &amp; Post-doc</li>
+    <li><a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop">LSE–UCL–Warwick PhD Micro Theory Workshop</a></li>
+  </ul>
+  <hr>
+  <ul>
+    <li><a href="https://iias.huji.ac.il/economic-theory">Advanced School in Economic Theory (Jerusalem)</a></li>
+    <li>Gerzensee <a href="https://www.szgerzensee.ch/programs/graduate-training/advanced-economics-courses">Advanced Courses in Economics</a>, <a href="https://cepr.org/events/event-series/european-summer-symposium-economic-theory-esset/european-summer-symposium-30">ESSET</a></li>
+    <li><a href="https://www.epicenter.name/summercourse/">EPICENTER Summer Course</a> (Maastricht)</li>
+  </ul>
+  <hr>
+  <ul>
+    <li><a href="https://game-theory.u-paris2.fr">Paris Workshop on Game Theory and Language</a></li>
+    <li><a href="http://www.tark.org">TARK</a> (Biennial, Theoretical Aspects of Rationality and Knowledge)</li>
+    <li><a href="https://faculty.econ.ucdavis.edu/faculty/bonanno/loft.html">LOFT</a> (Biennial, Logic and the Foundations of Game and Decision Theory)</li>
+    <li><a href="https://sites.google.com/site/dteaworkshop/d-tea-2026">D-TEA</a> (Decision: Theory, Experiments and Applications, Paris)</li>
+    <li><a href="https://www.gamesec-conf.org">GameSec</a> (Conference on Game Theory and AI for Security)</li>
+  </ul>
+  <hr>
+  <ul>
+    <li><a href="https://gametheorysociety.org/conferences/">List managed by Game Theory Society</a></li>
+    <li><a href="https://igorletina.com/conferences.html">List managed by Igor Letina</a></li>
+  </ul>
 </div>
+
+  </div>
+    
+  
+
   <footer style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
   &copy; 2026 Youngji Sohn
 </footer>
