@@ -15,15 +15,11 @@ links:
   - label: slides
     url: https://youngjisohn.github.io/files/paytoquitslidesJuly2026sohn.pdf
 abstract: >  
-  We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately 
-  know whether their assigned components require costly repair. The principal observes only participation, 
-  not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann 
-  and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information, 
-  leaving the principal exposed to high coordination rents. We show that a “pay-to-quit” contract—which 
-  offers a higher success bonus for opting out than for participating—strictly reduces implementation costs. 
-  As the contract screens out experts who intend to shirk or whose components need no repair, participation
-  becomes an on-path signal of active effort. Under complementarities, this endogenous information raises 
-  each expert’s marginal contribution, significantly lowering the bonuses required for unique implementation. 
-  We also show that, paradoxically, environments in which components are more likely to be already satisfactory can
-  be more expensive to implement robustly, because intervention then becomes less informative.
+  We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately know whether their assigned components require costly repair. 
+  The principal observes only participation, not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann and Morris, 2017). 
+  Standard contracts rewarding only participation fail to elicit private information, leaving the principal exposed to high coordination rents. We show that a “pay-to-quit” 
+  contract—which offers a higher success bonus for opting out than for participating—strictly reduces implementation costs. As the contract screens out experts who intend 
+  to shirk or whose components need no repair, participation becomes an on-path signal of active effort. Under complementarities, this endogenous information raises each 
+  expert’s marginal contribution, significantly lowering the bonuses required for unique implementation. We also show that, paradoxically, environments in which components 
+  are more likely to be already satisfactory can be more expensive to implement robustly, because intervention then becomes less informative.
 ---
