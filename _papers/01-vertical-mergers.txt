@@ -1,5 +1,6 @@
 ---
 title: "Vertical Mergers in Ecosystems with Consumer Hold-Up"
+short: "Vertical Mergers"
 status: published
 venue: Journal of Industrial Economics
 year: 2024

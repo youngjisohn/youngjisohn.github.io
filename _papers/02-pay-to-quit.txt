@@ -1,5 +1,6 @@
 ---
 title: "Pay to Quit: Robust Team Incentives with Hidden Need"
+short: "Pay to Quit"
 status: working
 tags:
   - label: NEWS

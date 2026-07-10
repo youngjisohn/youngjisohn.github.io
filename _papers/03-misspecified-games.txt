@@ -1,5 +1,6 @@
 ---
 title: "(Dis-)agreement in Misspecified Games"
+short: "Misspecified Games"
 status: working
 tags:
   - label: NEW

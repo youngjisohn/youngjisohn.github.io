@@ -1,5 +1,6 @@
 ---
 title: "Paper Title"
+short: "Short Title"        # used for slugs
 status: wip                 # wip | working | published
                             # filename: 00- for wip (unnumbered), 01-/02-... for working & published
 
@@ -33,5 +34,5 @@ tags:
 
 # abstract: optional. The text MUST be indented under the ">".
 abstract: >
-  Add abstract text here. 
+  Add abstract text here.
 ---
