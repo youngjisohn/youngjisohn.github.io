@@ -1,0 +1,12 @@
+---
+title: "(Dis-)agreement in Misspecified Games"
+status: working
+tags:
+  - label: NEW
+    color: red
+links:
+  - label: slides
+    url: "#"
+# abstract: >
+#   Add abstract text here and the [abstract] link appears automatically.
+---

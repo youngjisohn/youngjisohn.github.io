@@ -1,0 +1,20 @@
+---
+title: "Vertical Mergers in Ecosystems with Consumer Hold-Up"
+status: published
+venue: Journal of Industrial Economics
+year: 2024
+coauthors:
+  - name: Daniele Condorelli
+    url: https://www.condorelli.science
+  - name: Jorge Padilla
+    url: https://www.compasslexecon.com/professionals/jorge-padilla
+links:
+  - label: paper
+    url: https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf
+abstract: >
+  An ecosystem comprises all downstream products that employ a certain upstream input. In many cases,
+  final consumers make irreversible investments to join an ecosystem before downstream prices are set.
+  Our main observation is that, in contrast to conventional wisdom, an upstream monopolist merging with
+  one of its downstream affiliates will find it profitable to continue to serve downstream competitors,
+  even when products sold downstream are homogeneous.
+---

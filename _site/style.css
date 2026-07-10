@@ -205,8 +205,14 @@ li { margin-bottom: 5px; }
 .paper-links { font-size: 13px; }
 .paper-status { font-size: 13px; font-style: italic; color: #555; }
 
-.new-tag {
-  background: #c00;
+/* Tags/badges: one system for NEW, NEWS, JMP, awards, etc.
+   - label = the pill text; always bold.
+   - color = preset class (c-red, c-blue, c-green, c-purple, c-orange, c-gray).
+   - message (optional) = click the pill to reveal expandable text inline.
+   Add a preset by adding one line to the color list below. */
+.tag {
+  --tag-bg: #c00;
+  background: var(--tag-bg);
   color: #fff;
   font-size: 10px;
   font-weight: bold;
@@ -217,32 +223,30 @@ li { margin-bottom: 5px; }
   position: relative;
   top: -2px;
 }
+label.tag { cursor: pointer; }
+label.tag:hover { opacity: 0.85; }
 
-.news-tag {
-  background: #003399;
-  color: #fff !important;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 1px 5px;
-  border-radius: 2px;
-  vertical-align: middle;
-  margin-left: 4px;
-  margin-right: 2px;
-  position: relative;
-  top: -2px;
-  cursor: pointer;
-}
-.news-tag:hover { background: #3366cc; }
-
-.news-msg {
+.tag-msg {
+  --tag-bg: #003399;
   display: none;
   font-size: 13px;
-  color: #003399 !important;
+  color: var(--tag-bg);
   cursor: pointer;
-  position: relative; 
+  position: relative;
   top: -1px;
 }
-.news-toggle:checked ~ .news-msg { display: inline; }
+.tag-toggle { display: none; }
+/* scoped to its OWN message (checkbox + pill + message), so multiple tags don't clash */
+.tag-toggle:checked + .tag + .tag-msg { display: inline; }
+
+/* --- color presets --- */
+.c-red    { --tag-bg: #c00; }
+.c-blue   { --tag-bg: #003399; }
+.c-green  { --tag-bg: #1a7f37; }
+.c-purple { --tag-bg: #6f42c1; }
+.c-orange { --tag-bg: #b35900; }
+.c-gray   { --tag-bg: #555; }
+
 
 
 .paper-links a,
@@ -434,8 +438,8 @@ a.tooltip-wrap { position: relative; }
     background: #fff;
     border: 1px solid #000;
   }
-  .new-tag { background: #000; color: #fff !important; }
-  .news-tag { background: #000; color: #fff !important; }
+  .tag { background: #000 !important; color: #fff !important; }
+  .tag-msg { color: #000 !important; }
   .paper-status { color: #333 !important; }
   .abstract { background: #fff; border-left: 3px solid #000; }
   .photo img { print-color-adjust: exact; }

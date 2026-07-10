@@ -1,0 +1,32 @@
+---
+# All conference / seminar / workshop presentations — newest year first.
+# Normal event:  short (index)  |  full (research & CV)  |  url (optional).
+# Divider row  { divider: "..." }  -> blue+italic, own line in research/CV, skipped on index.
+years:
+  - year: 2026
+    events:
+      - short: "Warwick MWIP"
+        full: "Warwick Microeconomics Work in Progress"
+      - short: "PhD Micro Theory Workshop (LSE)"
+        full: "PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London)"
+        url: https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop
+      - short: "Lisbon Meetings"
+        full: "15th Lisbon Meetings in Game Theory and Applications"
+      - short: "Berlin PhD Conference"
+        full: "2nd Berlin PhD Conference in Economics"
+      - divider: "Scheduled:"
+      - short: "Stony Brook International Conference"
+        full: "37th Stony Brook International Conference on Game Theory"
+      - short: "EARIE"
+        full: "53rd Annual Conference of EARIE (Mannheim)"
+      - short: "EETC"
+        full: "2nd European Economic Theory Conference (London)"
+  - year: 2025
+    events:
+      - short: "Warwick MWIP"
+        full: "Warwick Microeconomics Work in Progress"
+  - year: 2024
+    events:
+      - short: "Warwick MWIP"
+        full: "Warwick Microeconomics Work in Progress"
+---

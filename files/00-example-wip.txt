@@ -1,0 +1,37 @@
+---
+title: "Paper Title"
+status: wip                 # wip | working | published
+                            # filename: 00- for wip (unnumbered), 01-/02-... for working & published
+
+# venue/year: shown for working & published (year optional). Leave off for wip.
+# venue: Journal Name
+# year: 202X
+
+# tags: one pill each. label = text; color = preset; message = optional click-to-reveal.
+# Presets: red, blue, green, purple, orange, gray.
+tags:
+  - label: NEW
+    color: orange
+  - label: JMP
+    color: purple
+  - label: NEWS
+    color: gray
+    message: "message!"
+
+# coauthors: optional — delete this block if solo-authored.
+# coauthors:
+#   - name: Coauthor Name
+#     url: https://...
+
+# links: optional. request:true shows "draft upon request" instead of opening the URL.
+# links:
+#   - label: paper
+#     request: false
+#     url: https://youngjisohn.github.io/files/
+#   - label: slides
+#     url: https://youngjisohn.github.io/files/
+
+# abstract: optional. The text MUST be indented under the ">".
+abstract: >
+  Add abstract text here. 
+---

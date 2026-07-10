@@ -1,53 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="Cr83S5F6xBZag8225T_oIUUOQwhk5dV5Rz5t2IJBg-s" />
-
-<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, max-image-preview:none, nosnippet">
-
-
-<title>Youngji Sohn - Resources</title>
-<meta name="description" content="Youngji Sohn — PhD student in Economics at the University of Warwick. Research in microeconomic theory, game theory, contract design and misspecified games.">
-<meta property="og:title" content="Youngji Sohn - Resources">
-<meta property="og:description" content="Youngji Sohn — PhD student in Economics at the University of Warwick.">
-<meta property="og:url" content="https://youngjisohn.github.io/resource.html">
-<link rel="canonical" href="https://youngjisohn.github.io/resource.html">
-
-<link rel="stylesheet" href="/style.css?v=3">
-
-<link rel="icon" href="/assets/favicon.png" type="image/png">
-</head>
-<body>
-<div class="page-wrapper">
-  <div class="nav-bar">
-  <div>
-    <a href="index.html" class="nav-btn">Home</a>
-    <a href="cv.html" class="nav-btn">Curriculum</a>
-    <a href="research.html" class="nav-btn">Research</a>
-  </div>
-  <a href="#" id="bw-toggle" class="toggle-btn">color off</a>
-</div>
-
-<script>
-var p = new URLSearchParams(window.location.search).get('color');
-if (p === 'true') sessionStorage.setItem('color', '1');
-if (p === 'false') sessionStorage.removeItem('color');
-if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
-
-var btn = document.getElementById('bw-toggle');
-// label shows the CURRENT state: color on = color is on, color off = black & white
-btn.textContent = document.body.classList.contains('bw') ? 'color off' : 'color on';
-btn.onclick = function() {
-  document.body.classList.toggle('bw');
-  var bw = document.body.classList.contains('bw');
-  this.textContent = bw ? 'color off' : 'color on';
-  bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
-  return false;
-};
-</script>
-  <style>.page-wrapper{max-width: 500px;}</style>
+---
+title: Youngji Sohn - Resources
+layout: simple
+noindex: true
+---
+<style>.page-wrapper{max-width: 500px;}</style>
 
 <div class="col-mini">
   
@@ -84,6 +40,7 @@ btn.onclick = function() {
     <li>Durham Economic Theory Conference</li>
     <li><a href="https://sites.google.com/view/theros2026">THEROS</a></li>
     <li>European Workshop in Economic Theory</li>
+    <li><a href = "https://igier.unibocconi.eu/events/conferences/transatlantic-theory-workshop-2025">Transatlantic Theory Workshop</a></li>
   </ul>
   <hr>
   <ul>
@@ -91,7 +48,10 @@ btn.onclick = function() {
     <li>HEC Economics PhD Conference</li>
     <li>Berlin PhD Conference in Economics</li>
     <li>QMUL Economics and Finance Workshop for PhD &amp; Post-doc</li>
+    <li><a href="https://sites.google.com/site/doctorissimes3/21st-doctorissimes-2026/">Doctorissimes at PSE</a></li>
     <li><a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop">LSE–UCL–Warwick PhD Micro Theory Workshop</a></li>
+    <li><a href = "https://sites.google.com/view/sassari-venice-phd-conference/home">SASCA PhD Conference</a></li>
+    <li><a href = "https://economia.uniroma2.it/phd/ef/tor-vergata-phd-conference-in-economics/">Tor Vergata PhD Conference</a></li>
   </ul>
   <hr>
   <ul>
@@ -117,13 +77,3 @@ btn.onclick = function() {
   </div>
     
   
-
-  <footer style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
-  &copy; 2026 Youngji Sohn
-</footer>
-
-</div>
-<script data-goatcounter="https://ysohn.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-</body>
-</html>
