@@ -1,9 +1,9 @@
-{%- comment -%} _includes/conferences.html — the presentations list, in either style.
+{%- comment -%} _includes/present.html — the presentations list, in either style.
   include.style   = "compact" (index; short names inline)  |  "full" (research/CV; full names, one per line)
   include.heading = section heading text (default "Presentations")
 A normal event is { short, full, url? }. A divider row { divider: "Scheduled:" } renders
 blue + italic on its own line in "full" style, and is skipped in "compact" style. {%- endcomment -%}
-{% assign years = site.conferences.first.years | sort: 'year' | reverse %}
+{% assign years = site.present.first.years | sort: 'year' | reverse %}
 <h2>{{ include.heading | default: "Presentations" }}</h2>
 {% if include.style == "full" %}<ul class="cv-list">
 {% for y in years %}<li>
