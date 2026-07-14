@@ -1,6 +1,8 @@
 {%- comment -%}
 _includes/papers.html — papers list, DRY across index / research / cv.
   include.style = "cv" (compact list) | default (rich research blocks)
+  include.show_date = false to hide dates on this page (default: shown when a paper has one)
+  include.tag_break = true to put tags on their own line under the title (default: inline)
 
 Each paper is one front-matter-only .txt in _papers/. No id/num fields:
 order AND the [N] label both come from the number that STARTS the filename.
@@ -56,7 +58,9 @@ Sorted high number first (drop `| reverse` for low-first).
 {%- if p.status == "published" and shownPub == false %}<h2>Publications</h2>
 {% assign shownPub = true %}{% endif -%}
 <div class="paper-entry">
-  <strong>[{{ n }}] {{ p.title }}</strong>{% for t in p.tags %}{% assign col = t.color | default: "red" | prepend: "c-" %} {% if t.message %}<input type="checkbox" id="tag-{{ n }}-{{ forloop.index }}" class="tag-toggle" hidden><label for="tag-{{ n }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ n }}-{{ forloop.index }}" class="tag-msg {{ col }}">&nbsp;{{ t.message }}</label>{% else %}<span class="tag {{ col }}">{{ t.label }}</span>{% endif %}{% endfor %}<br>
+  {% capture tags_html %}{% for t in p.tags %}{% assign col = t.color | default: "red" | prepend: "c-" %} {% if t.message %}<input type="checkbox" id="tag-{{ n }}-{{ forloop.index }}" class="tag-toggle" hidden><label for="tag-{{ n }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ n }}-{{ forloop.index }}" class="tag-msg {{ col }}">&nbsp;{{ t.message }}</label>{% else %}<span class="tag {{ col }}">{{ t.label }}</span>{% endif %}{% endfor %}{% endcapture %}<strong>[{{ n }}] {{ p.title }}</strong>{% if include.show_date != false and p.dateline %} <span class="paper-date">{{ p.dateline }}</span>{% endif %}{% unless include.tag_break %}{{ tags_html }}{% endunless %}<br>
+{% if include.tag_break and p.tags %}  {{ tags_html }}<br>
+{% endif %}
 {% if p.coauthors %}  with {% for a in p.coauthors %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}<br>
 {% endif %}{% if p.venue %}  <span class="paper-status">{{ p.venue }}{% if p.year %}, {{ p.year }}{% endif %}</span><br>
 {% endif %}  <span class="paper-links">{% for link in p.links %}{% unless forloop.first %}&nbsp;{% endunless %}[{% if link.request %}<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='{{ link.label }}'; this.style.color='';}, 5000); return false;">{{ link.label }}</a>{% else %}{% assign ev = link.gc %}{% unless ev %}{% if slug != "" %}{% assign ev = slug | append: "-" | append: link.label %}{% endif %}{% endunless %}{% assign evtitle = link.gc_title %}{% unless evtitle %}{% assign evtitle = p.short | append: " " | append: link.label %}{% endunless %}<a href="{{ link.url }}"{% if ev %} data-goatcounter-click="{{ ev }}" data-goatcounter-title="{{ evtitle }}"{% endif %}>{{ link.label }}</a>{% endif %}]{% endfor %}{% if p.abstract and p.abstract != "" %}{% if p.links %}&nbsp;{% endif %}[<label for="abs-{{ n }}">abstract</label>]{% endif %}</span>

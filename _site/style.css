@@ -204,6 +204,11 @@ li { margin-bottom: 5px; }
 .paper-entry {  margin-bottom: 14px;  }
 .paper-links { font-size: 13px; }
 .paper-status { font-size: 13px; font-style: italic; color: #555; }
+.paper-date {
+  font-weight: normal;
+  font-size: 13px;
+  color: #555;
+}
 
 /* Tags/badges: one system for NEW, NEWS, JMP, awards, etc.
    - label = the pill text; always bold.

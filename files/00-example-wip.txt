@@ -8,6 +8,9 @@ status: wip                 # wip | working | published
 # venue: Journal Name
 # year: 202X
 
+# date: shows in normal weight to the RIGHT of the title (e.g. a working-paper draft date).
+# date: "March 2026"
+
 # tags: one pill each. label = text; color = preset; message = optional click-to-reveal.
 # Presets: red, blue, green, purple, orange, gray.
 tags:
