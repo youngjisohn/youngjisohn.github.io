@@ -24,21 +24,26 @@
 </div>
 
 <script>
-// "contact" -> click reveals the address -> click again copies it.
+// "contact" -> click reveals the address -> click copies it ("copied!")
 (function(){
   var link = document.getElementById('e-link');
   var email = null;
+  var copied = false;          // is the "copied!" message currently showing?
   var revertTimer = null;
 
-  // show "copied!" briefly, then go back to showing the address
+  function showEmail(){
+    clearTimeout(revertTimer);
+    copied = false;
+    link.textContent = email;
+    link.style.color = '';
+  }
+
   function flashCopied(){
     clearTimeout(revertTimer);
+    copied = true;
     link.textContent = 'copied!';
     link.style.color = '#c00';
-    revertTimer = setTimeout(function(){
-      link.textContent = email;
-      link.style.color = '';
-    }, 3000);
+    revertTimer = setTimeout(showEmail, 3000);   // auto-revert if left alone
   }
 
   link.addEventListener('click', function(ev){
@@ -57,7 +62,10 @@
       return;
     }
 
-    // Click 2+ — copy.
+    // While "copied!" is showing — click dismisses it back to the address.
+    if (copied) { showEmail(); return; }
+
+    // Otherwise — copy.
     navigator.clipboard.writeText(email).then(flashCopied, flashCopied);
   });
 })();
