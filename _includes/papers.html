@@ -10,7 +10,7 @@ order AND the [N] label both come from the number that STARTS the filename.
   `| plus: 0` coerces "01" -> 1 so the label prints [1] while the file stays 01-.
 Sections come from `status`:
   working   -> "Working Papers", numbered [N]
-  published -> "Publications",   numbered [N]
+  published -> "Publication",   numbered [N]
   wip       -> "Work in Progress", NOT numbered — just bulleted (files start 00-)
 Sorted high number first (drop `| reverse` for low-first).
 
@@ -47,7 +47,7 @@ For WORKING papers the coauthors render inline as "(with …)" on the title line
     <em>{{ p.venue }}</em>{% if p.year %}, {{ p.year }}{% endif %}{% endif %}{% if p.cvmsg %}<br>{{ p.cvmsg }}{% endif %}</li>
 {% endfor %}</ul>
 {% endif -%}
-{%- if published.size > 0 %}<h2>Publications</h2>
+{%- if published.size > 0 %}<h2>Publication</h2>
 <ul>
 {% for p in published %}  <li><strong>{{ p.title }}</strong>{% if p.coauthors %}<br>
     with {% for a in p.coauthors %}{{ a.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}{% if p.venue %}<br>
@@ -66,7 +66,7 @@ For WORKING papers the coauthors render inline as "(with …)" on the title line
 {%- if include.wp_heading and working.size > 0 %}<h2>Working Papers</h2>
 {% endif -%}
 {% for p in ordered %}{%- assign n = p.path | split: '/' | last | split: '-' | first | plus: 0 -%}{%- assign slug = p.short | slugify | remove: "-" -%}
-{%- if p.status == "published" and shownPub == false %}<h2>Publications</h2>
+{%- if p.status == "published" and shownPub == false %}<h2>Publication</h2>
 {% assign shownPub = true %}{% endif -%}
 <div class="paper-entry">
   {% capture tags_html %}{% for t in p.tags %}{% assign col = t.color | default: "red" | prepend: "c-" %}{% if t.newline %}<br>{% else %} {% endif %}{% if t.message %}<input type="checkbox" id="tag-{{ n }}-{{ forloop.index }}" class="tag-toggle" hidden checked><label for="tag-{{ n }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ n }}-{{ forloop.index }}" class="tag-msg {{ col }}">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</label>{% else %}<span class="tag {{ col }}">{{ t.label }}</span>{% endif %}{% endfor %}{% endcapture %}<strong>[{{ n }}] {{ p.title }}</strong>{% if p.status == "working" and p.coauthors %} (with {% for a in p.coauthors %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}){% endif %}{% if include.show_date != false and p.dateline %} <span class="paper-date">{{ p.dateline }}</span>{% endif %}{% unless include.tag_break %}{{ tags_html }}{% endunless %}<br>
