@@ -1,13 +1,15 @@
 \documentclass[11pt]{article}
 
 % --- Encoding & font ---
-\usepackage[utf8]{inputenc}
-
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
 % --- Layout ---
-\usepackage[margin=1in]{geometry}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
 \usepackage{titlesec}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
+\usepackage{enumitem} 
 
 % --- Page numbers: "1/2", "2/2" centered in the footer ---
 \usepackage{lastpage}
@@ -15,119 +17,142 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\cfoot{\small\thepage/\pageref{LastPage}}
+\lfoot{\small\thepage/\pageref{LastPage}}
 
 \definecolor{linkblue}{HTML}{003399}
-\hypersetup{colorlinks=true, urlcolor=linkblue, linkcolor=linkblue}
+\hypersetup{colorlinks=true, urlcolor=black, linkcolor=black}
+% --- How far all section CONTENT is indented from the flush-left headings ---
+\newlength{\bodyindent}
+\setlength{\bodyindent}{2em}
 
-% --- Section headings: bold, with a rule underneath ---
-\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{-0.55em}\rule{\linewidth}{0.4pt}]
-\titlespacing{\section}{0pt}{1.1em}{0.6em}
+% --- Section headings: rule ABOVE, heading + rule pulled back to the true margin ---
+
+
+\titleformat{\section}{\bfseries}{}{0em}{}%{\rule{\textwidth}{0.5pt}\vspace{-0.03cm}\newline}
+
+
+\titleformat{\subsection}{}{}{0em}{\hspace*{2em}}
+\titleformat{\subsection}{}{}{0em}{}
+
+
+\titlespacing{\section}{0pt}{22pt}{11pt}%{1\baselineskip}
+\titlespacing*{\subsection}{0pt}{11pt}{0pt}%{1\baselineskip}
 
 \setlength{\parindent}{0pt}
 
 % --- helper: a presentation year (year on the left, events on the right) ---
 \newcommand{\yearblock}[2]{%
-  \noindent\begin{minipage}[t]{0.07\textwidth}{#1.}\end{minipage}%
-  \begin{minipage}[t]{0.90\textwidth}#2\end{minipage}\par\vspace{0.5em}}
+  \noindent\begin{minipage}[t]{0.06\textwidth}{#1.}\end{minipage}%
+  \begin{minipage}[t]{0.85\textwidth}#2\end{minipage}\par\vspace{0.5em}}
 
 \begin{document}
 
-% ================= HEADER =================
-{\LARGE\bfseries Youngji Sohn}\par\vspace{0.7em}
-PhD Student in Economics\par\vspace{0.15em}
-University of Warwick, Coventry, UK\par\vspace{0.15em}
-{\small\href{mailto:youngji.sohn@warwick.ac.uk}{\texttt{youngji.sohn@warwick.ac.uk}}}\par
-{\small\href{https://youngjisohn.github.io}{\texttt{https://youngjisohn.github.io}}}\par
-{\small\href{https://warwick.ac.uk/fac/soc/economics/staff/sohn/}{\texttt{https://warwick.ac.uk/fac/soc/economics/staff/sohn/}}}
+% ================= HEADER (full width, not indented) =================
+{\bfseries \large Youngji Sohn}\vspace{11pt}
 
+% ---- from here on, all section content is indented ----
+% ================= PERSONAL DETAILS =================
+\section*{Personal}
+\begin{tabular}{@{}p{6.5em}l@{}}
+%{Birth}       	& 19 January 1994 / Bucheon, South Korea\\
+{Nationality} 	& South Korea\\
+{Website}  	&{\href{https://youngjisohn.github.io}{\texttt{youngjisohn.github.io}}}\\
+{Contact}     	& \href{mailto:youngji.sohn@warwick.ac.uk}{\texttt{youngji.sohn@warwick.ac.uk}}\\
+                     		& +44 7713 451866\\
+{Language}    & Korean (native), English (fluent)\\
+\end{tabular}
 % ================= EDUCATION =================
 \section*{Education}
-\textbf{University of Warwick}, Coventry, UK\\
-\hspace{1.5em}PhD Economics \hfill 2022--2026 (Expected)\\
-\hspace{1.5em}MRes Economics \hfill 2020--2022\\[0.5em]
-\textbf{University of Zurich}, Zurich, Switzerland\\
-\hspace{1.5em}MA Economics (with distinction) \hfill 2018--2021\\[0.5em]
-\textbf{Pohang University of Science and Technology}, Pohang, South Korea\\
-\hspace{1.5em}BSc Mathematics (with distinction) \hfill 2012--2016
+{University of Warwick}, UK\\
+PhD Economics \hfill 2022--Present\\
+MRes Economics \hfill 2020--2022\\[11pt]
+{University of Zurich}, Switzerland\\
+MA Economics (with distinction) \hfill 2018--2021\\[11pt]
+{Pohang University of Science and Technology}, South Korea\\
+BSc Mathematics (with distinction) \hfill 2012--2017\\
+Semester Exchange Program, Technical University of Berlin, Germany \hfill Spring 2016
 
-% ================= RESEARCH FIELDS =================
-\section*{Research Fields}
+% ================= RESEARCH =================
+\section*{Research}
 Microeconomic Theory, Game Theory, Contract Theory, Organizational Economics, IO
 
 
 
-% ================= PUBLICATIONS =================
-\section*{Publication}
-\textbf{Vertical Mergers in Ecosystems with Consumer Hold-Up}\\
-with Daniele Condorelli, Jorge Padilla\\
+\subsection*{Publication}
+\begin{itemize}[leftmargin=0em, nosep, itemsep=4pt]
+\item 
+{Vertical Mergers in Ecosystems with Consumer Hold-Up}
+(with Daniele Condorelli and Jorge Padilla)\\
 \textit{Journal of Industrial Economics}, 2024
+\end{itemize} 
 
-% ================= WORKING PAPERS =================
-\section*{Working Papers}
+\subsection*{Working Papers}
+\begin{itemize}[leftmargin=0em, nosep, itemsep=4pt]
+\item  {Pay to Quit: Robust Team Incentives with Hidden Need} (with Hyungmin Park)\\
+Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications
+\item   {(Dis-)agreement in Misspecified Games}
+\end{itemize}
 
-
-\textbf{Pay to Quit: Robust Team Incentives with Hidden Need}\\
-with Hyungmin Park\\
-Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications\par
-\vspace{0.6em}
-\textbf{(Dis-)agreement in Misspecified Games}
-
+\setlength{\leftskip}{0em}
 % ================= PRESENTATIONS =================
-\section*{Conferences, Seminars, and Workshop Presentations}
-\yearblock{2026}{%
-Warwick Microeconomics Work in Progress;\\
+\section*{Presentations}
+Warwick Microeconomics Work in Progress; \hfill 2026\\
 PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London);\\
 15th Lisbon Meetings in Game Theory and Applications;\\
 2nd Berlin PhD Conference in Economics;\\
-\textcolor{linkblue}{\textit{Scheduled:}} 
+{\textit{Scheduled:}} 
 37th Stony Brook International Conference on Game Theory;\\
 53rd Annual Conference of EARIE (Mannheim);\\
-2nd European Economic Theory Conference (London)
-}
-\yearblock{2025}{Warwick Microeconomics Work in Progress}
-\yearblock{2024}{Warwick Microeconomics Work in Progress}
+2nd European Economic Theory Conference (London)\\
+Warwick Microeconomics Work in Progress\hfill 2025\\
+Warwick Microeconomics Work in Progress\hfill 2024
+
+
+
+% ---- from here on, all section content is indented ----
+
 
 % ================= AWARDS =================
 \section*{Awards and Scholarships}
-Departmental Scholarship, Department of Economics, University of Warwick \hfill 2020--2026\\
-Discretionary Research Funding, Department of Economics, University of Warwick \hfill July 2026\\
-Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications \ \ \hfill June 2026\\
-Microeconomic Theory Group Travel Funding, Department of Economics, University of Warwick \\  \phantom{ } \hfill May 2024\\
-Teaching Excellence Award, Department of Economics, University of Warwick \ \  \hfill Term 2 2023--2024
+Departmental Scholarship, University of Warwick \hfill 2020--2026\\
+Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications \hfill  2026\\
+Discretionary Research Funding, University of Warwick \hfill July 2026\\
+Microeconomic Theory Group Travel Funding, University of Warwick \hfill May 2024\\
+Teaching Excellence Award, University of Warwick \hfill Term 2 2023, 2024\\
+Study Abroad Scholarship, Pohang University of Science and Technology \hfill Spring 2016\\
+National Science and Technology Scholarship (6x), KOSAF \hfill 2012--2015
+
+
+% ================= TEACHING =================
+\section*{Teaching Experience}
+Advanced Microeconomic Theory (MRes/PhD) for Prof.\ Motty Perry \hfill Term 2 2023, 2024\\
+Mathematical Economics 1A \hfill Term 1 2022, 2023\\
+Microeconomics 2 \hfill Term 2 2023
 
 % ================= SERVICE =================
 \section*{Service}
 Co-Organizer, Warwick PhD Conference, University of Warwick \hfill 2023
 
-% ================= TEACHING =================
-\section*{Teaching}
-EC9A1 Advanced Microeconomic Theory (MRes/PhD) for Prof.\ Motty Perry \hfill Spring 2023, 2024\\
-EC220 Mathematical Economics 1A \hfill Fall 2022, 2023\\
-EC202 Microeconomics 2 \hfill Spring 2023
 
 % ================= LANGUAGES =================
-\section*{Languages}
-Korean (Native), English (Fluent)\\
-MATLAB, \LaTeX{}
+\section*{Programming}
+MATLAB, \LaTeX{}, C
 
-% ================= Nationality =================
-\section*{Nationality}
-South Korea
 
 % ================= REFERENCES =================
 \section*{References}
-\textbf{Prof. Daniele Condorelli}\\
+{Prof. Daniele Condorelli}\\
 Department of Economics, University of Warwick\\
-{Website: \href{https://www.condorelli.science/}{\small\texttt{https://www.condorelli.science/}}\par
-{Email: \href{mailto:d.condorelli@warwick.ac.uk}{\small\texttt{d.condorelli@warwick.ac.uk}}}\par\vspace{0.5em}}
-\textbf{Prof. Motty Perry}\\
+Website: \href{https://www.condorelli.science/}{\texttt{https://www.condorelli.science/}}\\
+Email: \href{mailto:d.condorelli@warwick.ac.uk}{\texttt{d.condorelli@warwick.ac.uk}}\\[11pt]
+{Prof. Motty Perry}\\
 Department of Economics, University of Warwick\\
-Website: \href{https://profiles.warwick.ac.uk/ecsiak-motty-perry}{\small\texttt{https://profiles.warwick.ac.uk/ecsiak-motty-perry}}\\
-{Email: \href{mailto:M.M.Perry@warwick.ac.uk}{\small\texttt{m.m.perry@warwick.ac.uk}}\par\vspace{0.5em}}
+Website: \href{https://profiles.warwick.ac.uk/ecsiak-motty-perry}{\texttt{https://profiles.warwick.ac.uk/ecsiak-motty-perry}}\\
+Email: \href{mailto:M.M.Perry@warwick.ac.uk}{\texttt{m.m.perry@warwick.ac.uk}}
 
 
-\vspace{1.5em}
-{\small\itshape (Last updated: 17 July 2026)}
+\vspace{30pt}
+
+{\small (Last updated: 18 July 2026)}
 
 \end{document}

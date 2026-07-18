@@ -318,7 +318,27 @@ a.tooltip-wrap { position: relative; }
   margin: 10px 0 3px 0;
   padding-top: 6px;
 }
-.col-wide .box-cream ul { margin: 2px 0; }
+.col-wide .box-cream h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 8px 0 2px 0;
+  padding: 0;
+  border: none;
+}
+.col-wide .box-cream ul { margin: 2px 0; list-style: none; padding-left: 0; }
+
+/* Index page (Education, Miscellaneous, and the compact presentations list): no bullets 
+.col-narrow .box-cream ul,
+.col-narrow .box-light ul { list-style: none; padding-left: 0; }*/
+.col-narrow .box-cream ul,
+.col-narrow .box-light ul { list-style: disc; padding-left: 18px; }
+/* CV: gap between consecutive paper entries, matching the Education group spacing */
+.col-wide .box-cream ul.cv-papers li { margin-bottom: 6px; }
+
+/* Index and research: news message, journal venue and year in black; year upright, journal title stays italic */
+.box-light .tag-msg { color: #003399; }
+.box-light .paper-status { color: #555; }
+.box-light .paper-year { font-style: normal; }
 .col-wide .box-cream li { margin-bottom: 1px; }
 .col-wide .box-cream p { margin: 0 0 4px 0; }
 
@@ -356,10 +376,15 @@ a.tooltip-wrap { position: relative; }
 }
 .cv-list li {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: baseline;
   gap: 0.8em;
   margin-bottom: 4px;
 }
-.cv-list li strong { flex-shrink: 0; }
+/* Research page: even spacing between year entries (no extra gap between groups) */
+.box-light .cv-list li { margin-bottom: 0; }
+.cv-list li .cv-year { flex-shrink: 0; }
 
 
 /* --- I LIKE PAGE: birds dropdown menu + media players --- */

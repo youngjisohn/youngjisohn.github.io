@@ -9,6 +9,7 @@ tags:
     message: "Best Graduate Paper Award at Lisbon Meetings 2026!"
     newline: true
     msg_break: false
+    fixed: true         # message always shown, not clickable (omit or set false for the click-to-toggle behavior)
 cvmsg: "Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications"
 coauthors:
   - name: Hyungmin Park

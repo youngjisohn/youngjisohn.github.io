@@ -1,91 +1,138 @@
-{%- comment -%}
-_includes/papers.html — papers list, DRY across index / research / cv.
-  include.style = "cv" (compact list) | default (rich research blocks)
-  include.show_date = false to hide dates on this page (default: shown when a paper has one)
-  include.tag_break = true to put tags on their own line under the title (default: inline)
-
-Each paper is one front-matter-only .txt in _papers/. No id/num fields:
-order AND the [N] label both come from the number that STARTS the filename.
-  Files are two-digit for correct string-sorting: 01-, 02-, ... 10-, 11-
-  `| plus: 0` coerces "01" -> 1 so the label prints [1] while the file stays 01-.
-Sections come from `status`:
-  working   -> "Working Papers", numbered [N]
-  published -> "Publication",   numbered [N]
-  wip       -> "Work in Progress", NOT numbered — just bulleted (files start 00-)
-Sorted high number first (drop `| reverse` for low-first).
-
-`venue` (+ optional `year`) renders for working & published in every style.
-`cvmsg` is a plain one-line note shown ONLY in the CV style, on its own line under the
-  entry (no badge, no toggle) — e.g. "Best Graduate Paper Award, 15th Lisbon Meetings…".
-  It is independent of `tags`: use `tags` for the clickable badge on index/research, and
-  `cvmsg` for the spelled-out line on the CV.
-`tags` is a list of pills — each { label, color?, message?, newline?, msg_break? }:
-  color presets live in style.css (red, blue, green, purple, orange, gray; default red);
-  a tag with a message starts expanded; clicking EITHER the badge or the message collapses it.
-  Line breaks are yours to choose, per tag (both default off = everything inline):
-    newline: true    -> the badge drops to its own line, below the title
-    msg_break: true  -> the message drops to its own line, below the badge
-  e.g. news = { newline: true } gives:  [N] Title (with X)  /  NEWS <message on same line>.
-For WORKING papers the coauthors render inline as "(with …)" on the title line, so the
-  layout reads  [N] Title (with Coauthor)  <tags>.  Published papers keep the separate
-  "with …" line below the title.
-`short` is a short title. Its slug (slugify + hyphens removed, e.g. "Pay to Quit" -> paytoquit)
-  auto-names GoatCounter click events on non-request links as "<slug>-<label>"
-  (paytoquit-paper, paytoquit-slides). request:true links are NOT counted.
-  Per-link `gc`/`gc_title` still override the auto name if ever needed.
-{%- endcomment -%}
 {%- assign papers    = site.papers | sort: 'path' | reverse -%}
 {%- assign working   = papers | where: 'status', 'working'   -%}
 {%- assign published = papers | where: 'status', 'published' -%}
 {%- assign wip       = papers | where: 'status', 'wip'       -%}
 
-{%- if include.style == "cv" -%}
-{%- if working.size > 0 %}<h2>Working Papers</h2>
-<ul>
-{% for p in working %}  <li><strong>{{ p.title }}</strong>{% if p.coauthors %}<br>
-    with {% for a in p.coauthors %}{{ a.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}{% if p.venue %}<br>
-    <em>{{ p.venue }}</em>{% if p.year %}, {{ p.year }}{% endif %}{% endif %}{% if p.cvmsg %}<br>{{ p.cvmsg }}{% endif %}</li>
-{% endfor %}</ul>
-{% endif -%}
-{%- if published.size > 0 %}<h2>Publication</h2>
-<ul>
-{% for p in published %}  <li><strong>{{ p.title }}</strong>{% if p.coauthors %}<br>
-    with {% for a in p.coauthors %}{{ a.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}{% if p.venue %}<br>
-    <em>{{ p.venue }}</em>{% if p.year %}, {{ p.year }}{% endif %}{% endif %}{% if p.cvmsg %}<br>{{ p.cvmsg }}{% endif %}</li>
-{% endfor %}</ul>
-{% endif -%}
-{%- if wip.size > 0 %}<h2>Work in Progress</h2>
-<ul>
-{% for p in wip %}  <li><strong>{{ p.title }}</strong>{% if p.coauthors %} (with {% for a in p.coauthors %}{{ a.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}){% endif %}{% if p.cvmsg %}<br>{{ p.cvmsg }}{% endif %}</li>
-{% endfor %}</ul>
-{% endif -%}
 
+    
+    
+{%- if include.style == "cv" -%}
+
+  {%- if working.size > 0 -%}
+<h3>Working Papers</h3>
+<ul class="cv-papers">
+  {%- for p in working %}
+  <li>
+    {{- p.title -}}
+    {%- if p.coauthors %} (with {% for a in p.coauthors %}{% unless forloop.first %}{% if forloop.last %}{% if forloop.length > 2 %}, and {% else %} and {% endif %}{% else %}, {% endif %}{% endunless %}{{ a.name }}{% endfor %}){% endif -%}
+    {%- if p.venue %}<br>
+    <em>{{ p.venue }}</em>{% if p.year %}, {{ p.year }}{% endif %}{% endif -%}
+    {%- if p.cvmsg %}<br>{{ p.cvmsg }}{% endif -%}
+  </li>
+  {%- endfor %}
+</ul>
+  {%- endif -%}
+  {%- if published.size > 0 -%}
+<h3>Publication</h3>
+<ul class="cv-papers">
+  {%- for p in published %}
+  <li>
+    {{- p.title -}}
+    {%- if p.coauthors %} (with {% for a in p.coauthors %}{% unless forloop.first %}{% if forloop.last %}{% if forloop.length > 2 %}, and {% else %} and {% endif %}{% else %}, {% endif %}{% endunless %}{{ a.name }}{% endfor %}){% endif -%}
+    {%- if p.venue %}<br>
+    <em>{{ p.venue }}</em>{% if p.year %}, {{ p.year }}{% endif %}{% endif -%}
+    {%- if p.cvmsg %}<br>{{ p.cvmsg }}{% endif -%}
+  </li>
+  {%- endfor %}
+</ul>
+  {%- endif -%}
+  {%- if wip.size > 0 -%}
+<h3>Work in Progress</h3>
+<ul class="cv-papers">
+  {%- for p in wip %}
+  <li>
+    {{- p.title -}}
+    {%- if p.coauthors %} (with {% for a in p.coauthors %}{% unless forloop.first %}{% if forloop.last %}{% if forloop.length > 2 %}, and {% else %} and {% endif %}{% else %}, {% endif %}{% endunless %}{{ a.name }}{% endfor %}){% endif -%}
+    {%- if p.cvmsg %}<br>{{ p.cvmsg }}{% endif -%}
+  </li>
+  {%- endfor %}
+</ul>
+  {%- endif -%}
+
+    
+    
+    
+    
+    
 {%- else -%}
+
 {%- assign ordered = working | concat: published -%}
 {%- assign shownPub = false -%}
 {%- if include.wp_heading and working.size > 0 %}<h2>Working Papers</h2>
 {% endif -%}
-{% for p in ordered %}{%- assign n = p.path | split: '/' | last | split: '-' | first | plus: 0 -%}{%- assign slug = p.short | slugify | remove: "-" -%}
-{%- if p.status == "published" and shownPub == false %}<h2>Publication</h2>
-{% assign shownPub = true %}{% endif -%}
+
+{% for p in ordered -%}
+  {%- assign n = p.path | split: '/' | last | split: '-' | first | plus: 0 -%}
+  {%- assign slug = p.short | slugify | remove: "-" -%}
+  {%- if p.status == "published" and shownPub == false -%}
+    {%- assign shownPub = true -%}
+<h2>Publication</h2>
+  {%- endif %}
 <div class="paper-entry">
-  {% capture tags_html %}{% for t in p.tags %}{% assign col = t.color | default: "red" | prepend: "c-" %}{% if t.newline %}<br>{% else %} {% endif %}{% if t.message %}<input type="checkbox" id="tag-{{ n }}-{{ forloop.index }}" class="tag-toggle" hidden checked><label for="tag-{{ n }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ n }}-{{ forloop.index }}" class="tag-msg {{ col }}">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</label>{% else %}<span class="tag {{ col }}">{{ t.label }}</span>{% endif %}{% endfor %}{% endcapture %}<strong>[{{ n }}] {{ p.title }}</strong>{% if p.status == "working" and p.coauthors %} (with {% for a in p.coauthors %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}){% endif %}{% if include.show_date != false and p.dateline %} <span class="paper-date">{{ p.dateline }}</span>{% endif %}{% unless include.tag_break %}{{ tags_html }}{% endunless %}<br>
-{% if include.tag_break and p.tags %}  {{ tags_html }}<br>
-{% endif %}
-{% if p.coauthors and p.status != "working" %}  with {% for a in p.coauthors %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}<br>
-{% endif %}{% if p.venue %}  <span class="paper-status">{{ p.venue }}{% if p.year %}, {{ p.year }}{% endif %}</span><br>
-{% endif %}  <span class="paper-links">{% for link in p.links %}{% unless forloop.first %}&nbsp;{% endunless %}[{% if link.request %}<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='{{ link.label }}'; this.style.color='';}, 5000); return false;">{{ link.label }}</a>{% else %}{% assign ev = link.gc %}{% unless ev %}{% if slug != "" %}{% assign ev = slug | append: "-" | append: link.label %}{% endif %}{% endunless %}{% assign evtitle = link.gc_title %}{% unless evtitle %}{% assign evtitle = p.short | append: " " | append: link.label %}{% endunless %}<a href="{{ link.url }}"{% if ev %} data-goatcounter-click="{{ ev }}" data-goatcounter-title="{{ evtitle }}"{% endif %}>{{ link.label }}</a>{% endif %}]{% endfor %}{% if p.abstract and p.abstract != "" %}{% if p.links %}&nbsp;{% endif %}[<label for="abs-{{ n }}">abstract</label>]{% endif %}</span>
-{% if p.abstract and p.abstract != "" %}  <input type="checkbox" id="abs-{{ n }}" class="abstract-toggle" hidden>
+  {%- capture tags_html -%}
+    {%- for t in p.tags -%}
+      {%- assign col = t.color | default: "red" | prepend: "c-" -%}
+      {%- if t.newline %}<br>{% else %} {% endif -%}
+      {%- if t.message -%}
+        {%- if t.fixed -%}
+<span class="tag {{ col }}">{{ t.label }}</span><span class="tag-msg {{ col }}" style="display:inline; cursor:default;">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</span>
+        {%- else -%}
+<input type="checkbox" id="tag-{{ n }}-{{ forloop.index }}" class="tag-toggle" hidden checked><label for="tag-{{ n }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ n }}-{{ forloop.index }}" class="tag-msg {{ col }}">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</label>
+        {%- endif -%}
+      {%- else -%}
+<span class="tag {{ col }}">{{ t.label }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  <strong>[{{ n }}] {{ p.title }}</strong>
+  {%- if include.show_date != false and p.dateline %} <span class="paper-date">{{ p.dateline }}</span>{% endif -%}
+  {%- unless include.tag_break %}{{ tags_html }}{% endunless -%}
+  <br>
+  {%- if p.coauthors %}with {% for a in p.coauthors %}{% unless forloop.first %}{% if forloop.last %}{% if forloop.length > 2 %}, and {% else %} and {% endif %}{% else %}, {% endif %}{% endunless %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% endfor %}<br>{% endif -%}
+  {%- if include.tag_break and p.tags %}
+  {{ tags_html }}<br>
+  {%- endif -%}
+  {%- if p.venue %}
+  <span class="paper-status">{{ p.venue }}{% if p.year %}, <span class="paper-year">{{ p.year }}</span>{% endif %}</span><br>
+  {%- endif %}
+  <span class="paper-links">{% for link in p.links %}{% unless forloop.first %}&nbsp;{% endunless %}[{% if link.request %}<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='{{ link.label }}'; this.style.color='';}, 5000); return false;">{{ link.label }}</a>{% else %}{% assign ev = link.gc %}{% unless ev %}{% if slug != "" %}{% assign ev = slug | append: "-" | append: link.label %}{% endif %}{% endunless %}{% assign evtitle = link.gc_title %}{% unless evtitle %}{% assign evtitle = p.short | append: " " | append: link.label %}{% endunless %}<a href="{{ link.url }}"{% if ev %} data-goatcounter-click="{{ ev }}" data-goatcounter-title="{{ evtitle }}"{% endif %}>{{ link.label }}</a>{% endif %}]{% endfor %}{% if p.abstract and p.abstract != "" %}{% if p.links %}&nbsp;{% endif %}[<label for="abs-{{ n }}">abstract</label>]{% endif %}</span>
+  {%- if p.abstract and p.abstract != "" %}
+  <input type="checkbox" id="abs-{{ n }}" class="abstract-toggle" hidden>
   <div class="abstract">{{ p.abstract | strip }}</div>
-{% endif %}</div>
-{% endfor %}
-{%- if wip.size > 0 %}<h2>Work in Progress</h2>
+  {%- endif %}
+</div>
+{% endfor -%}
+{%- if wip.size > 0 %}
+<h2>Work in Progress</h2>
 <ul>
-{% for p in wip %}{%- assign wid = p.path | split: '/' | last | split: '.' | first -%}{%- assign slug = p.short | slugify | remove: "-" -%}
-{%- assign hasabs = false -%}{% if p.abstract and p.abstract != "" %}{% assign hasabs = true %}{% endif %}  <li><strong>{{ p.title }}</strong>{% for t in p.tags %}{% assign col = t.color | default: "red" | prepend: "c-" %}{% if t.newline %}<br>{% else %} {% endif %}{% if t.message %}<input type="checkbox" id="tag-{{ wid }}-{{ forloop.index }}" class="tag-toggle" hidden checked><label for="tag-{{ wid }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ wid }}-{{ forloop.index }}" class="tag-msg {{ col }}">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</label>{% else %}<span class="tag {{ col }}">{{ t.label }}</span>{% endif %}{% endfor %}{% if p.coauthors %} (with {% for a in p.coauthors %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}){% endif %}{% if p.links or hasabs %}<br>
-    <span class="paper-links">{% for link in p.links %}{% unless forloop.first %}&nbsp;{% endunless %}[{% if link.request %}<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='{{ link.label }}'; this.style.color='';}, 5000); return false;">{{ link.label }}</a>{% else %}{% assign ev = link.gc %}{% unless ev %}{% if slug != "" %}{% assign ev = slug | append: "-" | append: link.label %}{% endif %}{% endunless %}{% assign evtitle = link.gc_title %}{% unless evtitle %}{% assign evtitle = p.short | append: " " | append: link.label %}{% endunless %}<a href="{{ link.url }}"{% if ev %} data-goatcounter-click="{{ ev }}" data-goatcounter-title="{{ evtitle }}"{% endif %}>{{ link.label }}</a>{% endif %}]{% endfor %}{% if hasabs %}{% if p.links %}&nbsp;{% endif %}[<label for="abs-{{ wid }}">abstract</label>]{% endif %}</span>{% endif %}{% if hasabs %}
+  {%- for p in wip -%}
+    {%- assign wid = p.path | split: '/' | last | split: '.' | first -%}
+    {%- assign slug = p.short | slugify | remove: "-" -%}
+    {%- assign hasabs = false -%}
+    {%- if p.abstract and p.abstract != "" %}{% assign hasabs = true %}{% endif -%}
+  <li>
+    <strong>{{- p.title -}}</strong>
+    {%- for t in p.tags -%}
+      {%- assign col = t.color | default: "red" | prepend: "c-" -%}
+      {%- if t.newline %}<br>{% else %} {% endif -%}
+      {%- if t.message -%}
+        {%- if t.fixed -%}
+<span class="tag {{ col }}">{{ t.label }}</span><span class="tag-msg {{ col }}" style="display:inline; cursor:default;">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</span>
+        {%- else -%}
+<input type="checkbox" id="tag-{{ wid }}-{{ forloop.index }}" class="tag-toggle" hidden checked><label for="tag-{{ wid }}-{{ forloop.index }}" class="tag {{ col }}">{{ t.label }}</label><label for="tag-{{ wid }}-{{ forloop.index }}" class="tag-msg {{ col }}">{% if t.msg_break %}<br>{% else %} {% endif %}{{ t.message }}</label>
+        {%- endif -%}
+      {%- else -%}
+<span class="tag {{ col }}">{{ t.label }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if p.coauthors %} (with {% for a in p.coauthors %}{% unless forloop.first %}{% if forloop.last %}{% if forloop.length > 2 %}, and {% else %} and {% endif %}{% else %}, {% endif %}{% endunless %}{% if a.url %}<a href="{{ a.url }}" class="plain">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% endfor %}){% endif -%}
+    {%- if p.links or hasabs %}<br>
+    <span class="paper-links">{% for link in p.links %}{% unless forloop.first %}&nbsp;{% endunless %}[{% if link.request %}<a href="#" onclick="this.textContent='draft upon request'; this.style.color='#c00'; setTimeout(()=>{this.textContent='{{ link.label }}'; this.style.color='';}, 5000); return false;">{{ link.label }}</a>{% else %}{% assign ev = link.gc %}{% unless ev %}{% if slug != "" %}{% assign ev = slug | append: "-" | append: link.label %}{% endif %}{% endunless %}{% assign evtitle = link.gc_title %}{% unless evtitle %}{% assign evtitle = p.short | append: " " | append: link.label %}{% endunless %}<a href="{{ link.url }}"{% if ev %} data-goatcounter-click="{{ ev }}" data-goatcounter-title="{{ evtitle }}"{% endif %}>{{ link.label }}</a>{% endif %}]{% endfor %}{% if hasabs %}{% if p.links %}&nbsp;{% endif %}[<label for="abs-{{ wid }}">abstract</label>]{% endif %}</span>{% endif -%}
+    {%- if hasabs %}
     <input type="checkbox" id="abs-{{ wid }}" class="abstract-toggle" hidden>
-    <div class="abstract">{{ p.abstract | strip }}</div>{% endif %}</li>
-{% endfor %}</ul>
-{% endif -%}
+    <div class="abstract">{{ p.abstract | strip }}</div>{% endif -%}
+  </li>
+  {%- endfor %}
+</ul>
+{%- endif -%}
 {%- endif -%}
