@@ -11,7 +11,7 @@ coauthors:
     url: https://www.compasslexecon.com/professionals/jorge-padilla
 links:
   - label: paper
-    url: https://warwick.ac.uk/fac/soc/economics/staff/sohn/vertical-mergers.pdf
+    url: /files/vertical-mergers2024.pdf
 abstract: >
   An ecosystem comprises all downstream products that employ a certain upstream input. In many cases,
   final consumers make irreversible investments to join an ecosystem before downstream prices are set.

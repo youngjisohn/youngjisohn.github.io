@@ -16,9 +16,9 @@ coauthors:
 links:
   - label: paper
     request: false      # shows "draft upon request" on click instead of linking out
-    url: https://youngjisohn.github.io/files/paytoquitmar2026draft.pdf
+    url: /files/paytoquitmar2026draft.pdf
   - label: slides
-    url: https://youngjisohn.github.io/files/paytoquitslidesJuly2026sohn.pdf
+    url: /files/paytoquitslidesJuly2026sohn.pdf
 abstract: >  
   We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately 
   know whether their assigned components require costly repair. The principal observes only participation, 
