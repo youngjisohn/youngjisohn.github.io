@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+
+% --- Encoding & font ---
+\usepackage[utf8]{inputenc}
+
+% --- Layout ---
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% --- Page numbers: "1/2", "2/2" centered in the footer ---
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\small\thepage/\pageref{LastPage}}
+
+\definecolor{linkblue}{HTML}{003399}
+\hypersetup{colorlinks=true, urlcolor=linkblue, linkcolor=linkblue}
+
+% --- Section headings: bold, with a rule underneath ---
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\vspace{-0.55em}\rule{\linewidth}{0.4pt}]
+\titlespacing{\section}{0pt}{1.1em}{0.6em}
+
+\setlength{\parindent}{0pt}
+
+% --- helper: a presentation year (year on the left, events on the right) ---
+\newcommand{\yearblock}[2]{%
+  \noindent\begin{minipage}[t]{0.07\textwidth}{#1.}\end{minipage}%
+  \begin{minipage}[t]{0.90\textwidth}#2\end{minipage}\par\vspace{0.5em}}
+
+\begin{document}
+
+% ================= HEADER =================
+{\LARGE\bfseries Youngji Sohn}\par\vspace{0.7em}
+PhD Student in Economics\par\vspace{0.15em}
+University of Warwick, Coventry, UK\par\vspace{0.15em}
+{\small\href{mailto:youngji.sohn@warwick.ac.uk}{\texttt{youngji.sohn@warwick.ac.uk}}}\par
+{\small\href{https://youngjisohn.github.io}{\texttt{https://youngjisohn.github.io}}}\par
+{\small\href{https://warwick.ac.uk/fac/soc/economics/staff/sohn/}{\texttt{https://warwick.ac.uk/fac/soc/economics/staff/sohn/}}}
+
+% ================= EDUCATION =================
+\section*{Education}
+\textbf{University of Warwick}, Coventry, UK\\
+\hspace{1.5em}PhD Economics \hfill 2022--2026 (Expected)\\
+\hspace{1.5em}MRes Economics \hfill 2020--2022\\[0.5em]
+\textbf{University of Zurich}, Zurich, Switzerland\\
+\hspace{1.5em}MA Economics (with distinction) \hfill 2018--2021\\[0.5em]
+\textbf{Pohang University of Science and Technology}, Pohang, South Korea\\
+\hspace{1.5em}BSc Mathematics (with distinction) \hfill 2012--2016
+
+% ================= RESEARCH FIELDS =================
+\section*{Research Fields}
+Microeconomic Theory, Game Theory, Contract Theory, Organizational Economics, IO
+
+
+
+% ================= PUBLICATIONS =================
+\section*{Publication}
+\textbf{Vertical Mergers in Ecosystems with Consumer Hold-Up}\\
+with Daniele Condorelli, Jorge Padilla\\
+\textit{Journal of Industrial Economics}, 2024
+
+% ================= WORKING PAPERS =================
+\section*{Working Papers}
+
+
+\textbf{Pay to Quit: Robust Team Incentives with Hidden Need}\\
+with Hyungmin Park\\
+Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications\par
+\vspace{0.6em}
+\textbf{(Dis-)agreement in Misspecified Games}
+
+% ================= PRESENTATIONS =================
+\section*{Conferences, Seminars, and Workshop Presentations}
+\yearblock{2026}{%
+Warwick Microeconomics Work in Progress;\\
+PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London);\\
+15th Lisbon Meetings in Game Theory and Applications;\\
+2nd Berlin PhD Conference in Economics;\\
+\textcolor{linkblue}{\textit{Scheduled:}} 
+37th Stony Brook International Conference on Game Theory;\\
+53rd Annual Conference of EARIE (Mannheim);\\
+2nd European Economic Theory Conference (London)%
+}
+\yearblock{2025}{Warwick Microeconomics Work in Progress}
+\yearblock{2024}{Warwick Microeconomics Work in Progress}
+
+% ================= AWARDS =================
+\section*{Awards and Scholarships}
+Departmental Scholarship, Department of Economics, University of Warwick \hfill 2020--2026\\
+Discretionary Research Funding, Department of Economics, University of Warwick \hfill July 2026\\
+Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications \ \ \hfill June 2026\\
+Microeconomic Theory Group Travel Funding, Department of Economics, University of Warwick \\  \phantom{ } \hfill May 2024\\
+Teaching Excellence Award, Department of Economics, University of Warwick \ \  \hfill Term 2 2023--2024
+
+% ================= SERVICE =================
+\section*{Service}
+Co-Organizer, Warwick PhD Conference, University of Warwick \hfill 2023
+
+% ================= TEACHING =================
+\section*{Teaching}
+EC9A1 Advanced Microeconomic Theory (MRes/PhD) for Prof.\ Motty Perry \hfill Spring 2023, 2024\\
+EC220 Mathematical Economics 1A \hfill Fall 2022, 2023\\
+EC202 Microeconomics 2 \hfill Spring 2023
+
+% ================= LANGUAGES =================
+\section*{Languages}
+Korean (Native), English (Fluent)\\
+MATLAB, \LaTeX{}
+
+% ================= Nationality =================
+\section*{Nationality}
+South Korea
+
+% ================= REFERENCES =================
+\section*{References}
+\textbf{Prof. Daniele Condorelli}\\
+Department of Economics, University of Warwick\\
+\href{https://www.condorelli.science/}{Website: https://www.condorelli.science/}\par\vspace{0.5em}
+\textbf{Prof. Motty Perry}\\
+Department of Economics, University of Warwick\\
+\href{https://profiles.warwick.ac.uk/ecsiak-motty-perry}{Website: https://profiles.warwick.ac.uk/ecsiak-motty-perry}
+
+\vspace{1.5em}
+{\small\itshape (Last updated: 17 July 2026)}
+
+\end{document}
