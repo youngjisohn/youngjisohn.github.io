@@ -1,5 +1,5 @@
 ---
-title: "Pay to Quit: Robust Team Incentives with Hidden Need"
+title: "Pay to Quit: Robust Team Incentives with Hidden Need&nbsp;"
 short: "Pay to Quit"
 status: working
 #dateline: "March 2026"
@@ -7,6 +7,9 @@ tags:
   - label: NEWS
     color: blue
     message: "Best Graduate Paper Award at Lisbon Meetings 2026!"
+    newline: true
+    msg_break: false
+cvmsg: "Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications"
 coauthors:
   - name: Hyungmin Park
     url: https://sites.google.com/view/hyungminpark/

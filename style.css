@@ -221,12 +221,12 @@ li { margin-bottom: 5px; }
   color: #fff;
   font-size: 10px;
   font-weight: bold;
-  padding: 1px 5px;
+  padding: 1px 4.5px;
   border-radius: 2px;
   vertical-align: middle;
-  margin-left: 4px;
+  margin-left: 0px;
   position: relative;
-  top: -2px;
+  top: -1px;
 }
 label.tag { cursor: pointer; }
 label.tag:hover { opacity: 0.85; }
@@ -238,12 +238,11 @@ label.tag:hover { opacity: 0.85; }
   color: var(--tag-bg);
   cursor: pointer;
   position: relative;
-  top: -1px;
+  top: 0px;
+  margin-left: 4px
 }
 .tag-toggle { display: none; }
-/* scoped to its OWN message (checkbox + pill + message), so multiple tags don't clash */
-.tag-toggle:checked + .tag + .tag-msg { display: inline; }
-
+.tag-toggle:checked ~ .tag-msg { display: inline; }
 /* --- color presets --- */
 .c-red    { --tag-bg: #c00; }
 .c-blue   { --tag-bg: #003399; }

@@ -1,5 +1,5 @@
 ---
-title: "(Dis-)agreement in Misspecified Games"
+title: "(Dis-)agreement in Misspecified Games&nbsp;"
 short: "Misspecified Games"
 status: working
 tags:

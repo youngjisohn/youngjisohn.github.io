@@ -61,7 +61,7 @@ btn.onclick = function() {
 
     <div class="contact-info"> &nbsp; 📍 &thinsp; Coventry, UK</div>
     <div class="contact-info"> &nbsp; ✉️ &thinsp;
-      <a href="#" class="plain" id="e-link" title="">loading...</a>
+      <a href="#" class="plain" id="e-link">contact</a>
     </div>
     <div class="contact-info"> &nbsp; 🏫 &thinsp; Office S1.111, Social Sciences</div>
 
@@ -74,76 +74,50 @@ btn.onclick = function() {
 </div>
 
 <script>
+// "contact" -> click reveals the address -> click copies it ("copied!")
 (function(){
   var link = document.getElementById('e-link');
-  var armed = false;
-  var ready = false;
-  var clicks = 0;
   var email = null;
+  var copied = false;          // is the "copied!" message currently showing?
   var revertTimer = null;
 
-  function arm(){
-    if (armed) return;
-    armed = true;
-    setTimeout(function(){
-      ready = true;
-      link.textContent = 'contact';
-      link.title = '';
-    }, 3000);
-  }
-
-  function showThenRevert(text, revertTo, ms){
+  function showEmail(){
     clearTimeout(revertTimer);
-    link.textContent = text;
+    copied = false;
+    link.textContent = email;
     link.style.color = '';
-    revertTimer = setTimeout(function(){
-      link.textContent = revertTo;
-      link.style.color = '';
-    }, ms);
   }
 
   function flashCopied(){
     clearTimeout(revertTimer);
+    copied = true;
     link.textContent = 'copied!';
     link.style.color = '#c00';
-    revertTimer = setTimeout(function(){
-      link.textContent = email;
-      link.style.color = '';
-    }, 3000);
+    revertTimer = setTimeout(showEmail, 3000);   // auto-revert if left alone
   }
 
   link.addEventListener('click', function(ev){
     ev.preventDefault();
-    if (!ev.isTrusted || !ready) return;
+    if (!ev.isTrusted) return;
 
-    clicks++;
-
-    // Click 1, 2 — escalating dots, no fetch, no copy. Revert to "contact".
-    if (clicks === 1) { showThenRevert('!',  'contact', 2000); return; }
-    if (clicks === 2) { showThenRevert('!!', 'contact', 2000); return; }
-
-    // Click 3 — fetch + reveal only. No copy yet.
-    if (clicks === 3) {
-      showThenRevert('!!!', '!!!', 2000); // hold !!! while fetch runs
+    // Click 1 — fetch and reveal.
+    if (!email) {
       fetch('/assets/c.txt')
         .then(function(r){ return r.text(); })
         .then(function(t){
           var parts = t.trim().split(' ');
           email = parts[0] + '@' + parts[1];
-          clearTimeout(revertTimer);
           link.textContent = email;
-          link.style.color = '';
         });
       return;
     }
 
-    // Click 4+ — copy, flash "copied!", revert to email.
+    // While "copied!" is showing — click dismisses it back to the address.
+    if (copied) { showEmail(); return; }
+
+    // Otherwise — copy.
     navigator.clipboard.writeText(email).then(flashCopied, flashCopied);
   });
-
-  document.addEventListener('mousemove',  arm, { once: true, passive: true });
-  document.addEventListener('touchstart', arm, { once: true, passive: true });
-  document.addEventListener('keydown',    arm, { once: true });
 })();
 </script>
     <div class="col-wide">
@@ -192,9 +166,9 @@ btn.onclick = function() {
 
     <h2>Working Papers</h2>
 <ul>
-  <li><strong>(Dis-)agreement in Misspecified Games</strong></li>
-  <li><strong>Pay to Quit: Robust Team Incentives with Hidden Need</strong><br>
-    with Hyungmin Park</li>
+  <li><strong>(Dis-)agreement in Misspecified Games&nbsp;</strong></li>
+  <li><strong>Pay to Quit: Robust Team Incentives with Hidden Need&nbsp;</strong><br>
+    with Hyungmin Park<br>Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications</li>
 </ul>
 <h2>Publications</h2>
 <ul>
