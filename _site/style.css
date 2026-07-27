@@ -335,10 +335,8 @@ a.tooltip-wrap { position: relative; }
 /* CV: gap between consecutive paper entries, matching the Education group spacing */
 .col-wide .box-cream ul.cv-papers li { margin-bottom: 6px; }
 
-/* Index and research: news message, journal venue and year in black; year upright, journal title stays italic */
-.box-light .tag-msg { color: #003399; }
-.box-light .paper-status { color: #555; }
-.box-light .paper-year { font-style: normal; }
+/* Journal year renders upright, unlike the italic venue */
+.paper-year { font-style: normal; }
 .col-wide .box-cream li { margin-bottom: 1px; }
 .col-wide .box-cream p { margin: 0 0 4px 0; }
 
