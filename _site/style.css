@@ -335,8 +335,10 @@ a.tooltip-wrap { position: relative; }
 /* CV: gap between consecutive paper entries, matching the Education group spacing */
 .col-wide .box-cream ul.cv-papers li { margin-bottom: 6px; }
 
-/* Journal year renders upright, unlike the italic venue */
-.paper-year { font-style: normal; }
+/* Index and research: news message, journal venue and year in black; year upright, journal title stays italic */
+.box-light .tag-msg { color: #003399; }
+.box-light .paper-status { color: #555; }
+.box-light .paper-year { font-style: normal; }
 .col-wide .box-cream li { margin-bottom: 1px; }
 .col-wide .box-cream p { margin: 0 0 4px 0; }
 
@@ -412,6 +414,25 @@ a.tooltip-wrap { position: relative; }
 }
 .bird-folder:hover { background: #f0ead6; }
 .bird-folder.active { background: #E6C843; font-weight: bold; }
+
+/* country row that opens a subfolder submenu to its right */
+.bird-country { position: relative; }
+.bird-caret { float: right; margin-left: 12px; color: #999; }
+.bird-country.open > .bird-caret { color: #444; }
+.bird-submenu {
+  display: none;
+  position: absolute;
+  top: -5px;
+  left: 100%;
+  margin-left: 3px;
+  min-width: 140px;
+  background: #fdfcf8;
+  border: 1px solid #c9b98a;
+  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
+  padding: 4px;
+  z-index: 60;
+}
+.bird-country.open > .bird-submenu { display: block; }
 
 /* responsive 16:9 YouTube embed (padding trick = height can't collapse) */
 #yt-wrap { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; margin: 0 auto; }
@@ -512,3 +533,5 @@ body.bw #birds-menu { background: #fff; border: 1px solid #000; }
 body.bw .bird-folder { color: #000; }
 body.bw .bird-folder:hover { background: #fff; color: #000; }
 body.bw .bird-folder.active { background: #d9d9d9; color: #000; font-weight: bold; }
+body.bw .bird-submenu { background: #fff; border: 1px solid #000; }
+body.bw .bird-caret { color: #000; }

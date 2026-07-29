@@ -83,28 +83,47 @@ function pickRandom(items, key, exclude) {
   return pick;
 }
 
-// --- Birds: pick a subfolder from the title menu, then randomize within it ---
+// --- Birds: country > subfolder menu; randomize within a subfolder ---
 if (birds.length > 0) {
 
-  function subfolderOf(path) {
-    var rest  = (path.split('assets/birds/')[1] || '');
-    var parts = rest.split('/');
-    return parts.length > 1 ? parts[0] : '(root)';
+  function dirsOf(path) {
+    var rest = (path.split('assets/birds/')[1] || '');
+    var segs = rest.split('/');
+    segs.pop();                         // drop the filename
+    return segs;                        // dir segments under assets/birds/
+  }
+  // country = 1st folder, subfolder = 2nd; a country with loose files (no 2nd folder)
+  // is treated as its own single subfolder.
+  function leafInfo(path) {
+    var d = dirsOf(path);
+    if (d.length >= 2) return { country: d[0], sub: d[1], key: d[0] + '/' + d[1] };
+    if (d.length === 1) return { country: d[0], sub: d[0], key: d[0] };
+    return { country: '(misc)', sub: '(misc)', key: '(misc)' };
   }
   function ytId(url) {
     var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/);
     return m ? m[1] : null;
   }
-  function folderLabel(g) {
-    return g === '(root)' ? 'misc' : g.replace(/[-_]+/g, ' ');
+  function cleanLabel(s) {
+    return s === '(misc)' ? 'misc' : s.replace(/[-_]+/g, ' ');
   }
 
-  var groups = {};
+  // group into leaves (= subfolders); remember each leaf's country + city label
+  var leaves = {};          // key -> [birds]
+  var leafCountry = {};     // key -> country
+  var leafSub = {};         // key -> city / sub label
+  var countryLeaves = {};   // country -> [key, ...] in menu order
   birds.forEach(function(b) {
-    var g = subfolderOf(b.path);
-    (groups[g] = groups[g] || []).push(b);
+    var info = leafInfo(b.path);
+    (leaves[info.key] = leaves[info.key] || []).push(b);
+    leafCountry[info.key] = info.country;
+    leafSub[info.key] = info.sub;
+    (countryLeaves[info.country] = countryLeaves[info.country] || []);
+    if (countryLeaves[info.country].indexOf(info.key) === -1)
+      countryLeaves[info.country].push(info.key);
   });
-  var groupNames = Object.keys(groups);
+  var leafKeys = Object.keys(leaves);        // ALL subfolders — the cross-folder random pool
+  var countryNames = Object.keys(countryLeaves);
 
   var birdsHeader = document.getElementById('birds-header');
   var birdsLabel  = document.getElementById('birds-label');
@@ -120,38 +139,38 @@ if (birds.length > 0) {
 
   var currentPath = null;
   var currentKind = 'image';
-  var prefetchedGroup = null;
+  var prefetchedLeaf = null;
   var wantSound = false;
-  var skipCount = 0;            // guards against looping over unparseable .txt files
+  var skipCount = 0;
 
   // current subfolder (persists across reloads); default to a random one
-  var currentGroup = sessionStorage.getItem('currentGroup');
-  if (!currentGroup || !groups[currentGroup]) {
-    currentGroup = groupNames[Math.floor(Math.random() * groupNames.length)];
-    sessionStorage.setItem('currentGroup', currentGroup);
+  var currentLeaf = sessionStorage.getItem('currentLeaf');
+  if (!currentLeaf || !leaves[currentLeaf]) {
+    currentLeaf = leafKeys[Math.floor(Math.random() * leafKeys.length)];
+    sessionStorage.setItem('currentLeaf', currentLeaf);
   }
 
-  function pickInGroup(lastPath) {
-    return pickRandom(groups[currentGroup], 'seenGroup:' + currentGroup, lastPath);
+  function pickInLeaf(lastPath) {
+    return pickRandom(leaves[currentLeaf], 'seenLeaf:' + currentLeaf, lastPath);
   }
 
-  // for the "next" button / image click: stay in the folder until it's exhausted,
-  // then jump to a different folder at random (menu selection stays put instead)
+  // "next" / image click: stay in the subfolder until it is exhausted, then jump to a
+  // random DIFFERENT subfolder chosen across ALL subfolders (country grouping ignored).
   function pickNext(lastPath) {
-    var sg = JSON.parse(sessionStorage.getItem('seenGroup:' + currentGroup) || '[]');
-    var hasUnseen = groups[currentGroup].some(function(b) { return sg.indexOf(b.path) === -1; });
+    var sg = JSON.parse(sessionStorage.getItem('seenLeaf:' + currentLeaf) || '[]');
+    var hasUnseen = leaves[currentLeaf].some(function(b) { return sg.indexOf(b.path) === -1; });
     if (!hasUnseen) {
-      currentGroup = pickRandom(groupNames, 'seenGroups', currentGroup);
-      sessionStorage.setItem('currentGroup', currentGroup);
+      currentLeaf = pickRandom(leafKeys, 'seenLeaves', currentLeaf);
+      sessionStorage.setItem('currentLeaf', currentLeaf);
       highlightMenu();
     }
-    return pickRandom(groups[currentGroup], 'seenGroup:' + currentGroup, lastPath);
+    return pickRandom(leaves[currentLeaf], 'seenLeaf:' + currentLeaf, lastPath);
   }
 
-  function prefetchGroup(name) {
-    if (prefetchedGroup === name) return;
-    prefetchedGroup = name;
-    (groups[name] || []).forEach(function(b) { fetch(b.path).catch(function(){}); });
+  function prefetchLeaf(key) {
+    if (prefetchedLeaf === key) return;
+    prefetchedLeaf = key;
+    (leaves[key] || []).forEach(function(b) { fetch(b.path).catch(function(){}); });
   }
 
   function sizePage() {
@@ -252,41 +271,102 @@ if (birds.length > 0) {
       img.style.display = '';
       img.onload = sizePage;
     }
-    prefetchGroup(currentGroup);
+    prefetchLeaf(currentLeaf);
   }
 
   function advance() { show(pickNext(currentPath)); }
 
-  // ---- subfolder menu (built only when there's more than one folder) ----
+  // ---- country > subfolder menu ----
+  function selectLeaf(key) {
+    currentLeaf = key;
+    sessionStorage.setItem('currentLeaf', key);
+    highlightMenu();
+    closeMenu();
+    show(pickInLeaf(currentPath));
+  }
+  function closeMenu() {
+    birdsMenu.style.display = 'none';
+    Array.prototype.forEach.call(birdsMenu.querySelectorAll('.bird-country.open'),
+      function(c) { c.classList.remove('open'); });
+  }
+  // accent the country of the current photo, and (inside an open submenu) its subfolder
   function highlightMenu() {
-    Array.prototype.forEach.call(birdsMenu.children, function(b) {
-      if (b.getAttribute('data-group') === currentGroup) b.classList.add('active');
-      else b.classList.remove('active');
+    var curCountry = leafCountry[currentLeaf];
+    Array.prototype.forEach.call(birdsMenu.querySelectorAll('.bird-country'), function(c) {
+      c.classList.toggle('active', c.getAttribute('data-country') === curCountry);
+    });
+    Array.prototype.forEach.call(birdsMenu.querySelectorAll('.bird-sub'), function(s) {
+      s.classList.toggle('active', s.getAttribute('data-leaf') === currentLeaf);
     });
   }
-  if (groupNames.length > 1) {
-    groupNames.forEach(function(g) {
-      var b = document.createElement('span');
-      b.className = 'bird-folder';
-      b.textContent = folderLabel(g);
-      b.setAttribute('data-group', g);
-      b.addEventListener('click', function(e) {
-        e.stopPropagation();
-        currentGroup = g;
-        sessionStorage.setItem('currentGroup', g);
-        highlightMenu();
-        birdsMenu.style.display = 'none';   // close the menu after choosing
-        show(pickInGroup(currentPath));     // fresh draw, never the one already shown
-      });
-      birdsMenu.appendChild(b);
+
+  if (leafKeys.length > 1) {
+    countryNames.forEach(function(country) {
+      var keys = countryLeaves[country];
+      var item = document.createElement('div');
+      item.className = 'bird-country bird-folder';
+      item.setAttribute('data-country', country);
+
+      if (keys.length === 1) {
+        // only one subfolder for this country -> standalone item, labelled by its city name
+        var only = keys[0];
+        item.textContent = cleanLabel(leafSub[only]);
+        item.setAttribute('data-leaf', only);
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          selectLeaf(only);
+        });
+      } else {
+        // multiple subfolders -> country row that opens a submenu to its right
+        //item.textContent = cleanLabel(country) + ' ';
+        //var caret = document.createElement('span');
+        //caret.className = 'bird-caret';
+        //caret.innerHTML = '&rsaquo;';
+        //item.appendChild(caret);
+        item.textContent = cleanLabel(country);
+        
+        var submenu = document.createElement('div');
+        submenu.className = 'bird-submenu';
+        keys.forEach(function(key) {
+          var s = document.createElement('span');
+          s.className = 'bird-sub bird-folder';
+          s.textContent = cleanLabel(leafSub[key]);
+          s.setAttribute('data-leaf', key);
+          s.addEventListener('click', function(e) {
+            e.stopPropagation();
+            selectLeaf(key);
+          });
+          submenu.appendChild(s);
+        });
+        item.appendChild(submenu);
+
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var wasOpen = item.classList.contains('open');
+          Array.prototype.forEach.call(birdsMenu.querySelectorAll('.bird-country.open'),
+            function(c) { c.classList.remove('open'); });
+          if (!wasOpen) { item.classList.add('open'); highlightMenu(); }
+        });
+      }
+      birdsMenu.appendChild(item);
     });
+
     birdsLabel.style.cursor = 'pointer';
     birdsLabel.title = 'choose a folder';
     birdsLabel.addEventListener('click', function(e) {
       e.stopPropagation();
-      var open = birdsMenu.style.display !== 'none';
-      birdsMenu.style.display = open ? 'none' : '';
-      if (!open) highlightMenu();
+      if (birdsMenu.style.display !== 'none') { closeMenu(); return; }
+      birdsMenu.style.display = '';
+      highlightMenu();
+      // also open the submenu for the current photo's place (if it has one)
+      var curCountry = leafCountry[currentLeaf];
+      Array.prototype.forEach.call(birdsMenu.querySelectorAll('.bird-country'), function(c) {
+        c.classList.toggle('open',
+          c.getAttribute('data-country') === curCountry && !!c.querySelector('.bird-submenu'));
+      });
+    });
+    document.addEventListener('click', function(e) {   // click outside closes the menu
+      if (!birdsHeader.contains(e.target)) closeMenu();
     });
   }
 
@@ -294,7 +374,7 @@ if (birds.length > 0) {
   box.addEventListener('click', function() {            // images advance on click
     if (currentKind === 'image') advance();
   });
-  nextBtn.addEventListener('click', function(e) {       // video/YouTube advance via button
+  nextBtn.addEventListener('click', function(e) {       // video / YouTube advance via button
     e.stopPropagation();
     advance();
   });
@@ -305,12 +385,13 @@ if (birds.length > 0) {
     updateSoundLabel();
   });
 
-  show(pickInGroup(null));                              // first item on load
+  show(pickInLeaf(null));                              // first item on load
 
 } else {
   document.getElementById('birds-header').style.display = 'none';
   document.getElementById('birds-box').style.display = 'none';
 }
+
 
 // --- PDF first-page preview ---
 var PDFJS_SRC    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
