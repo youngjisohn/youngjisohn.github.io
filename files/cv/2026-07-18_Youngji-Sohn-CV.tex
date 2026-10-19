@@ -10,6 +10,7 @@
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem} 
+\usepackage{multicol}
 
 % --- Page numbers: "1/2", "2/2" centered in the footer ---
 \usepackage{lastpage}
@@ -22,8 +23,12 @@
 \definecolor{linkblue}{HTML}{003399}
 \hypersetup{colorlinks=true, urlcolor=black, linkcolor=black}
 % --- How far all section CONTENT is indented from the flush-left headings ---
-\newlength{\bodyindent}
-\setlength{\bodyindent}{2em}
+
+
+\newlength{\oneli}
+\setlength{\oneli}{13.6pt}
+\newlength{\twoli}
+\setlength{\twoli}{27.2pt}
 
 % --- Section headings: rule ABOVE, heading + rule pulled back to the true margin ---
 
@@ -35,8 +40,8 @@
 \titleformat{\subsection}{}{}{0em}{}
 
 
-\titlespacing{\section}{0pt}{22pt}{11pt}%{1\baselineskip}
-\titlespacing*{\subsection}{0pt}{11pt}{0pt}%{1\baselineskip}
+\titlespacing{\section}{0pt}{27.2pt}{13.6pt}%{1\baselineskip}
+\titlespacing*{\subsection}{0pt}{13.6pt}{0pt}%{1\baselineskip}
 
 \setlength{\parindent}{0pt}
 
@@ -45,29 +50,53 @@
   \noindent\begin{minipage}[t]{0.06\textwidth}{#1.}\end{minipage}%
   \begin{minipage}[t]{0.85\textwidth}#2\end{minipage}\par\vspace{0.5em}}
 
+
+
+
 \begin{document}
 
 % ================= HEADER (full width, not indented) =================
-{\bfseries \large Youngji Sohn}\vspace{11pt}
+{\bfseries \large Youngji Sohn}\\
 
 % ---- from here on, all section content is indented ----
 % ================= PERSONAL DETAILS =================
-\section*{Personal}
-\begin{tabular}{@{}p{6.5em}l@{}}
+\vspace{\oneli}
+
+\setlength{\columnsep}{35pt}
+\setlength\multicolsep{0pt}
+
+\begin{multicols}{2}
+PhD Student\\
+\noindent Department of Economics\\
+University of Warwick\par
+\columnbreak
+\raggedleft
+\href{https://youngjisohn.github.io}{\texttt{youngjisohn.github.io}}\\
+\href{mailto:youngji.sohn@warwick.ac.uk}{\texttt{youngji.sohn@warwick.ac.uk}}\\
+\texttt{+44 7713 451866}\par
+\end{multicols}
+
+
+%\section*{Personal}
+
+\iffalse
+\begin{tabular}{@{}p{7em}l@{}}
 %{Birth}       	& 19 January 1994 / Bucheon, South Korea\\
-{Nationality} 	& South Korea\\
+%{Nationality} 	& South Korea\\
 {Website}  	&{\href{https://youngjisohn.github.io}{\texttt{youngjisohn.github.io}}}\\
 {Contact}     	& \href{mailto:youngji.sohn@warwick.ac.uk}{\texttt{youngji.sohn@warwick.ac.uk}}\\
                      		& +44 7713 451866\\
-{Language}    & Korean (native), English (fluent)\\
+%{Language}    & Korean (native), English (fluent)\\
 \end{tabular}
+
+\fi
 % ================= EDUCATION =================
 \section*{Education}
 {University of Warwick}, UK\\
-PhD Economics \hfill 2022--Present\\
-MRes Economics \hfill 2020--2022\\[11pt]
+PhD Economics \hfill 2022--2027 (Expected)\\
+MRes Economics \hfill 2020--2022\\[\oneli]
 {University of Zurich}, Switzerland\\
-MA Economics (with distinction) \hfill 2018--2021\\[11pt]
+MA Economics (with distinction) \hfill 2018--2021\\[\oneli]
 {Pohang University of Science and Technology}, South Korea\\
 BSc Mathematics (with distinction) \hfill 2012--2017\\
 Semester Exchange Program, Technical University of Berlin, Germany \hfill Spring 2016
@@ -77,36 +106,56 @@ Semester Exchange Program, Technical University of Berlin, Germany \hfill Spring
 Microeconomic Theory, Game Theory, Contract Theory, Organizational Economics, IO
 
 
+\section*{Working Papers}
+\begin{itemize}[leftmargin=0em, nosep, itemsep=4pt]
+\item   Compatible Explanations (Job Market Paper)\par\vspace{\oneli}
+Berk--Nash equilibrium allows players to hold misspecified views of their environment, requiring optimal actions under beliefs supported on hypotheses that minimize
+Kullback--Leibler divergence. These conditions concern each player's own statistical decision problem: a best-fitting hypothesis may nevertheless conjecture an opponent strategy that cannot be justified by the opponent's inference and incentives.
+%
+This paper develops a refinement motivated by players' introspection under common knowledge of the game structure and players' subjective model classes. 
+A hypothesis about Nature and the opponent's behavior, together with the player's own strategy forms an explanation that determines the observations the opponent would receive if the hypothesis were correct. Rationalizable Berk--Nash equilibrium requires each player to have a supporting belief such that every hypothesis in its support conjectures an opponent strategy optimal under some belief supported on the opponent's best-fitting hypotheses for those hypothetical observations. 
+%
+The paper characterizes rationalizable Berk--Nash equilibria through families of compatible explanations. The concept extends the recursive strategic justification underlying rationalizable conjectural equilibrium (RCE) from exact observational consistency to best available statistical fit. 
+It coincides with the corresponding RCE benchmark when players share a model class containing the true model. 
+If both model classes contain the true model, every Nash equilibrium of the objective game survives. 
+With misspecified models, false explanations can remain recursively justifiable despite positive fitting losses in both actual and hypothetical problems.
+\end{itemize}
 
-\subsection*{Publication}
+\newpage
+
+\begin{itemize}[leftmargin=0em, nosep, itemsep=4pt]
+\item  {Pay to Quit: Robust Team Incentives with Hidden Need} (with Hyungmin Park)\\
+\textit{Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications}\\[\oneli]
+We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately know whether their assigned components require costly repair. The principal observes only participation, not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information, leaving the principal exposed to high coordination rents. We show that a ``pay-to-quit'' contract---which offers a higher success bonus for opting out than for participating---strictly reduces implementation costs. 
+As the contract screens out experts who intend to shirk or whose components need no repair, participation becomes an on-path signal of active effort. Under complementarities, this endogenous information raises each expert’s marginal contribution, significantly lowering the bonuses required for unique implementation. We also show that, paradoxically, environments in which components are more likely to be already satisfactory can be more expensive to implement robustly, because intervention then becomes less informative.
+\end{itemize}
+
+\section*{\textbf{Publication}}
 \begin{itemize}[leftmargin=0em, nosep, itemsep=4pt]
 \item 
 {Vertical Mergers in Ecosystems with Consumer Hold-Up}
 (with Daniele Condorelli and Jorge Padilla)\\
-\textit{Journal of Industrial Economics}, 2024
+\textit{Journal of Industrial Economics}, 2024\\[\oneli]
+An ecosystem comprises all downstream products that employ a certain upstream input. In many cases, final consumers make irreversible investments to join an ecosystem before downstream prices are set. By committing to buy products that use the specific ecosystem input, they are at risk of being held-up. Unable to observe future prices, consumers base their decisions on what they observe about the market structure within each ecosystem, including vertical contracts signed by the upstream firms. By entering into vertical agreements with multiple competing downstream firms, thus creating a credible expectation of lower prices, an upstream firm is able to mitigate consumers' hold-up problem and, as a result, increase ecosystem demand. Our main observation is that, in contrast to conventional wisdom, an upstream monopolist merging with one of its downstream affiliates will find it profitable to continue to serve downstream competitors,  even when products sold downstream are homogeneous. 
 \end{itemize} 
 
-\subsection*{Working Papers}
-\begin{itemize}[leftmargin=0em, nosep, itemsep=4pt]
-\item  {Pay to Quit: Robust Team Incentives with Hidden Need} (with Hyungmin Park)\\
-Best Graduate Paper Award, 15th Lisbon Meetings in Game Theory and Applications
-\item   {(Dis-)agreement in Misspecified Games}
-\end{itemize}
+
 
 \setlength{\leftskip}{0em}
 % ================= PRESENTATIONS =================
 \section*{Presentations}
-Warwick Microeconomics Work in Progress; \hfill 2026\\
-PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London);\\
-15th Lisbon Meetings in Game Theory and Applications;\\
-2nd Berlin PhD Conference in Economics;\\
-{\textit{Scheduled:}} 
-37th Stony Brook International Conference on Game Theory;\\
+2026 European Winter Meeting of the Econometric Society (Warsaw)*;		\hfill 2026\\
+%{\textit{Scheduled:}} 
+2nd European Economic Theory Conference (London);\\
 53rd Annual Conference of EARIE (Mannheim);\\
-2nd European Economic Theory Conference (London)\\
+37th Stony Brook International Conference on Game Theory;\\
+2nd Berlin PhD Conference in Economics;\\
+15th Lisbon Meetings in Game Theory and Applications;\\
+PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London);\\
+Warwick Microeconomics Work in Progress\\ 
 Warwick Microeconomics Work in Progress\hfill 2025\\
-Warwick Microeconomics Work in Progress\hfill 2024
-
+Warwick Microeconomics Work in Progress\hfill 2024\\
+(* scheduled)
 
 
 % ---- from here on, all section content is indented ----
@@ -125,9 +174,16 @@ National Science and Technology Scholarship (6x), KOSAF \hfill 2012--2015
 
 % ================= TEACHING =================
 \section*{Teaching Experience}
-Advanced Microeconomic Theory (MRes/PhD) for Prof.\ Motty Perry \hfill Term 2 2023, 2024\\
-Mathematical Economics 1A \hfill Term 1 2022, 2023\\
-Microeconomics 2 \hfill Term 2 2023
+
+University of Warwick\\
+Advanced Microeconomic Theory (MRes/PhD) for Prof.\ Motty Perry 
+%(4.92/5.00, 4.85/5.00)
+\hfill Term 2 2023, 2024\\
+Mathematical Economics 1A 
+%(4.24/5.00, 4.67/5.00)
+ \hfill Term 2 2022, 2023\\
+Microeconomics 2 %(4.52/5.00)
+ \hfill  Term 1 2023
 
 % ================= SERVICE =================
 \section*{Service}
@@ -139,20 +195,61 @@ Co-Organizer, Warwick PhD Conference, University of Warwick \hfill 2023
 MATLAB, \LaTeX{}, C
 
 
+\section*{Personal}
+\begin{tabular}{@{}p{7em}l@{}}
+%{Birth}       	& 19 January 1994 / Bucheon, South Korea\\
+{Nationality} 	& South Korea\\
+%{Website}  	&{\href{https://youngjisohn.github.io}{\texttt{youngjisohn.github.io}}}\\
+%{Contact}     	& \href{mailto:youngji.sohn@warwick.ac.uk}{\texttt{youngji.sohn@warwick.ac.uk}}\\
+ %                    		& +44 7713 451866\\
+{Language}    & Korean (native), English (fluent)\\
+\end{tabular}
+
+
+
+
 % ================= REFERENCES =================
 \section*{References}
-{Prof. Daniele Condorelli}\\
+
+Professor {Daniele Condorelli} \\
 Department of Economics, University of Warwick\\
-Website: \href{https://www.condorelli.science/}{\texttt{https://www.condorelli.science/}}\\
+%Website: \href{https://www.condorelli.science/}{\texttt{www.condorelli.science}}\\
+Email: \href{mailto:d.condorelli@warwick.ac.uk}{\texttt{d.condorelli@warwick.ac.uk}}
+
+\vspace{\oneli}
+Professor {Herakles Polemarchakis}\\
+Department of Economics, University of Warwick\\
+%Website: \href{https://www.polemarchakis.org}{\texttt{www.polemarchakis.org}}\\
+Email: \href{mailto:h.polemarchakis@warwick.ac.uk}{\texttt{h.polemarchakis@warwick.ac.uk}}
+
+\vspace{\oneli}
+
+\iffalse
+\setlength{\columnsep}{35pt}
+\setlength\multicolsep{0pt}
+\begin{multicols}{2}
+{Daniele Condorelli} \\
+Department of Economics\\ University of Warwick\\
+%Website: \href{https://www.condorelli.science/}{\texttt{www.condorelli.science}}\\
 Email: \href{mailto:d.condorelli@warwick.ac.uk}{\texttt{d.condorelli@warwick.ac.uk}}\\[11pt]
-{Prof. Motty Perry}\\
-Department of Economics, University of Warwick\\
-Website: \href{https://profiles.warwick.ac.uk/ecsiak-motty-perry}{\texttt{https://profiles.warwick.ac.uk/ecsiak-motty-perry}}\\
-Email: \href{mailto:M.M.Perry@warwick.ac.uk}{\texttt{m.m.perry@warwick.ac.uk}}
+{Herakles Polemarchakis}\\
+Department of Economics\\ University of Warwick\\
+%Website: \href{https://www.polemarchakis.org}{\texttt{www.polemarchakis.org}}\\
+Email: \href{mailto:h.polemarchakis@warwick.ac.uk}{\texttt{h.polemarchakis@warwick.ac.uk}}
+\end{multicols}
+\vspace{\oneli}
+
+\fi
+
+Professor {Debraj Ray}\\
+Department of Economics, New York University\\
+%Website: \href{https://debrajray.com/}{\texttt{debrajray.com}}\\
+Email: \href{mailto:debraj.ray@nyu.edu}{\texttt{debraj.ray@nyu.edu}}
 
 
-\vspace{30pt}
+\vspace{\oneli}
+\vfill
 
-{\small (Last updated: 18 July 2026)}
+{\small (Last updated: 6 October 2026)}
 
 \end{document}

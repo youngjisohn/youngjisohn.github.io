@@ -1,2 +1,0 @@
-# youngjisohn.github.io
-youngji

@@ -1,26 +1,134 @@
----
-title: Youngji Sohn — CV
-layout: two-col
-noindex: true
-description: Youngji Sohn — Economics PhD student at the University of Warwick
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="Cr83S5F6xBZag8225T_oIUUOQwhk5dV5Rz5t2IJBg-s" />
+
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, max-image-preview:none, nosnippet">
 
 
+<title>Youngji Sohn — CV</title>
+<meta name="description" content="Youngji Sohn — Economics PhD student at the University of Warwick">
+<meta property="og:title" content="Youngji Sohn — CV">
+<meta property="og:description" content="Youngji Sohn — Economics PhD student at the University of Warwick">
+<meta property="og:url" content="https://youngjisohn.github.io/cv.html">
+<link rel="canonical" href="https://youngjisohn.github.io/cv.html">
 
+<link rel="stylesheet" href="/style.css?v=23">
 
-<div class="col-wide">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+</head>
+<body>
+<div class="page-wrapper">
+  <div class="nav-bar">
+  <div>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="cv.html" class="nav-btn">Curriculum</a>
+    <a href="research.html" class="nav-btn">Research</a>
+    <a href="teaching.html" class="nav-btn">Teaching</a>
+  </div>
+  <a href="#" id="bw-toggle" class="toggle-btn">color off</a>
+</div>
+
+<script>
+var p = new URLSearchParams(window.location.search).get('color');
+if (p === 'true') sessionStorage.setItem('color', '1');
+if (p === 'false') sessionStorage.removeItem('color');
+if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
+
+var btn = document.getElementById('bw-toggle');
+// label shows the CURRENT state: color on = color is on, color off = black & white
+btn.textContent = document.body.classList.contains('bw') ? 'color off' : 'color on';
+btn.onclick = function() {
+  document.body.classList.toggle('bw');
+  var bw = document.body.classList.contains('bw');
+  this.textContent = bw ? 'color off' : 'color on';
+  bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
+  return false;
+};
+</script>
+  <div class="grid-2col">
+    <div class="col-sidebar">
+  <div class="box-side">
+    <div class="name">Youngji Sohn</div>
+    <div class="photo">
+      
+      
+      <img class="photo-color-on" src="/assets/oldprofile.jpg?v=1780868895" alt="Youngji Sohn" title="Me" draggable="false" oncontextmenu="return false;">
+      <img class="photo-color-off" src="/assets/profile.jpg?v=1792371632" alt="Youngji Sohn" title="Me" draggable="false" oncontextmenu="return false;">
+    </div>
+    <div class="affiliation">
+      Department of Economics<br>
+      University of Warwick
+    </div>
+
+    
+    <div class="contact-info"> &nbsp; ✉️ &thinsp;
+      <a href="#" class="plain" id="e-link" title="Click to copy email address">youngji.sohn@warwick.ac.uk</a>
+    </div>
+    <div class="contact-info"> &nbsp; 🏫 &thinsp;
+      <a class="plain" href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/">Department profile</a>
+    </div>
+
+    <div class="sidebar-links">
+      <span class="sidebar-links-label">Quick links:</span>
+      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/cvysohn.pdf" title="CV PDF" data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF">cv</a>]&nbsp;[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/jmpysohn.pdf" title="Job market paper PDF" data-goatcounter-click="jmp-pdf" data-goatcounter-title="JMP PDF">jmp</a>]&nbsp;[<a href="research.html?abstracts=all" title="Read all paper abstracts">abstracts</a>]</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Show the address immediately; click to copy it ("copied!").
+(function(){
+  var link = document.getElementById('e-link');
+  var email = link.textContent.trim();
+  var copied = false;          // is the "copied!" message currently showing?
+  var revertTimer = null;
+
+  function showEmail(){
+    clearTimeout(revertTimer);
+    copied = false;
+    link.textContent = email;
+    link.style.color = '';
+  }
+
+  function flashCopied(){
+    clearTimeout(revertTimer);
+    copied = true;
+    link.textContent = 'copied!';
+    link.style.color = '#c00';
+    revertTimer = setTimeout(showEmail, 1500);   // auto-revert if left alone
+  }
+
+  link.addEventListener('click', function(ev){
+    ev.preventDefault();
+    if (!ev.isTrusted) return;
+
+    // While "copied!" is showing — click dismisses it back to the address.
+    if (copied) { showEmail(); return; }
+
+    // Otherwise — copy.
+    if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+    navigator.clipboard.writeText(email).then(flashCopied, showEmail);
+  });
+})();
+</script>
+
+    <div class="col-wide col-cv">
   <div class="box-header"><a href="index.html" class="inherit" style="display:block; margin:-10px -14px; padding:10px 14px;">Curriculum Vitae</a></div>
   <div class="box-cream">
 
     <div style="margin-bottom:12px;">
       <div style="display:flex; justify-content:space-between; align-items:baseline;">
         <span style="font-size:20px; font-weight:bold;">Youngji Sohn</span>
-          <!-- <a href="/files/Youngji-Sohn-CV.pdf" class="plain" style="font-size:13px; position:relative; top:-6px;"
-            data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF">[download&nbsp;PDF]</a> --!>
+           <a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/cvysohn.pdf" class="plain" style="font-size:13px; position:relative; top:-6px;"
+            data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF">[download&nbsp;PDF]</a> 
       </div>
       <div style="font-size:13px; color:#555;">
-        <!--https://youngjisohn.github.io<br>
-         https://warwick.ac.uk/fac/soc/economics/staff/sohn/ --!>
+        youngji.sohn@warwick.ac.uk<br>
+        youngjisohn.github.io<br>
+         warwick.ac.uk/fac/soc/economics/staff/sohn/ 
       </div>
     </div>
 
@@ -59,9 +167,44 @@ description: Youngji Sohn — Economics PhD student at the University of Warwick
     <h2>Research</h2>
     <p>Microeconomic Theory, Game Theory, Contract Theory, Organizational Economics, IO</p>
 
-    {% include papers.html style="cv" %}
+    <h3>Working Papers</h3>
+<ul class="cv-papers">
+  <li>Compatible Explanations <span class="cv-paper-note">(Job Market Paper)</span></li>
+  <li>Pay to Quit: Robust Team Incentives with Hidden Need (with Hyungmin Park)<br>Best Graduate Paper, 15th Lisbon Meetings in Game Theory and Applications</li>
+</ul><h3>Publication</h3>
+<ul class="cv-papers">
+  <li>Vertical Mergers in Ecosystems with Consumer Hold-Up (with Daniele Condorelli and Jorge Padilla) <em>Journal of Industrial Economics</em>, 2024</li>
+</ul><h3>Work in Progress</h3>
+<ul class="cv-papers">
+  <li>Galileo in 1633 (with Hyungmin Park)</li>
+</ul>
 
-    {% include present.html style="full" heading="Presentations" year_plain=true %}
+    
+<h2>Presentations</h2>
+<ul class="cv-list">
+<li>
+  <span class="cv-year">2026</span>
+  <span>European Winter Meeting of the Econometric Society*;<br>
+    2nd European Economic Theory Conference (London);<br>
+    53rd Annual Conference of EARIE (Mannheim);<br>
+    37th Stony Brook International Conference on Game Theory;<br>
+    2nd Berlin PhD Conference in Economics;<br>
+    15th Lisbon Meetings in Game Theory and Applications;<br>
+    <a href="https://www.lse.ac.uk/economics/events-and-seminars/PhD-Microeconomic-Theory-Workshop" class="plain">PhD Microeconomic Theory Workshop LSE, UCL and Warwick (London)</a>;<br>
+    Warwick Microeconomics Work in Progress</span>
+</li>
+<li>
+  <span class="cv-year">2025</span>
+  <span>Warwick Microeconomics Work in Progress</span>
+</li>
+<li>
+  <span class="cv-year">2024</span>
+  <span>Warwick Microeconomics Work in Progress;<br>
+    <span style="color:#003399; font-style:normal;">(Scheduled *)</span></span>
+</li>
+</ul>
+
+
 
     <h2>Awards and Scholarships</h2>
     <div class="cv-group">
@@ -95,14 +238,6 @@ description: Youngji Sohn — Economics PhD student at the University of Warwick
       </div>
     </div>
 
-    <h2>Service</h2>
-    <div class="cv-group">
-      <div class="cv-entry">
-        <span>Co-Organizer, Warwick PhD Conference, University of Warwick</span>
-        <span class="cv-entry-dates">2023</span>
-      </div>
-    </div>
-
     <h2>Teaching</h2>
     <div class="cv-group">
       <div class="cv-entry">
@@ -119,12 +254,36 @@ description: Youngji Sohn — Economics PhD student at the University of Warwick
       </div>
     </div>
 
+    <h2>Service</h2>
+    <div class="cv-group">
+    <div class="cv-entry">
+        <span>Co-Organizer, Warwick PhD Conference, University of Warwick</span>
+        <span class="cv-entry-dates">2023</span>
+      </div>
+    </div>
+    
     <h2>Languages</h2>
     <p>Korean (native), English (fluent) </p>
     <p>MATLAB, LaTeX, C</p>
     
+    <h2>References</h2>
+    <p>Daniele Condorelli, Department of Economics, University of Warwick
+      </p>
+    <p>Herakles Polemarchakis, Department of Economics, University of Warwick</p>
+    <p>Debraj Ray, Department of Economics, New York University</p>
     
     <br>
-    (Last updated: 18 July 2026)
+    <br>
+    (Last updated: 19 October 2026)
   </div>
 </div>
+  </div>
+  <footer style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
+  <a href="like.html" class="copyright-link">&copy; 2026 Youngji Sohn</a>
+</footer>
+
+</div>
+<script data-goatcounter="https://ysohn.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

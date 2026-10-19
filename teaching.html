@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="Cr83S5F6xBZag8225T_oIUUOQwhk5dV5Rz5t2IJBg-s" />
+
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, max-image-preview:none, nosnippet">
+
+
+<title>Youngji Sohn — Teaching</title>
+<meta name="description" content="Youngji Sohn — Teaching at the University of Warwick">
+<meta property="og:title" content="Youngji Sohn — Teaching">
+<meta property="og:description" content="Youngji Sohn — Teaching at the University of Warwick">
+<meta property="og:url" content="https://youngjisohn.github.io/teaching.html">
+<link rel="canonical" href="https://youngjisohn.github.io/teaching.html">
+
+<link rel="stylesheet" href="/style.css?v=23">
+
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+</head>
+<body>
+<div class="page-wrapper">
+  <div class="nav-bar">
+  <div>
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="cv.html" class="nav-btn">Curriculum</a>
+    <a href="research.html" class="nav-btn">Research</a>
+    <a href="teaching.html" class="nav-btn">Teaching</a>
+  </div>
+  <a href="#" id="bw-toggle" class="toggle-btn">color off</a>
+</div>
+
+<script>
+var p = new URLSearchParams(window.location.search).get('color');
+if (p === 'true') sessionStorage.setItem('color', '1');
+if (p === 'false') sessionStorage.removeItem('color');
+if (!sessionStorage.getItem('color')) document.body.classList.add('bw');
+
+var btn = document.getElementById('bw-toggle');
+// label shows the CURRENT state: color on = color is on, color off = black & white
+btn.textContent = document.body.classList.contains('bw') ? 'color off' : 'color on';
+btn.onclick = function() {
+  document.body.classList.toggle('bw');
+  var bw = document.body.classList.contains('bw');
+  this.textContent = bw ? 'color off' : 'color on';
+  bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
+  return false;
+};
+</script>
+  <div class="grid-2col">
+    <div class="col-sidebar">
+  <div class="box-side">
+    <div class="name">Youngji Sohn</div>
+    <div class="photo">
+      
+      
+      <img class="photo-color-on" src="/assets/oldprofile.jpg?v=1780868895" alt="Youngji Sohn" title="Me" draggable="false" oncontextmenu="return false;">
+      <img class="photo-color-off" src="/assets/profile.jpg?v=1792371632" alt="Youngji Sohn" title="Me" draggable="false" oncontextmenu="return false;">
+    </div>
+    <div class="affiliation">
+      Department of Economics<br>
+      University of Warwick
+    </div>
+
+    
+    <div class="contact-info"> &nbsp; ✉️ &thinsp;
+      <a href="#" class="plain" id="e-link" title="Click to copy email address">youngji.sohn@warwick.ac.uk</a>
+    </div>
+    <div class="contact-info"> &nbsp; 🏫 &thinsp;
+      <a class="plain" href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/">Department profile</a>
+    </div>
+
+    <div class="sidebar-links">
+      <span class="sidebar-links-label">Quick links:</span>
+      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/cvysohn.pdf" title="CV PDF" data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF">cv</a>]&nbsp;[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/jmpysohn.pdf" title="Job market paper PDF" data-goatcounter-click="jmp-pdf" data-goatcounter-title="JMP PDF">jmp</a>]&nbsp;[<a href="research.html?abstracts=all" title="Read all paper abstracts">abstracts</a>]</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Show the address immediately; click to copy it ("copied!").
+(function(){
+  var link = document.getElementById('e-link');
+  var email = link.textContent.trim();
+  var copied = false;          // is the "copied!" message currently showing?
+  var revertTimer = null;
+
+  function showEmail(){
+    clearTimeout(revertTimer);
+    copied = false;
+    link.textContent = email;
+    link.style.color = '';
+  }
+
+  function flashCopied(){
+    clearTimeout(revertTimer);
+    copied = true;
+    link.textContent = 'copied!';
+    link.style.color = '#c00';
+    revertTimer = setTimeout(showEmail, 1500);   // auto-revert if left alone
+  }
+
+  link.addEventListener('click', function(ev){
+    ev.preventDefault();
+    if (!ev.isTrusted) return;
+
+    // While "copied!" is showing — click dismisses it back to the address.
+    if (copied) { showEmail(); return; }
+
+    // Otherwise — copy.
+    if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+    navigator.clipboard.writeText(email).then(flashCopied, showEmail);
+  });
+})();
+</script>
+
+    <div class="col-wide">
+  <div class="box-header"><a href="index.html" class="inherit" style="display:block; margin:-10px -14px; padding:10px 14px;">Teaching</a></div>
+  <div class="box-light">
+    <h4>Advanced Microeconomic Theory (MRes/PhD) <span class="paper-links" style="font-weight:normal;">[<a href="https://warwick.ac.uk/fac/soc/economics/current/modules/ec9a1/" target="_blank" rel="noopener noreferrer">course outline</a>]</span></h4>
+    <ul>
+      <li><strong>2023/24:</strong> Average score 4.85/5 <span class="paper-links">[<a href="/assets/teachingeval/pdfs/2023-24%20spring%204.85.pdf" target="_blank" rel="noopener noreferrer">report</a>]</span></li>
+      <li><strong>2022/23:</strong> Average score 4.92/5 <span class="paper-links">[<a href="/assets/teachingeval/pdfs/2022-23%20spring%204.52%20%26%204.92.pdf" target="_blank" rel="noopener noreferrer">report</a>]</span></li>
+    </ul>
+
+    <h4>Mathematical Economics 1A <span class="paper-links" style="font-weight:normal;">[<a href="https://warwick.ac.uk/fac/soc/economics/current/modules/ec220/" target="_blank" rel="noopener noreferrer">course outline</a>]</span></h4>
+    <ul>
+      <li><strong>2023/24:</strong> Average score 4.67/5 <span class="paper-links">[<a href="/assets/teachingeval/pdfs/2023-24%20autumn%204.67.pdf" target="_blank" rel="noopener noreferrer">report</a>]</span></li>
+      <li><strong>2022/23:</strong> Average score 4.24/5 <span class="paper-links">[<a href="/assets/teachingeval/pdfs/2022-23%20Autumn%204.24.pdf" target="_blank" rel="noopener noreferrer">report</a>]</span></li>
+    </ul>
+
+    <h4>Microeconomics 2 <span class="paper-links" style="font-weight:normal;">[<a href="https://warwick.ac.uk/fac/soc/economics/current/modules/ec202/" target="_blank" rel="noopener noreferrer">course outline</a>]</span></h4>
+    <ul>
+      <li><strong>2022/23:</strong> Average score 4.52/5 <span class="paper-links">[<a href="/assets/teachingeval/pdfs/2022-23%20spring%204.52%20%26%204.92.pdf" target="_blank" rel="noopener noreferrer">report</a>]</span></li>
+    </ul>
+
+    <p class="line-above">Teaching Excellence Award, University of Warwick (2022/23, 2023/24)</p>
+  </div>
+</div>
+
+  </div>
+  <footer style="text-align:center; color:#aab; font-size:13px; margin-top:12px;">
+  <a href="like.html" class="copyright-link">&copy; 2026 Youngji Sohn</a>
+</footer>
+
+</div>
+<script data-goatcounter="https://ysohn.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
