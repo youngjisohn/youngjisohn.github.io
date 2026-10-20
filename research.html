@@ -45,6 +45,9 @@ btn.onclick = function() {
   var bw = document.body.classList.contains('bw');
   this.textContent = bw ? 'color off' : 'color on';
   bw ? sessionStorage.removeItem('color') : sessionStorage.setItem('color', '1');
+  if (!bw && window.goatcounter && window.goatcounter.count && !window.goatcounter.filter()) {
+    window.goatcounter.count({path: 'color-on', title: 'Color on', event: true});
+  }
   return false;
 };
 </script>
@@ -65,15 +68,15 @@ btn.onclick = function() {
 
     
     <div class="contact-info"> &nbsp; ✉️ &thinsp;
-      <a href="#" class="plain" id="e-link" title="Click to copy email address">youngji.sohn@warwick.ac.uk</a>
+      <a href="#" class="plain" id="e-link" title="Click to copy email address" data-goatcounter-click="email" data-goatcounter-title="Email">youngji.sohn@warwick.ac.uk</a>
     </div>
     <div class="contact-info"> &nbsp; 🏫 &thinsp;
-      <a class="plain" href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/">Department profile</a>
+      <a class="plain" href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/" data-goatcounter-click="department-profile" data-goatcounter-title="Department profile">Department profile</a>
     </div>
 
     <div class="sidebar-links">
       <span class="sidebar-links-label">Quick links:</span>
-      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/cvysohn.pdf" title="CV PDF" data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF">cv</a>]&nbsp;[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/jmpysohn.pdf" title="Job market paper PDF" data-goatcounter-click="jmp-pdf" data-goatcounter-title="JMP PDF">jmp</a>]&nbsp;[<a href="research.html?abstracts=all" title="Read all paper abstracts">abstracts</a>]</span>
+      <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/cvysohn.pdf" title="CV PDF" data-goatcounter-click="cv-pdf" data-goatcounter-title="CV PDF">cv</a>]&nbsp;[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/jmpysohn.pdf" title="Job market paper PDF" data-goatcounter-click="compatible-paper" data-goatcounter-title="Compatible paper">jmp</a>]&nbsp;[<a href="research.html?abstracts=all" title="Read all paper abstracts">abstracts</a>]</span>
     </div>
   </div>
 </div>
@@ -121,19 +124,19 @@ btn.onclick = function() {
     <h2>Working Papers</h2>
 
 <div class="paper-entry" id="paper-3"><strong>[3] Compatible Explanations</strong> <span class="tag-msg c-red" style="display:inline; cursor:default;">(Job Market Paper)</span><br>
-  <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/jmpysohn.pdf" data-goatcounter-click="compatibleexplanations-paper" data-goatcounter-title="Compatible Explanations paper">paper</a>]</span>
+  <span class="paper-links">[<a href="https://warwick.ac.uk/fac/soc/economics/staff/sohn/jmpysohn.pdf" data-goatcounter-click="compatible-paper" data-goatcounter-title="Compatible paper">paper</a>]</span>
 </div>
 
 <div class="paper-entry" id="paper-2"><strong>[2] Pay to Quit: Robust Team Incentives with Hidden Need</strong><br>with <a href="https://sites.google.com/view/hyungminpark/" class="plain">Hyungmin Park</a><br>
   <span class="tag-msg c-blue" style="display:inline; cursor:default; margin-left:0;">Best Graduate Paper at Lisbon Meetings 2026!</span><br>
-  <span class="paper-links">[<a href="/files/paytoquitmar2026draft.pdf" data-goatcounter-click="paytoquit-paper" data-goatcounter-title="Pay to Quit paper">paper</a>]&nbsp;[<a href="/files/paytoquitslidesJuly2026sohn.pdf" data-goatcounter-click="paytoquit-slides" data-goatcounter-title="Pay to Quit slides">slides</a>]&nbsp;[<label for="abs-2">abstract</label>]</span>
+  <span class="paper-links">[<a href="/files/paytoquitmar2026draft.pdf" data-goatcounter-click="paytoquit-paper" data-goatcounter-title="Pay to Quit paper">paper</a>]&nbsp;[<a href="/files/paytoquitslidesJuly2026sohn.pdf" data-goatcounter-click="paytoquit-slides" data-goatcounter-title="Pay to Quit slides">slides</a>]&nbsp;[<label for="abs-2" data-goatcounter-click="paytoquit-abstract" data-goatcounter-title="Pay to Quit abstract">abstract</label>]</span>
   <input type="checkbox" id="abs-2" class="abstract-toggle" hidden>
   <div class="abstract">We study team incentives under complementarities, moral hazard, and adverse selection. Experts privately  know whether their assigned components require costly repair. The principal observes only participation,  not effort, and seeks to uniquely implement high quality under belief-free rationalizability (Bergemann  and Morris, 2017). Standard contracts rewarding only participation fail to elicit private information,  leaving the principal exposed to high coordination rents. We show that a “pay-to-quit” contract—which  offers a higher success bonus for opting out than for participating—strictly reduces implementation costs.  As the contract screens out experts who intend to shirk or whose components need no repair, participation becomes an on-path signal of active effort. Under complementarities, this endogenous information raises  each expert’s marginal contribution, significantly lowering the bonuses required for unique implementation.  We also show that, paradoxically, environments in which components are more likely to be already satisfactory can be more expensive to implement robustly, because intervention then becomes less informative.</div>
 </div>
 <h2>Publication</h2>
 <div class="paper-entry" id="paper-1"><strong>[1] Vertical Mergers in Ecosystems with Consumer Hold-Up</strong><br>with <a href="https://www.condorelli.science" class="plain">Daniele Condorelli</a> and <a href="https://www.compasslexecon.com/professionals/jorge-padilla" class="plain">Jorge Padilla</a><br>
   <span class="paper-status">Journal of Industrial Economics, <span class="paper-year">2024</span></span><br>
-  <span class="paper-links">[<a href="/files/vertical-mergers2024.pdf" data-goatcounter-click="verticalmergers-paper" data-goatcounter-title="Vertical Mergers paper">paper</a>]&nbsp;[<label for="abs-1">abstract</label>]</span>
+  <span class="paper-links">[<a href="/files/vertical-mergers2024.pdf" data-goatcounter-click="verticalmergers-paper" data-goatcounter-title="Vertical Mergers paper">paper</a>]&nbsp;[<label for="abs-1" data-goatcounter-click="verticalmergers-abstract" data-goatcounter-title="Vertical Mergers abstract">abstract</label>]</span>
   <input type="checkbox" id="abs-1" class="abstract-toggle" hidden>
   <div class="abstract">An ecosystem comprises all downstream products that employ a certain upstream input. In many cases, final consumers make irreversible investments to join an ecosystem before downstream prices are set. Our main observation is that, in contrast to conventional wisdom, an upstream monopolist merging with one of its downstream affiliates will find it profitable to continue to serve downstream competitors, even when products sold downstream are homogeneous.</div>
 </div>
